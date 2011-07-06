@@ -1,0 +1,48 @@
+<?
+
+require 'common.inc.php';
+
+
+
+
+if (isset($_POST['key'], $_POST['ttl'])) {
+  if ($_POST['ttl'] == -1) {
+    $redis->persist($_POST['key']);
+  } else {
+    $redis->setTimeout($_POST['key'], $_POST['ttl']);
+  }
+
+  header('Location: view.php?key='.$_POST['key']);
+  die;
+}
+
+
+
+$page['css'][] = 'frame';
+$page['js'][]  = 'frame';
+
+require 'header.inc.php';
+
+?>
+<h2>Edit TTL</h2>
+<form action="<?=format_html($_SERVER['REQUEST_URI'])?>" method="post">
+
+<p>
+<label for="key">Key:</label>
+<input type="text" name="key" id="key" size="30" <?=isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+</p>
+
+<p>
+<label for="ttl"><abbr title="Time To Live">TTL</abbr>:</label>
+<input type="text" name="ttl" id="ttl" size="30" <?=isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
+</p>
+
+<p>
+<input type="submit" class="button" value="Edit TTL">
+</p>
+
+</form>
+<?
+
+require 'footer.inc.php';
+

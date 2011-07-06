@@ -1,0 +1,95 @@
+
+#sidebar {
+position: absolute;
+top: 0;
+bottom: 0; 
+left: 0;
+width: 18em;
+height: 100%;
+padding-left: 1em;
+border-right: 1px solid #000;
+overflow: hidden;
+}
+
+#sidebar a, #sidebar a:visited {
+color: #000;
+}
+
+#sidebar a {
+text-decoration: none;
+}
+
+#sidebar a:hover {
+text-decoration: underline;
+}
+
+
+#keys {
+position: fixed;
+top: 10em;
+bottom: 0;
+width: 18em;
+padding-bottom: 1em;
+overflow: auto;
+}
+
+#keys ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+
+#keys li {
+font-weight: normal;
+}
+
+#keys li.folder {
+font-weight: bold;
+}
+
+#keys li.current a {
+background-color: #eee;
+}
+
+#keys div {
+padding: 1px 0 1px 20px;
+background: url(../images/folder-open.png) left center no-repeat;
+}
+
+#keys li.collapsed ul {
+display: none;
+}
+
+#keys li.collapsed div {
+background: url(../images/folder-closed.png) left center no-repeat;  
+}
+
+#keys ul ul {
+margin-left: 10px;
+background: url(../images/tree-vline.gif) repeat-y;
+}
+
+#keys ul ul li {
+padding-left: 12px;
+background: url(../images/tree-node.gif) no-repeat;
+}
+
+#keys ul ul li.last { /* Hard-coded substitute for :last-child */
+background: #fff url(../images/tree-lastnode.gif) no-repeat;
+}
+
+
+#frame {
+position: fixed;
+top: 0; 
+left: 19em;
+right: 0;
+bottom: 0;
+padding-left: 1em;
+}
+
+#frame iframe {
+width: 100%;
+height: 100%;
+}
+
