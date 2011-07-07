@@ -69,7 +69,7 @@ function export_json($key) {
   if (isset($value)) {
     return $value;
   } else {
-    return undefined;
+    return 'undefined';
   }
 }
 
