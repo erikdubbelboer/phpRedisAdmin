@@ -5,6 +5,15 @@ require 'common.inc.php';
 
 
 
+if (isset($_GET['reset']) && method_exists($redis, 'resetStat')) {
+  $redis->resetStat();
+
+  header('Location: info.php');
+  die;
+}
+
+
+
 $info = $redis->info();
 $alt  = false;
 
@@ -16,6 +25,12 @@ require 'header.inc.php';
 
 ?>
 <h2>Info</h2>
+
+<? if (method_exists($redis, 'resetStat')) { ?>
+<p>
+<a href="?reset" class="reset">Reset usage statistics</a>
+</p>
+<? } ?>
 
 <table>
 <tr><th><div>Key</div></th><th><div>Value</div></th></tr>
