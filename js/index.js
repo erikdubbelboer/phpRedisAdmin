@@ -24,8 +24,14 @@ $(function() {
 
   $('li.current').parents('li.folder').removeClass('collapsed');
 
-  $('li.folder div').css('cursor', 'pointer').click(function() {
-    $(this).parent().toggleClass('collapsed');
+  $('li.folder').click(function(e) {
+    var t = $(this);
+
+    if ((e.pageY >= t.offset().top) &&
+        (e.pageY <= t.offset().top + t.children('div').height())) {
+      e.stopPropagation();
+      t.toggleClass('collapsed');
+    }
   });
 
   $('a').click(function() {

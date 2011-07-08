@@ -45,13 +45,14 @@ font-weight: normal;
 
 #keys li.folder {
 font-weight: bold;
+margin-top: .05em;
 }
 
 #keys li.current a {
 background-color: #eee;
 }
 
-#keys div {
+#keys .icon {
 padding: 1px 0 1px 20px;
 background: url(../images/folder-open.png) left center no-repeat;
 }
@@ -60,22 +61,35 @@ background: url(../images/folder-open.png) left center no-repeat;
 display: none;
 }
 
-#keys li.collapsed div {
-background: url(../images/folder-closed.png) left center no-repeat;  
-}
-
 #keys ul ul {
-margin-left: 10px;
+margin-left: 6px;
 background: url(../images/tree-vline.gif) repeat-y;
 }
 
 #keys ul ul li {
-padding-left: 12px;
+padding-left: 16px;
 background: url(../images/tree-node.gif) no-repeat;
 }
 
+#keys ul ul li.folder {
+background-image: url(../images/tree-folder-expanded.gif);
+}
+
+#keys ul ul li.folder.collapsed {
+background-image: url(../images/tree-folder-collapsed.gif);
+}
+
 #keys ul ul li.last { /* Hard-coded substitute for :last-child */
+margin-bottom: .3em;
 background: #fff url(../images/tree-lastnode.gif) no-repeat;
+}
+
+#keys ul ul li.last.folder {
+background-image: url(../images/tree-lastnode-expanded.gif);
+}
+
+#keys ul ul li.last.folder.collapsed {
+background-image: url(../images/tree-lastnode-collapsed.gif);
 }
 
 

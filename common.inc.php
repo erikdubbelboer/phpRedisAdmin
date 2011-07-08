@@ -1,5 +1,10 @@
 <?
 
+if (!class_exists('Redis')) {
+  die('ERROR: phpredis is required. You can find phpredis at <a href="https://github.com/nicolasff/phpredis">https://github.com/nicolasff/phpredis</a>');
+}
+
+
 require 'config.inc.php';
 
 
