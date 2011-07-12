@@ -80,14 +80,16 @@ function print_tree($item, $key, $all, $last) {
 
     $len = false;
 
-    if ($type == 'hash') {
-      $len = $redis->hLen($all);
-    } else if ($type == 'list') {
-      $len = $redis->lSize($all);
-    } else if ($type == 'set') {
-      $len = count($redis->sMembers($all));
-    } else if ($type == 'zset') {
-      $len = count($redis->zRange($all, 0, -1));
+    if (!isset($config['faster']) || !$config['faster']) {
+      if ($type == 'hash') {
+        $len = $redis->hLen($all);
+      } else if ($type == 'list') {
+        $len = $redis->lSize($all);
+      } else if ($type == 'set') {
+        $len = count($redis->sMembers($all));
+      } else if ($type == 'zset') {
+        $len = count($redis->zRange($all, 0, -1));
+      }
     }
 
     if ($len !== false) {
@@ -100,7 +102,7 @@ function print_tree($item, $key, $all, $last) {
     <?
   } else {
     ?>
-    <li class="folder<?=empty($all) ? '' : ' collapsed'?><?=$last ? ' last' : ''?>"><div class="icon"><?=format_html($key)?></div><ul>
+    <li class="folder<?=empty($all) ? '' : ' collapsed'?><?=$last ? ' last' : ''?>"><div class="icon"><?=format_html($key)?> <span class="info">(<?=count($item)?>)</span></div><ul>
     <?
 
     $l = count($item);

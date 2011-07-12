@@ -71,7 +71,7 @@ if (!isset($_GET['key'])) {
 
     <tr><td><div>Encoding:</div></td><td><div><?=format_html($encoding)?></div></td></tr>
 
-    <tr><td><div>Size:</div></td><td><div><?=$size?> <span class="info"><?=($type == 'string') ? 'characters' : 'items'?></span></div></td></tr>
+    <tr><td><div>Size:</div></td><td><div><?=$size?> <?=($type == 'string') ? 'characters' : 'items'?></div></td></tr>
 
     </table>
     

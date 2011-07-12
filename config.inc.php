@@ -8,6 +8,9 @@ $config = array(
 
   'seperator' => ':',
 
+  // Uncomment to show less information and make phpRedisAdmin fire less commands to the Redis server. Recommended for a really busy Redis server.
+  //'faster' => true,
+
   // Uncomment to enable HTTP authentication
   /*'login' => array(
     // Username => Password
