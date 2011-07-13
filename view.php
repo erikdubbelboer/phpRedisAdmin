@@ -25,9 +25,9 @@ if (!isset($_GET['key'])) {
   <?
     if ($exists) {
       ?>
-      <a href="rename.php?key=<?=format_html($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Rename" alt="[R]"></a>
-      <a href="delete.php?key=<?=format_html($_GET['key'])?>" class="delkey"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
-      <a href="export.php?key=<?=format_html($_GET['key'])?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
+      <a href="rename.php?key=<?=urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Rename" alt="[R]"></a>
+      <a href="delete.php?key=<?=urlencode($_GET['key'])?>" class="delkey"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+      <a href="export.php?key=<?=urlencode($_GET['key'])?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
       <?
     }
   ?>
@@ -67,7 +67,7 @@ if (!isset($_GET['key'])) {
 
     <tr><td><div>Type:</div></td><td><div><?=format_html($type)?></div></td></tr>
 
-    <tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?=($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?key=<?=format_html($_GET['key'])?>&amp;ttl=<?=$ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
+    <tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?=($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?key=<?=urlencode($_GET['key'])?>&amp;ttl=<?=$ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
     <tr><td><div>Encoding:</div></td><td><div><?=format_html($encoding)?></div></td></tr>
 
@@ -82,9 +82,9 @@ if (!isset($_GET['key'])) {
       ?>
       <table>
       <tr><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-        <a href="edit.php?type=string&amp;key=<?=format_html($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+        <a href="edit.php?type=string&amp;key=<?=urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
       </div></td><td><div>
-        <a href="delete.php?type=string&amp;key=<?=format_html($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+        <a href="delete.php?type=string&amp;key=<?=urlencode($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
       </div></td></tr>
       </table>
       <?
@@ -97,9 +97,9 @@ if (!isset($_GET['key'])) {
       foreach ($values as $hkey => $value) {
         ?>
         <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=format_html($hkey)?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-          <a href="edit.php?type=hash&amp;key=<?=format_html($_GET['key'])?>&amp;hkey=<?=format_html($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+          <a href="edit.php?type=hash&amp;key=<?=urlencode($_GET['key'])?>&amp;hkey=<?=urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
         </div></td><td><div>
-          <a href="delete.php?type=hash&amp;key=<?=format_html($_GET['key'])?>&amp;hkey=<?=format_html($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+          <a href="delete.php?type=hash&amp;key=<?=urlencode($_GET['key'])?>&amp;hkey=<?=urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
         </div></td></tr>
         <?
 
@@ -116,9 +116,9 @@ if (!isset($_GET['key'])) {
 
         ?>
         <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=$i?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-          <a href="edit.php?type=list&amp;key=<?=format_html($_GET['key'])?>&amp;index=<?=$i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+          <a href="edit.php?type=list&amp;key=<?=urlencode($_GET['key'])?>&amp;index=<?=$i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
         </div></td><td><div>
-          <a href="delete.php?type=list&amp;key=<?=format_html($_GET['key'])?>&amp;index=<?=$i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+          <a href="delete.php?type=list&amp;key=<?=urlencode($_GET['key'])?>&amp;index=<?=$i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
         </div></td></tr>
         <?
 
@@ -133,9 +133,9 @@ if (!isset($_GET['key'])) {
       foreach ($values as $value) {
         ?>
         <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-          <a href="edit.php?type=set&amp;key=<?=format_html($_GET['key'])?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+          <a href="edit.php?type=set&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
         </div></td><td><div>
-          <a href="delete.php?type=set&amp;key=<?=format_html($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+          <a href="delete.php?type=set&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
         </div></td></tr>
         <?
 
@@ -152,8 +152,8 @@ if (!isset($_GET['key'])) {
 
         ?>
         <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=$score?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-          <a href="edit.php?type=zset&amp;key=<?=format_html($_GET['key'])?>&amp;score=<?=$score?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
-          <a href="delete.php?type=zset&amp;key=<?=format_html($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+          <a href="edit.php?type=zset&amp;key=<?=urlencode($_GET['key'])?>&amp;score=<?=$score?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+          <a href="delete.php?type=zset&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
         </div></td></tr>
         <?
 
@@ -166,7 +166,7 @@ if (!isset($_GET['key'])) {
       </table>
 
       <p>
-      <a href="edit.php?type=<?=$type?>&amp;key=<?=format_html($_GET['key'])?>" class="add">Add another value</a>
+      <a href="edit.php?type=<?=$type?>&amp;key=<?=urlencode($_GET['key'])?>" class="add">Add another value</a>
       </p>
       <?
     }

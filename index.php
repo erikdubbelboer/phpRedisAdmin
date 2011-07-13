@@ -36,6 +36,10 @@ sort($keys);
 $dirs = array();
 
 foreach ($keys as $key) {
+  if (strlen($key) > 30) {
+    continue;
+  }
+
   $key = explode($config['seperator'], $key);
 
   $a = &$dirs;
@@ -76,7 +80,7 @@ function print_tree($item, $key, $all, $last) {
 
     ?>
     <li<?=empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-    <a href="?view&amp;key=<?=format_html($all)?>"><?=format_html($key)?><?
+    <a href="?view&amp;key=<?=urlencode($all)?>"><?=format_html($key)?><?
 
     $len = false;
 

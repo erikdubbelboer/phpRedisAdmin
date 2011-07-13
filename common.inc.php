@@ -15,9 +15,13 @@ if (isset($config['login'])) {
 
 
 $redis = new Redis();
-if (!$redis->connect($config['host'], $config['port'])) {
+
+try {
+  $redis->connect($config['host'], $config['port']);
+} catch (Exception $e) {
   die('ERROR: Could not connect to Redis');
 }
+
 
 if (isset($config['auth'])) {
   if (!$redis->auth($config['auth'])) {

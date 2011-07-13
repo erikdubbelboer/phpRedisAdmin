@@ -24,7 +24,7 @@ if (isset($_GET['key'])) {
   require 'header.inc.php';
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&key=<?=format_html($_GET['key'])?>';
+  top.location.href = top.location.pathname+'?view&key=<?=urlencode($_GET['key'])?>';
   </script>
   <?
   require 'footer.inc.php';

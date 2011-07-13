@@ -5,10 +5,18 @@ require 'common.inc.php';
 
 
 
-if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
+while (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
+  if (strlen($_POST['key']) > 30) {
+    break;
+  }
+
   if ($_POST['type'] == 'string') {
     $redis->set($_POST['key'], $_POST['value']);
   } else if (($_POST['type'] == 'hash') && isset($_POST['hkey'])) {
+    if (strlen($_POST['hkey']) > 30) {
+      break;
+    }
+
     $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
   } else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
     $size = $redis->lSize($_POST['key']);
@@ -29,7 +37,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   require 'header.inc.php';
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&key=<?=format_html($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&key=<?=urlencode($_POST['key'])?>';
   </script>
   <?
   require 'footer.inc.php';
@@ -74,12 +82,12 @@ require 'header.inc.php';
 
 <p>
 <label for="key">Key:</label>
-<input type="text" name="key" id="key" size="30" <?=isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+<input type="text" name="key" id="key" size="30" maxlength="30" <?=isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
 <p id="hkeyp">
 <label for="khey">Hash key:</label>
-<input type="text" name="hkey" id="hkey" size="30" <?=isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
+<input type="text" name="hkey" id="hkey" size="30" maxlength="30" <?=isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
 </p>
 
 <p id="indexp">

@@ -5,13 +5,17 @@ require 'common.inc.php';
 
 
 
-if (isset($_POST['old'], $_POST['key'])) {
+while (isset($_POST['old'], $_POST['key'])) {
+  if (strlen($_POST['key']) > 30) {
+    break;
+  }
+
   $redis->rename($_POST['old'], $_POST['key']);
 
   require 'header.inc.php';
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&key=<?=format_html($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&key=<?=urlencode($_POST['key'])?>';
   </script>
   <?
   require 'footer.inc.php';
