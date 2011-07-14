@@ -1,6 +1,11 @@
 <?
 
+// This fill will perform HTTP digest authentication. This is not the most secure form of authentication so be carefull when using this.
+
+
+// Using the md5 of the user agent and IP should make it a bit harder to intercept and reuse the responses.
 $realm = md5('phpRedisAdmin'.$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
+
 
 if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
   header('HTTP/1.1 401 Unauthorized');
@@ -21,7 +26,7 @@ $needed_parts = array(
 $data = array();
 $keys = implode('|', array_keys($needed_parts));
 
-preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $_SERVER['PHP_AUTH_DIGEST'], $matches, PREG_SET_ORDER);
+preg_match_all('/('.$keys.')=(?:([\'"])([^\2]+?)\2|([^\s,]+))/', $_SERVER['PHP_AUTH_DIGEST'], $matches, PREG_SET_ORDER);
 
 foreach ($matches as $m) {
   $data[$m[1]] = $m[3] ? $m[3] : $m[4];
@@ -29,7 +34,9 @@ foreach ($matches as $m) {
 }
 
 if (!empty($needed_parts)) {
-  die('error=1');
+  header('HTTP/1.1 401 Unauthorized');
+  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+  die;
 }
 
 if (!isset($config['login'][$data['username']])) {

@@ -15,79 +15,7 @@ margin-left: -8em;
 }
 
 form .button {
-margin-left: -8em;
-}
-
-.button {
-background: #3963b7;
-background: -moz-linear-gradient(top, #4787d7 0%, #3963b7 100%);
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4787d7), to(#3963b7));
-border-top: 1px solid #426a98;
-border-right: 1px solid #32548c;
-border-bottom: 1px solid #254283;
-border-left: 1px solid #32548c;
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-border-radius: 3px;
--moz-box-shadow: inset 0 1px 0 0 #629bdc;
--webkit-box-shadow: inset 0 1px 0 0 #629bdc;
-color: #fff;
-font-size: 95%;
-font-weight: normal;
-line-height: 1;
-padding: 3px 0 5px 0;
-text-align: center;
-text-shadow: 0 -1px 1px #5680cc;
-padding: 3px 10px;
--webkit-background-clip: padding-box;
-}
-
-.button:hover {
-background: #206bcb;
-background: -moz-linear-gradient(top, #3e9ee5 0%, #206bcb 100%);
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3e9ee5), to(#206bcb));
-border-top: 1px solid #2a73a6;
-border-right: 1px solid #165899;
-border-bottom: 1px solid #07428f;
-border-left: 1px solid #165899;
--moz-box-shadow: inset 0 1px 0 0 #62b1e9;
--webkit-box-shadow: inset 0 1px 0 0 #62b1e9;
-cursor: pointer;
-text-shadow: 0 -1px 1px #1d62ab;
--webkit-background-clip: padding-box;
-}
-
-.button:active {
-background: #3282d3;
-border: 1px solid #154c8c;
-border-bottom: 1px solid #0e408e;
--moz-box-shadow: inset 0 0 6px 3px #1657b5, 0 1px 0 0 #fff;
--webkit-box-shadow: inset 0 0 6px 3px #1657b5, 0 1px 0 0 #fff;
-text-shadow: 0 -1px 1px #2361a4;
--webkit-background-clip: padding-box;
-}
-
-.button[disabled],
-.button[disabled]:hover,
-.button[disabled]:active {
-background: #dadada;
-background: -moz-linear-gradient(top, #f3f3f3 0%, #dadada 100%);
-background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#dadada), to(#f3f3f3));
-border-top: 1px solid #c5c5c5;
-border-right: 1px solid #cecece;
-border-bottom: 1px solid #d9d9d9;
-border-left: 1px solid #cecece;
-color: #8f8f8f;
-box-shadow: none;
--moz-box-shadow: none;
--webkit-box-shadow: none;
-cursor: not-allowed;
-text-shadow: 0 -1px 1px #ebebeb;
-}
-
-.button::-moz-focus-inner {
-border: 0;
-padding: 0;
+margin-left: -7em;
 }
 
 
@@ -118,5 +46,11 @@ padding: .5em;
 .imgbut {
 vertical-align: middle;
 margin-top: -4px;
+}
+
+
+.server {
+float: left;
+margin: 1em;
 }
 

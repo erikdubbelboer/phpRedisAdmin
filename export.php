@@ -1,81 +1,120 @@
 <?
 
-require 'common.inc.php';
+require_once 'common.inc.php';
 
 
 
 
+// Export to redis-cli commands
 function export_redis($key) {
-  global $types, $redis;
+  global $redistypes, $redis;  
 
   $type = $redis->type($key);
-  $type = $types[$type];
+
+  if (!isset($redistypes[$type])) {
+    return;
+  }
+
+  $type = $redistypes[$type];
   
+
+  // String
   if ($type == 'string') {
-    echo 'SET ',$key,' "',addslashes($redis->get($key)),'"',PHP_EOL;
-  } else if ($type == 'hash') {
+    echo 'SET "',addslashes($key),'" "',addslashes($redis->get($key)),'"',PHP_EOL;
+  }
+
+  // Hash
+  else if ($type == 'hash') {
     $values = $redis->hGetAll($key);
 
     foreach ($values as $k => $v) {
-      echo 'HSET ',$key,' ',$k,' "',addslashes($v),'"',PHP_EOL;
+      echo 'HSET "',addslashes($key),'" "',addslashes($k),'" "',addslashes($v),'"',PHP_EOL;
     }
-  } else if ($type == 'list') {
+  }
+
+  // List
+  else if ($type == 'list') {
     $size = $redis->lSize($key);
 
     for ($i = 0; $i < $size; ++$i) {
-      echo 'LPUSH ',$key,' "',addslashes($redis->lGet($key, $i)),'"',PHP_EOL;
+      echo 'LPUSH "',addslashes($key),'" "',addslashes($redis->lGet($key, $i)),'"',PHP_EOL;
     }
-  } else if ($type == 'set') {
+  }
+
+  // Set
+  else if ($type == 'set') {
     $values = $redis->sMembers($key);
 
     foreach ($values as $v) {
-      echo 'SADD ',$key,' "',addslashes($v),'"',PHP_EOL;
+      echo 'SADD "',addslashes($key),'" "',addslashes($v),'"',PHP_EOL;
     }
-  } else if ($type == 'zset') {
+  }
+
+  // ZSet
+  else if ($type == 'zset') {
     $values = $redis->zRange($key, 0, -1);
 
     foreach ($values as $v) {
       $s = $redis->zScore($key, $v);
 
-      echo 'ZADD ',$key,' ',$s,' "',addslashes($v),'"',PHP_EOL;
+      echo 'ZADD "',addslashes($key),'" ',$s,' "',addslashes($v),'"',PHP_EOL;
     }
   }
 }
 
 
+
+// Return the JSON for this key
 function export_json($key) {
-  global $types, $redis;
+  global $redistypes, $redis;
 
   $type = $redis->type($key);
-  $type = $types[$type];
+
+  if (!isset($redistypes[$type])) {
+    return 'undefined';
+  }
+
+  $type = $redistypes[$type];
   
+
+  // String
   if ($type == 'string') {
     $value = $redis->get($key);
-  } else if ($type == 'hash') {
+  }
+
+  // Hash
+  else if ($type == 'hash') {
     $value = $redis->hGetAll($key);
-  } else if ($type == 'list') {
+  }
+
+  // List
+  else if ($type == 'list') {
     $size  = $redis->lSize($key);
     $value = array();
 
     for ($i = 0; $i < $size; ++$i) {
       $value[] = $redis->lGet($key, $i);
     }
-  } else if ($type == 'set') {
+  }
+
+  // Set
+  else if ($type == 'set') {
     $value = $redis->sMembers($key);
-  } else if ($type == 'zset') {
+  }
+
+  // ZSet
+  else if ($type == 'zset') {
     $value = $redis->zRange($key, 0, -1);
   }
 
-  if (isset($value)) {
-    return $value;
-  } else {
-    return 'undefined';
-  }
+
+  return $value;
 }
 
 
 
 
+// Export
 if (isset($_POST['type'])) {
   if ($_POST['type'] == 'json') {
     $ext = 'js';
@@ -89,11 +128,13 @@ if (isset($_POST['type'])) {
   header('Content-type: '.$ct.'; charset=utf-8');
   header('Content-Disposition: inline; filename="export.'.$ext.'"');
     
-  
+ 
+  // JSON 
   if ($_POST['type'] == 'json') {
+    // Single key
     if (isset($_GET['key'])) {
       echo json_encode(export_json($_GET['key']));
-    } else {
+    } else { // All keys
       $keys = $redis->keys('*');
       $vals = array();
 
@@ -103,10 +144,14 @@ if (isset($_POST['type'])) {
 
       echo json_encode($vals);
     }
-  } else {
+  }
+
+  // Redis Commands
+  else {
+    // Single key
     if (isset($_GET['key'])) {
       export_redis($_GET['key']);
-    } else {
+    } else { // All keys
       $keys = $redis->keys('*');
 
       foreach ($keys as $key) {
@@ -114,6 +159,7 @@ if (isset($_POST['type'])) {
       }
     }
   }
+
 
   die;
 }

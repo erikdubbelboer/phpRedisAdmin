@@ -1,6 +1,6 @@
 <?
 
-require 'common.inc.php';
+require_once 'common.inc.php';
 
 
 
@@ -16,12 +16,13 @@ require 'header.inc.php';
 ...
 <?
 
+// Flush everything so far cause the next command could take some time.
 flush();
 
 $redis->save();
 
 ?>
-done.
+ done.
 <?
 
 require 'footer.inc.php';

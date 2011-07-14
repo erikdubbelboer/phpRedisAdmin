@@ -35,6 +35,11 @@ border: 0;
 }
 
 
+.clear {
+clear: left;
+}
+
+
 .info {
 color: #aaa;
 font-weight: normal;

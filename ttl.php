@@ -1,6 +1,6 @@
 <?
 
-require 'common.inc.php';
+require_once 'common.inc.php';
 
 
 
@@ -12,9 +12,10 @@ if (isset($_POST['key'], $_POST['ttl'])) {
     $redis->setTimeout($_POST['key'], $_POST['ttl']);
   }
 
-  header('Location: view.php?key='.$_POST['key']);
+  header('Location: view.php?key='.urlencode($_POST['key']));
   die;
 }
+
 
 
 

@@ -5,50 +5,9 @@ if (!class_exists('Redis')) {
 }
 
 
-require 'config.inc.php';
 
 
-
-if (isset($config['login'])) {
-  require 'login.inc.php';
-}
-
-
-$redis = new Redis();
-
-try {
-  $redis->connect($config['host'], $config['port']);
-} catch (Exception $e) {
-  die('ERROR: Could not connect to Redis');
-}
-
-
-if (isset($config['auth'])) {
-  if (!$redis->auth($config['auth'])) {
-    die('ERROR: Authentication failed.');
-  }
-}
-
-
-$page = array(
-  'css' => array('common'),
-  'js'  => array()
-);
-
-
-
-$types = array(
-  Redis::REDIS_STRING    => 'string',
-  Redis::REDIS_SET       => 'set',
-  Redis::REDIS_LIST      => 'list',
-  Redis::REDIS_ZSET      => 'zset',
-  Redis::REDIS_HASH      => 'hash',
-  Redis::REDIS_NOT_FOUND => 'other'
-);
-
-
-
-// Undo magic quotes
+// Undo magic quotes (both in keys and values)
 if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
   $process = array(&$_GET, &$_POST);
   
@@ -71,76 +30,54 @@ if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 
 
 
-function is_ie() {
-  if (isset($_SERVER['HTTP_USER_AGENT']) &&
-      (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
-    return true;
-  } else {
-    return false;
-  }
+// These includes are needed by each script.
+require_once 'config.inc.php';
+require_once 'functions.inc.php';
+require_once 'page.inc.php';
+
+
+if (isset($config['login'])) {
+  require_once 'login.inc.php';
 }
 
 
-function format_html($str) {
-  return htmlentities($str, ENT_COMPAT, 'UTF-8');
+
+
+// phpredis types to string conversion array.
+$redistypes = array(
+  Redis::REDIS_STRING    => 'string',
+  Redis::REDIS_SET       => 'set',
+  Redis::REDIS_LIST      => 'list',
+  Redis::REDIS_ZSET      => 'zset',
+  Redis::REDIS_HASH      => 'hash',
+);
+
+
+
+
+
+$i = 0;
+
+if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['servers']))) {
+  $i = $_GET['s'];
+}
+
+$server       = $config['servers'][$i];
+$server['id'] = $i;
+
+// Setup a connection to Redis.
+$redis = new Redis();
+
+try {
+  $redis->connect($server['host'], $server['port']);
+} catch (Exception $e) {
+  die('ERROR: Could not connect to Redis ('.$server['host'].':'.$server['port'].')');
 }
 
 
-function format_ago($time, $ago = false) {
-  $minute = 60;
-  $hour   = $minute * 60;
-  $day    = $hour   * 24;
-
-  $when = $time;
-
-  if ($when >= 0)
-    $suffix = 'ago';
-  else {
-    $when = -$when;
-    $suffix = 'in the future';
+if (isset($server['auth'])) {
+  if (!$redis->auth($server['auth'])) {
+    die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
   }
-
-  if ($when > $day) {
-    $when = round($when / $day);
-    $what = 'day';
-  } else if ($when > $hour) {
-    $when = round($when / $hour);
-    $what = 'hour';
-  } else if ($when > $minute) {
-    $when = round($when / $minute);
-    $what = 'minute';
-  } else {
-    $what = 'second';
-  }
-
-  if ($when != 1) $what .= 's';
-
-  if ($ago) {
-    return "$when $what $suffix";
-  } else {
-    return "$when $what";
-  }
-}
-
-
-function format_size($size) {
-  $sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-
-  if ($size == 0) {
-    return '0 B';
-  } else {
-    return round($size / pow(1024, ($i = floor(log($size, 1024)))), 1).' '.$sizes[$i];
-  }
-}
-
-
-function str_rand($length) {
-  $r = '';
-
-  for (; $length > 0; --$length) {
-    $r .= chr(rand(32, 126));
-  }
-
-  return $r;
 }
 

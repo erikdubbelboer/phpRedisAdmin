@@ -1,45 +1,77 @@
 <?
 
-require 'common.inc.php';
+require_once 'common.inc.php';
 
 
 
 
-while (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
-  if (strlen($_POST['key']) > 30) {
-    break;
+if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
+  // Don't allow keys that are to long (Redis supports keys that can be way to long to put in an url).
+  if (strlen($_POST['key']) > $config['maxkeylen']) {
+    die('ERROR: Your key is to long (max length is '.$config['maxkeylen'].')');
   }
 
+  // String
   if ($_POST['type'] == 'string') {
     $redis->set($_POST['key'], $_POST['value']);
-  } else if (($_POST['type'] == 'hash') && isset($_POST['hkey'])) {
-    if (strlen($_POST['hkey']) > 30) {
-      break;
+  }
+
+  // Hash
+  else if (($_POST['type'] == 'hash') && isset($_POST['hkey'])) {
+    if (strlen($_POST['hkey']) > $config['maxkeylen']) {
+      die('ERROR: Your hash key is to long (max length is '.$config['maxkeylen'].')');
     }
 
     $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
-  } else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
-    $size = $redis->lSize($_POST['key']);
-
-    if (empty($_POST['index']) || ($_POST['index'] == $size)) {
-      $redis->rPush($_POST['key'], $_POST['value']);
-    } else if ($_POST['index'] == -1) {
-      $redis->lPush($_POST['key'], $_POST['value']);
-    } else if (($_POST['index'] >= 0) && ($_POST['index'] < $size)) {
-      $redis->lSet($_POST['key'], $_POST['index'], $_POST['value']);
-    }
-  } else if ($_POST['type'] == 'set') {
-    $redis->sAdd($_POST['key'], $_POST['value']);
-  } else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
-    $redis->zAdd($_POST['key'], $_POST['score'], $_POST['value']);
   }
 
+  // List
+  else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
+    $size = $redis->lSize($_POST['key']);
+
+    if (empty($_POST['index']) ||
+        ($_POST['index'] == $size) ||
+        ($_POST['index'] == -1)) {
+      // Push it at the end
+      $redis->rPush($_POST['key'], $_POST['value']);
+    } else if (($_POST['index'] >= 0) &&
+               ($_POST['index'] < $size)) {
+      // Overwrite an index
+      $redis->lSet($_POST['key'], $_POST['index'], $_POST['value']);
+    } else {
+      die('ERROR: Out of bounds index');
+    }
+  }
+
+  // Set
+  else if ($_POST['type'] == 'set') {
+    if ($_POST['value'] != $_POST['oldvalue']) {
+      // The only way to edit a Set value is to add it and remove the old value.
+      $redis->sRem($_POST['key'], $_POST['oldvalue']);
+      $redis->sAdd($_POST['key'], $_POST['value']);
+    }
+  }
+
+  // ZSet
+  else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
+    if ($_POST['value'] != $_POST['oldvalue']) {
+      // The only way to edit a ZSet value is to add it and remove the old value.
+      $redis->zDelete($_POST['key'], $_POST['oldvalue']);
+      $redis->zAdd($_POST['key'], $_POST['score'], $_POST['value']);
+    }
+  }
+
+
+
+  // Refresh the top so the key tree is updated.
   require 'header.inc.php';
+
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&key=<?=urlencode($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?=$server['id']?>&key=<?=urlencode($_POST['key'])?>';
   </script>
   <?
+
   require 'footer.inc.php';
   die;
 }
@@ -47,6 +79,7 @@ while (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
 
 
+// Are we editing or creating a new key?
 $edit = false;
 
 if (isset($_GET['key'], $_GET['type'])) {
@@ -58,6 +91,36 @@ if (isset($_GET['key'], $_GET['type'])) {
     $edit = true;
   }
 }
+
+
+
+
+// Get the current value.
+$value = '';
+
+if ($edit) {
+  // String
+  if ($_GET['type'] == 'string') {
+    $value = $redis->get($_GET['key']);
+  }
+
+  // Hash
+  else if (($_GET['type'] == 'hash') && isset($_GET['hkey'])) {
+    $value = $redis->hGet($_GET['key'], $_GET['hkey']);
+  }
+
+  // List
+  else if (($_GET['type'] == 'list') && isset($_GET['index'])) {
+    $value = $redis->lGet($_GET['key'], $_GET['index']);
+  }
+
+  // Set, ZSet
+  else if ((($_GET['type'] == 'set') || ($_GET['type'] == 'zset')) && isset($_GET['value'])) {
+    $value = $_GET['value'];
+  }
+}
+
+
 
 
 $page['css'][] = 'frame';
@@ -102,20 +165,10 @@ require 'header.inc.php';
 
 <p>
 <label>Value:</label>
-<textarea name="value" cols="80" rows="20"><?
-  if ($edit) {
-    if ($_GET['type'] == 'string') {
-      echo nl2br(format_html($redis->get($_GET['key'])));
-    } else if (($_GET['type'] == 'hash') && isset($_GET['hkey'])) {
-      echo nl2br(format_html($redis->hGet($_GET['key'], $_GET['hkey'])));
-    } else if (($_GET['type'] == 'list') && isset($_GET['index'])) {
-      echo nl2br(format_html($redis->lGet($_GET['key'], $_GET['index'])));
-    } else if ((($_GET['type'] == 'set') || ($_GET['type'] == 'zset')) && isset($_GET['value'])) {
-      echo nl2br(format_html($_GET['value']));
-    }
-  }
-?></textarea>
+<textarea name="value" cols="80" rows="20"><?=nl2br(format_html($value))?></textarea>
 </p>
+
+<input type="hidden" name="oldvalue" value="<?=format_html($value)?>">
 
 <p>
 <input type="submit" class="button" value="<?=$edit ? 'Edit' : 'Add'?>">

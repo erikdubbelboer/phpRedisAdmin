@@ -1,6 +1,6 @@
 <?
 
-require 'common.inc.php';
+require_once 'common.inc.php';
 
 
 
@@ -14,8 +14,11 @@ if (isset($_GET['reset']) && method_exists($redis, 'resetStat')) {
 
 
 
+// Fetch the info
 $info = $redis->info();
 $alt  = false;
+
+
 
 
 $page['css'][] = 'frame';
@@ -28,7 +31,7 @@ require 'header.inc.php';
 
 <? if (method_exists($redis, 'resetStat')) { ?>
 <p>
-<a href="?reset" class="reset">Reset usage statistics</a>
+<a href="?reset&amp;s=<?=$server['id']?>" class="reset">Reset usage statistics</a>
 </p>
 <? } ?>
 
@@ -37,7 +40,7 @@ require 'header.inc.php';
 <?
 
 foreach ($info as $key => $value) {
-  if ($key == 'allocation_stats') {
+  if ($key == 'allocation_stats') { // This key is very long to split it into multiple lines
     $value = str_replace(',', ",\n", $value);
   }
 

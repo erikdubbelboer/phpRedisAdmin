@@ -22,6 +22,17 @@ $(function() {
   });
 
 
+  $('#server').change(function(e) {
+    if (location.href.indexOf('?') == -1) {
+      location.href = location.href+'?s='+e.target.value;
+    } else if (location.href.indexOf('&s=') == -1) {
+      location.href = location.href+'&s='+e.target.value;
+    } else {
+      location.href = location.href.replace(/s=[0-9]*/, 's='+e.target.value);
+    }
+  });
+
+
   $('li.current').parents('li.folder').removeClass('collapsed');
 
   $('li.folder').click(function(e) {

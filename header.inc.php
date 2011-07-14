@@ -14,12 +14,14 @@ header('Cache-Control: private');
 } ?>
 
 <meta name=author content="https://github.com/ErikDubbelboer/">
+
+<?/* I don't think we ever want this to be indexed*/?>
 <meta name=robots content="noindex,nofollow,noarchive">
 
-<title><?=format_html($config['host'])?> - phpRedisAdmin</title>
+<title><?=format_html($server['host'])?> - phpRedisAdmin</title>
 
 <? foreach ($page['css'] as $css) { ?>
-<link rel=stylesheet href="css/<?=$css?>.css" media=all>
+<link rel=stylesheet href="css/<?=$css?>.css?v1" media=all>
 <? } ?>
 
 <link rel="shortcut icon" href="favicon.ico">
@@ -27,9 +29,8 @@ header('Cache-Control: private');
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
 
 <? foreach ($page['js'] as $js) { ?>
-<script src="js/<?=$js?>.js"></script>
+<script src="js/<?=$js?>.js?v1"></script>
 <? } ?>
 
 </head>
 <body>
-
