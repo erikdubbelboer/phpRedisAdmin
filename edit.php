@@ -68,7 +68,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&s=<?php print $server['id']?>&key=<?php print urlencode($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&key=<?php echo urlencode($_POST['key'])?>';
   </script>
   <?php
 
@@ -129,49 +129,49 @@ $page['js'][]  = 'frame';
 require 'header.inc.php';
 
 ?>
-<h2><?php print $edit ? 'Edit' : 'Add'?></h2>
-<form action="<?php print format_html($_SERVER['REQUEST_URI'])?>" method="post">
+<h2><?php echo $edit ? 'Edit' : 'Add'?></h2>
+<form action="<?php echo format_html($_SERVER['REQUEST_URI'])?>" method="post">
 
 <p>
 <label for="type">Type:</label>
 <select name="type" id="type">
-<option value="string" <?php print (isset($_GET['type']) && ($_GET['type'] == 'string')) ? 'selected="selected"' : ''?>>String</option>
-<option value="hash"   <?php print (isset($_GET['type']) && ($_GET['type'] == 'hash'  )) ? 'selected="selected"' : ''?>>Hash</option>
-<option value="list"   <?php print (isset($_GET['type']) && ($_GET['type'] == 'list'  )) ? 'selected="selected"' : ''?>>List</option>
-<option value="set"    <?php print (isset($_GET['type']) && ($_GET['type'] == 'set'   )) ? 'selected="selected"' : ''?>>Set</option>
-<option value="zset"   <?php print (isset($_GET['type']) && ($_GET['type'] == 'zset'  )) ? 'selected="selected"' : ''?>>ZSet</option>
+<option value="string" <?php echo (isset($_GET['type']) && ($_GET['type'] == 'string')) ? 'selected="selected"' : ''?>>String</option>
+<option value="hash"   <?php echo (isset($_GET['type']) && ($_GET['type'] == 'hash'  )) ? 'selected="selected"' : ''?>>Hash</option>
+<option value="list"   <?php echo (isset($_GET['type']) && ($_GET['type'] == 'list'  )) ? 'selected="selected"' : ''?>>List</option>
+<option value="set"    <?php echo (isset($_GET['type']) && ($_GET['type'] == 'set'   )) ? 'selected="selected"' : ''?>>Set</option>
+<option value="zset"   <?php echo (isset($_GET['type']) && ($_GET['type'] == 'zset'  )) ? 'selected="selected"' : ''?>>ZSet</option>
 </select>
 </p>
 
 <p>
 <label for="key">Key:</label>
-<input type="text" name="key" id="key" size="30" maxlength="30" <?php print isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+<input type="text" name="key" id="key" size="30" maxlength="30" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
 <p id="hkeyp">
 <label for="khey">Hash key:</label>
-<input type="text" name="hkey" id="hkey" size="30" maxlength="30" <?php print isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
+<input type="text" name="hkey" id="hkey" size="30" maxlength="30" <?php echo isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
 </p>
 
 <p id="indexp">
 <label for="index">Index:</label>
-<input type="text" name="index" id="index" size="30" <?php print isset($_GET['index']) ? 'value="'.format_html($_GET['index']).'"' : ''?>> <span class="info">empty to append, -1 to prepend</span>
+<input type="text" name="index" id="index" size="30" <?php echo isset($_GET['index']) ? 'value="'.format_html($_GET['index']).'"' : ''?>> <span class="info">empty to append, -1 to prepend</span>
 </p>
 
 <p id="scorep">
 <label for="score">Score:</label>
-<input type="text" name="score" id="score" size="30" <?php print isset($_GET['score']) ? 'value="'.format_html($_GET['score']).'"' : ''?>>
+<input type="text" name="score" id="score" size="30" <?php echo isset($_GET['score']) ? 'value="'.format_html($_GET['score']).'"' : ''?>>
 </p>
 
 <p>
-<label>Value:</label>
-<textarea name="value" cols="80" rows="20"><?php print nl2br(format_html($value))?></textarea>
+<label for="value">Value:</label>
+<textarea name="value" id="value" cols="80" rows="20"><?php echo nl2br(format_html($value))?></textarea>
 </p>
 
-<input type="hidden" name="oldvalue" value="<?php print format_html($value)?>">
+<input type="hidden" name="oldvalue" value="<?php echo format_html($value)?>">
 
 <p>
-<input type="submit" class="button" value="<?php print $edit ? 'Edit' : 'Add'?>">
+<input type="submit" class="button" value="<?php echo $edit ? 'Edit' : 'Add'?>">
 </p>
 
 </form>

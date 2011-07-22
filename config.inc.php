@@ -3,12 +3,12 @@
 $config = array(
   'servers' => array(
     array(
-      'name' => 'localhost', // Optional name.
+      'name' => 'local server', // Optional name.
       'host' => '127.0.0.1',
       'port' => 6379,
 
       // Optional authentication.
-      //'auth' => 'redispasswordhere' // Warning: The password is send in plain-text to the redis server.
+      //'auth' => 'redispasswordhere' // Warning: The password is sent in plain-text to the redis server.
     ),
 
     /*array(

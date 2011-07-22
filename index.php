@@ -110,13 +110,13 @@ function print_namespace($item, $name, $fullkey, $islast) {
 
 
     ?>
-    <li<?php print empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-    <a href="?view&amp;s=<?php print $server['id']?>&amp;key=<?php print urlencode($fullkey)?>"><?php print format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php print $len?>)</span><?php } ?></a>
+    <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
+    <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
     </li>
     <?php
   } else { // It's a namespace, recursively call this function on all it's members.
     ?>
-    <li class="folder<?php print empty($fullkey) ? '' : ' collapsed'?><?php print $islast ? ' last' : ''?>"><div class="icon"><?php print format_html($name)?> <span class="info">(<?php print count($item)?>)</span></div>
+    <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>"><div class="icon"><?php echo format_html($name)?> <span class="info">(<?php echo count($item)?>)</span></div>
     <ul>
     <?php
 
@@ -151,23 +151,23 @@ require 'header.inc.php';
 ?>
 <div id="sidebar">
 
-<h1 class="logo"><a href="?overview&amp;s=<?php print $server['id']?>">phpRedisAdmin</a></h1>
+<h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>">phpRedisAdmin</a></h1>
 
 <p>
 <select id="server">
 <?php foreach ($config['servers'] as $i => $srv) { ?>
-<option value="<?php print $i?>" <?php print ($server['id'] == $i) ? 'selected="selected"' : ''?>><?php print isset($srv['name']) ? format_html($srv['name']) : $srv['host'].':'.$srv['port']?></option>
+<option value="<?php echo $i?>" <?php echo ($server['id'] == $i) ? 'selected="selected"' : ''?>><?php echo isset($srv['name']) ? format_html($srv['name']) : $srv['host'].':'.$srv['port']?></option>
 <?php } ?>
 </select>
 </p>
 
 <p>
-<a href="?info&amp;s=<?php print $server['id']?>"><img src="images/info.png" width="16" height="16" title="Info" alt="[I]"></a>
-<a href="?export&amp;s=<?php print $server['id']?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
+<a href="?info&amp;s=<?php echo $server['id']?>"><img src="images/info.png" width="16" height="16" title="Info" alt="[I]"></a>
+<a href="?export&amp;s=<?php echo $server['id']?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
 </p>
 
 <p>
-<a href="?edit&amp;s=<?php print $server['id']?>" class="add">Add another key</a>
+<a href="?edit&amp;s=<?php echo $server['id']?>" class="add">Add another key</a>
 </p>
 
 <div id="keys">
@@ -177,7 +177,7 @@ require 'header.inc.php';
 </div><!-- #keys -->
 
 <div id="frame">
-<iframe src="<?php print format_html($iframe)?>" id="iframe" frameborder="0" scrolling="0"></iframe>
+<iframe src="<?php echo format_html($iframe)?>" id="iframe" frameborder="0" scrolling="0"></iframe>
 </div><!-- #frame -->
 
 </div><!-- #sidebar -->

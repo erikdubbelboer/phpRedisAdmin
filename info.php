@@ -31,7 +31,7 @@ require 'header.inc.php';
 
 <?php if (method_exists($redis, 'resetStat')) { ?>
 <p>
-<a href="?reset&amp;s=<?php print $server['id']?>" class="reset">Reset usage statistics</a>
+<a href="?reset&amp;s=<?php echo $server['id']?>" class="reset">Reset usage statistics</a>
 </p>
 <?php } ?>
 
@@ -45,7 +45,7 @@ foreach ($info as $key => $value) {
   }
 
   ?>
-  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print format_html($key)?></div></td><td><div><?php print nl2br(format_html($value))?></div></td></tr>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($key)?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td></tr>
   <?php
 
   $alt = !$alt;
