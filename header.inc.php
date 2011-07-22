@@ -24,7 +24,7 @@ header('Cache-Control: private');
 <link rel=stylesheet href="css/<?php echo $css; ?>.css?v1" media=all>
 <?php } ?>
 
-<link rel="shortcut icon" href="favicon.ico">
+<link rel="shortcut icon" href="images/favicon.png">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.js"></script>
 
