@@ -1,4 +1,4 @@
-<?
+<?php 
 
 
 function format_html($str) {

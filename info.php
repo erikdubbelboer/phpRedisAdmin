@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'common.inc.php';
 
@@ -29,15 +29,15 @@ require 'header.inc.php';
 ?>
 <h2>Info</h2>
 
-<? if (method_exists($redis, 'resetStat')) { ?>
+<?php if (method_exists($redis, 'resetStat')) { ?>
 <p>
-<a href="?reset&amp;s=<?=$server['id']?>" class="reset">Reset usage statistics</a>
+<a href="?reset&amp;s=<?php print $server['id']?>" class="reset">Reset usage statistics</a>
 </p>
-<? } ?>
+<?php } ?>
 
 <table>
 <tr><th><div>Key</div></th><th><div>Value</div></th></tr>
-<?
+<?php
 
 foreach ($info as $key => $value) {
   if ($key == 'allocation_stats') { // This key is very long to split it into multiple lines
@@ -45,15 +45,16 @@ foreach ($info as $key => $value) {
   }
 
   ?>
-  <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=format_html($key)?></div></td><td><div><?=nl2br(format_html($value))?></div></td></tr>
-  <?
+  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print format_html($key)?></div></td><td><div><?php print nl2br(format_html($value))?></div></td></tr>
+  <?php
 
   $alt = !$alt;
 }
 
 ?>
 </table>
-<?
+<?php
 
 require 'footer.inc.php';
 
+?>

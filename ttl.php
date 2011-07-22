@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'common.inc.php';
 
@@ -26,16 +26,16 @@ require 'header.inc.php';
 
 ?>
 <h2>Edit TTL</h2>
-<form action="<?=format_html($_SERVER['REQUEST_URI'])?>" method="post">
+<form action="<?php print format_html($_SERVER['REQUEST_URI'])?>" method="post">
 
 <p>
 <label for="key">Key:</label>
-<input type="text" name="key" id="key" size="30" <?=isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+<input type="text" name="key" id="key" size="30" <?php print isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
 <p>
 <label for="ttl"><abbr title="Time To Live">TTL</abbr>:</label>
-<input type="text" name="ttl" id="ttl" size="30" <?=isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
+<input type="text" name="ttl" id="ttl" size="30" <?php print isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
 </p>
 
 <p>
@@ -43,7 +43,8 @@ require 'header.inc.php';
 </p>
 
 </form>
-<?
+<?php
 
 require 'footer.inc.php';
 
+?>

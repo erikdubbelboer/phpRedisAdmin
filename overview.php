@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'common.inc.php';
 
@@ -38,9 +38,9 @@ require 'header.inc.php';
 
 ?>
 
-<? foreach ($config['servers'] as $i => $server) { ?>
+<?php foreach ($config['servers'] as $i => $server) { ?>
   <div class="server">
-  <h2><?=isset($server['name']) ? $server['name'] : format_html($server['host'])?></h2>
+  <h2><?php print isset($server['name']) ? $server['name'] : format_html($server['host'])?></h2>
 
   <table>
 
@@ -56,7 +56,7 @@ require 'header.inc.php';
 
   </table>
   </div>
-<? } ?>
+<?php } ?>
 
 <p class="clear">
 <a href="https://github.com/ErikDubbelboer/phpRedisAdmin" target="_blank">phpRedisAdmin on GitHub</a>
@@ -65,7 +65,8 @@ require 'header.inc.php';
 <p>
 <a href="http://redis.io/documentation" target="_blank">Redis Documentation</a>
 </p>
-<?
+<?php
 
 require 'footer.inc.php';
 
+?>
