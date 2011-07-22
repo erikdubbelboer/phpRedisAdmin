@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'common.inc.php';
 
@@ -15,7 +15,7 @@ require 'header.inc.php';
 if (!isset($_GET['key'])) {
   ?>
   Invalid key
-  <?
+  <?php
 
   require 'footer.inc.php';
   die;
@@ -28,19 +28,19 @@ $exists = $redis->exists($_GET['key']);
 
 
 ?>
-<h2><?=format_html($_GET['key'])?>
-<? if ($exists) { ?>
-  <a href="rename.php?s=<?=$server['id']?>&amp;key=<?=urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Rename" alt="[R]"></a>
-  <a href="delete.php?s=<?=$server['id']?>&amp;key=<?=urlencode($_GET['key'])?>" class="delkey"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
-  <a href="export.php?s=<?=$server['id']?>&amp;key=<?=urlencode($_GET['key'])?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
-<? } ?>
+<h2><?php print format_html($_GET['key'])?>
+<?php if ($exists) { ?>
+  <a href="rename.php?s=<?php print $server['id']?>&amp;key=<?php print urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Rename" alt="[R]"></a>
+  <a href="delete.php?s=<?php print $server['id']?>&amp;key=<?php print urlencode($_GET['key'])?>" class="delkey"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+  <a href="export.php?s=<?php print $server['id']?>&amp;key=<?php print urlencode($_GET['key'])?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
+<?php } ?>
 </h2>
-<?
+<?php
 
 if (!$exists) {
   ?>
   This key does not exist.
-  <?
+  <?php
 
   require 'footer.inc.php';
   die;
@@ -84,18 +84,18 @@ switch ($type) {
 ?>
 <table>
 
-<tr><td><div>Type:</div></td><td><div><?=format_html($type)?></div></td></tr>
+<tr><td><div>Type:</div></td><td><div><?php print format_html($type)?></div></td></tr>
 
-<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?=($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?=$server['id']?>&amp;key=<?=urlencode($_GET['key'])?>&amp;ttl=<?=$ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
+<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php print ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php print $server['id']?>&amp;key=<?php print urlencode($_GET['key'])?>&amp;ttl=<?php print $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
-<tr><td><div>Encoding:</div></td><td><div><?=format_html($encoding)?></div></td></tr>
+<tr><td><div>Encoding:</div></td><td><div><?php print format_html($encoding)?></div></td></tr>
 
-<tr><td><div>Size:</div></td><td><div><?=$size?> <?=($type == 'string') ? 'characters' : 'items'?></div></td></tr>
+<tr><td><div>Size:</div></td><td><div><?php print $size?> <?php print ($type == 'string') ? 'characters' : 'items'?></div></td></tr>
 
 </table>
 
 <p>
-<?
+<?php
 
 
 
@@ -103,14 +103,14 @@ switch ($type) {
 if ($type == 'string') { ?>
 
 <table>
-<tr><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-  <a href="edit.php?s=<?=$server['id']?>&amp;type=string&amp;key=<?=urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+<tr><td><div><?php print nl2br(format_html($value))?></div></td><td><div>
+  <a href="edit.php?s=<?php print $server['id']?>&amp;type=string&amp;key=<?php print urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
 </div></td><td><div>
-  <a href="delete.php?s=<?=$server['id']?>&amp;type=string&amp;key=<?=urlencode($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+  <a href="delete.php?s=<?php print $server['id']?>&amp;type=string&amp;key=<?php print urlencode($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
 </div></td></tr>
 </table>
 
-<? } 
+<?php } 
 
 
 
@@ -120,15 +120,15 @@ else if ($type == 'hash') { ?>
 <table>
 <tr><th><div>Key</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<? foreach ($values as $hkey => $value) { ?>
-  <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=format_html($hkey)?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-    <a href="edit.php?s=<?=$server['id']?>&amp;type=hash&amp;key=<?=urlencode($_GET['key'])?>&amp;hkey=<?=urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+<?php foreach ($values as $hkey => $value) { ?>
+  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print format_html($hkey)?></div></td><td><div><?php print nl2br(format_html($value))?></div></td><td><div>
+    <a href="edit.php?s=<?php print $server['id']?>&amp;type=hash&amp;key=<?php print urlencode($_GET['key'])?>&amp;hkey=<?php print urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
-    <a href="delete.php?s=<?=$server['id']?>&amp;type=hash&amp;key=<?=urlencode($_GET['key'])?>&amp;hkey=<?=urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+    <a href="delete.php?s=<?php print $server['id']?>&amp;type=hash&amp;key=<?php print urlencode($_GET['key'])?>&amp;hkey=<?php print urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
-<? $alt = !$alt; } ?>
+<?php $alt = !$alt; } ?>
 
-<? }
+<?php }
 
 
 
@@ -138,17 +138,17 @@ else if ($type == 'list') { ?>
 <table>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<? for ($i = 0; $i < $size; ++$i) {
+<?php for ($i = 0; $i < $size; ++$i) {
   $value = $redis->lGet($_GET['key'], $i);
 ?>
-  <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=$i?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-    <a href="edit.php?s=<?=$server['id']?>&amp;type=list&amp;key=<?=urlencode($_GET['key'])?>&amp;index=<?=$i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print $i?></div></td><td><div><?php print nl2br(format_html($value))?></div></td><td><div>
+    <a href="edit.php?s=<?php print $server['id']?>&amp;type=list&amp;key=<?php print urlencode($_GET['key'])?>&amp;index=<?php print $i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
-    <a href="delete.php?s=<?=$server['id']?>&amp;type=list&amp;key=<?=urlencode($_GET['key'])?>&amp;index=<?=$i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+    <a href="delete.php?s=<?php print $server['id']?>&amp;type=list&amp;key=<?php print urlencode($_GET['key'])?>&amp;index=<?php print $i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
-<? $alt = !$alt; } ?>
+<?php $alt = !$alt; } ?>
 
-<? }
+<?php }
 
 
 
@@ -159,15 +159,15 @@ else if ($type == 'set') {
 <table>
 <tr><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<? foreach ($values as $value) { ?>
-  <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-    <a href="edit.php?s=<?=$server['id']?>&amp;type=set&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+<?php foreach ($values as $value) { ?>
+  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print nl2br(format_html($value))?></div></td><td><div>
+    <a href="edit.php?s=<?php print $server['id']?>&amp;type=set&amp;key=<?php print urlencode($_GET['key'])?>&amp;value=<?php print urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
-    <a href="delete.php?s=<?=$server['id']?>&amp;type=set&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+    <a href="delete.php?s=<?php print $server['id']?>&amp;type=set&amp;key=<?php print urlencode($_GET['key'])?>&amp;value=<?php print urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
-<? $alt = !$alt; } ?>
+<?php $alt = !$alt; } ?>
 
-<? }
+<?php }
 
 
 
@@ -177,16 +177,16 @@ else if ($type == 'zset') { ?>
 <table>
 <tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<? foreach ($values as $value) {
+<?php foreach ($values as $value) {
   $score = $redis->zScore($_GET['key'], $value);
 ?>
-  <tr <?=$alt ? 'class="alt"' : ''?>><td><div><?=$score?></div></td><td><div><?=nl2br(format_html($value))?></div></td><td><div>
-    <a href="edit.php?s=<?=$server['id']?>&amp;type=zset&amp;key=<?=urlencode($_GET['key'])?>&amp;score=<?=$score?>&amp;value=<?=urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
-    <a href="delete.php?s=<?=$server['id']?>&amp;type=zset&amp;key=<?=urlencode($_GET['key'])?>&amp;value=<?=urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+  <tr <?php print $alt ? 'class="alt"' : ''?>><td><div><?php print $score?></div></td><td><div><?php print nl2br(format_html($value))?></div></td><td><div>
+    <a href="edit.php?s=<?php print $server['id']?>&amp;type=zset&amp;key=<?php print urlencode($_GET['key'])?>&amp;score=<?php print $score?>&amp;value=<?php print urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+    <a href="delete.php?s=<?php print $server['id']?>&amp;type=zset&amp;key=<?php print urlencode($_GET['key'])?>&amp;value=<?php print urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
-<? $alt = !$alt; } ?>
+<?php $alt = !$alt; } ?>
 
-<? }
+<?php }
 
 
 
@@ -195,9 +195,9 @@ if ($type != 'string') { ?>
   </table>
 
   <p>
-  <a href="edit.php?s=<?=$server['id']?>&amp;type=<?=$type?>&amp;key=<?=urlencode($_GET['key'])?>" class="add">Add another value</a>
+  <a href="edit.php?s=<?php print $server['id']?>&amp;type=<?php print $type?>&amp;key=<?php print urlencode($_GET['key'])?>" class="add">Add another value</a>
   </p>
-<? }
+<?php }
 
 
 require 'footer.inc.php';

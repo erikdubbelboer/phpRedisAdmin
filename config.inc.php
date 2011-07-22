@@ -1,9 +1,9 @@
-<?
+<?php
 
 $config = array(
   'servers' => array(
     array(
-      'name' => 'server 1', // Optional name.
+      'name' => 'localhost', // Optional name.
       'host' => '127.0.0.1',
       'port' => 6379,
 
@@ -37,6 +37,7 @@ $config = array(
 
   // You can ignore settings below this point.
 
-  'maxkeylen' => 30
+  'maxkeylen' => 100
 );
 
+?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: private');
@@ -8,29 +8,29 @@ header('Cache-Control: private');
 <head>
 <meta charset=utf-8>
 
-<? if (is_ie()) {
+<?php if (is_ie()) {
   // Always force latest IE rendering engine and chrome frame (also hides compatibility mode button)
-  ?><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><?
+  ?><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><?php
 } ?>
 
 <meta name=author content="https://github.com/ErikDubbelboer/">
 
-<?/* I don't think we ever want this to be indexed*/?>
+<?php /* I don't think we ever want this to be indexed*/ ?>
 <meta name=robots content="noindex,nofollow,noarchive">
 
-<title><?=format_html($server['host'])?> - phpRedisAdmin</title>
+<title><?php print format_html($server['host'])?> - phpRedisAdmin</title>
 
-<? foreach ($page['css'] as $css) { ?>
-<link rel=stylesheet href="css/<?=$css?>.css?v1" media=all>
-<? } ?>
+<?php foreach ($page['css'] as $css) { ?>
+<link rel=stylesheet href="css/<?php print $css; ?>.css?v1" media=all>
+<?php } ?>
 
 <link rel="shortcut icon" href="favicon.ico">
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
 
-<? foreach ($page['js'] as $js) { ?>
-<script src="js/<?=$js?>.js?v1"></script>
-<? } ?>
+<?php foreach ($page['js'] as $js) { ?>
+<script src="js/<?php print $js; ?>.js?v1"></script>
+<?php } ?>
 
 </head>
 <body>

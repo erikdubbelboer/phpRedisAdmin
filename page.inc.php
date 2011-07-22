@@ -1,4 +1,4 @@
-<?
+<?php
 
 
 // Returns true when the user is using IE
@@ -19,3 +19,4 @@ $page = array(
   'js'  => array()
 );
 
+?>

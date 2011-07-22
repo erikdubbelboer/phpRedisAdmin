@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once 'common.inc.php';
 
@@ -47,11 +47,12 @@ if (isset($_GET['key'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&s=<?=$server['id']?>&key=<?=urlencode($_GET['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?php print $server['id']?>&key=<?php print urlencode($_GET['key'])?>';
   </script>
-  <?
+  <?php
 
   require 'footer.inc.php';
   die;
 }
 
+?>
