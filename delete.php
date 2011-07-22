@@ -47,7 +47,7 @@ if (isset($_GET['key'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&s=<?php print $server['id']?>&key=<?php print urlencode($_GET['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&key=<?php echo urlencode($_GET['key'])?>';
   </script>
   <?php
 

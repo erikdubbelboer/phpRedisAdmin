@@ -18,10 +18,10 @@ header('Cache-Control: private');
 <?php /* I don't think we ever want this to be indexed*/ ?>
 <meta name=robots content="noindex,nofollow,noarchive">
 
-<title><?php print format_html($server['host'])?> - phpRedisAdmin</title>
+<title><?php echo format_html($server['host'])?> - phpRedisAdmin</title>
 
 <?php foreach ($page['css'] as $css) { ?>
-<link rel=stylesheet href="css/<?php print $css; ?>.css?v1" media=all>
+<link rel=stylesheet href="css/<?php echo $css; ?>.css?v1" media=all>
 <?php } ?>
 
 <link rel="shortcut icon" href="favicon.ico">
@@ -29,7 +29,7 @@ header('Cache-Control: private');
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
 
 <?php foreach ($page['js'] as $js) { ?>
-<script src="js/<?php print $js; ?>.js?v1"></script>
+<script src="js/<?php echo $js; ?>.js?v1"></script>
 <?php } ?>
 
 </head>
