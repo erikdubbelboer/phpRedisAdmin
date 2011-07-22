@@ -1,4 +1,4 @@
-<?
+<?php
 
 // This fill will perform HTTP digest authentication. This is not the most secure form of authentication so be carefull when using this.
 
@@ -55,3 +55,4 @@ if ($data['response'] != $response) {
   die('Invalid username and/or password combination.');
 }
 
+?>
