@@ -44,15 +44,15 @@ require 'header.inc.php';
 
   <table>
 
-  <tr><td><div>Redis version:</div></td><td><div><?=$info[$i]['redis_version']?></div></td></tr>
+  <tr><td><div>Redis version:</div></td><td><div><?php echo $info[$i]['redis_version']?></div></td></tr>
 
-  <tr><td><div>Keys:</div></td><td><div><?=$info[$i]['size']?></div></td></tr>
+  <tr><td><div>Keys:</div></td><td><div><?php echo $info[$i]['size']?></div></td></tr>
 
-  <tr><td><div>Memory used:</div></td><td><div><?=format_size($info[$i]['used_memory'])?></div></td></tr>
+  <tr><td><div>Memory used:</div></td><td><div><?php echo format_size($info[$i]['used_memory'])?></div></td></tr>
 
-  <tr><td><div>Uptime:</div></td><td><div><?=format_ago($info[$i]['uptime_in_seconds'])?></div></td></tr>
+  <tr><td><div>Uptime:</div></td><td><div><?php echo format_ago($info[$i]['uptime_in_seconds'])?></div></td></tr>
 
-  <tr><td><div>Last save:</div></td><td><div><?=format_ago(time() - $info[$i]['last_save_time'], true)?> <a href="save.php?s=<?=$i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
+  <tr><td><div>Last save:</div></td><td><div><?php echo format_ago(time() - $info[$i]['last_save_time'], true)?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
 
   </table>
   </div>
