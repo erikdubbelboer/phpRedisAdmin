@@ -27,7 +27,7 @@ TODO
 * Make delete a POST request
 * Better error handling
 * Move or Copy key to different server
-* Importing of databases (json and redis commands)
+* Importing JSON
 * JSON export with seperate objects based on your seperator
 
 

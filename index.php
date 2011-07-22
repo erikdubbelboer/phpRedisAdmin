@@ -164,6 +164,7 @@ require 'header.inc.php';
 <p>
 <a href="?info&amp;s=<?php echo $server['id']?>"><img src="images/info.png" width="16" height="16" title="Info" alt="[I]"></a>
 <a href="?export&amp;s=<?php echo $server['id']?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
+<a href="?import&amp;s=<?php echo $server['id']?>"><img src="images/import.png" width="16" height="16" title="Import" alt="[I]"></a>
 </p>
 
 <p>
