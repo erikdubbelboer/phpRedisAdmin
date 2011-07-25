@@ -3,13 +3,15 @@
 // This fill will perform HTTP digest authentication. This is not the most secure form of authentication so be carefull when using this.
 
 
+$realm = 'phpRedisAdmin';
+
 // Using the md5 of the user agent and IP should make it a bit harder to intercept and reuse the responses.
-$realm = md5('phpRedisAdmin'.$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
+$opaque = md5('phpRedisAdmin'.$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
 
 if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
   header('HTTP/1.1 401 Unauthorized');
-  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
   die;
 }
 
@@ -35,13 +37,13 @@ foreach ($matches as $m) {
 
 if (!empty($needed_parts)) {
   header('HTTP/1.1 401 Unauthorized');
-  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
   die;
 }
 
 if (!isset($config['login'][$data['username']])) {
   header('HTTP/1.1 401 Unauthorized');
-  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
   die('Invalid username and/or password combination.');
 }
 
@@ -51,7 +53,7 @@ $response = md5($password.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce']
 
 if ($data['response'] != $response) {
   header('HTTP/1.1 401 Unauthorized');
-  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+  header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
   die('Invalid username and/or password combination.');
 }
 
