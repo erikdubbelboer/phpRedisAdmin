@@ -34,7 +34,9 @@ foreach ($keys as $key) {
     $d = &$d[$key[$i]];
   }
 
-  $d[$key[count($key) - 1]] = true; // true means this is an actual key.
+  // Containing an item named __phpredisadmin__ means it's also a key.
+  // This means that creating an actual key named __phpredisadmin__ will make this bug.
+  $d[$key[count($key) - 1]] = array('__phpredisadmin__' => true);
 
   // Unset $d so we don't accidentally overwrite it somewhere else.
   unset($d);
@@ -65,9 +67,11 @@ if (count($_GET) == 0) {
 function print_namespace($item, $name, $fullkey, $islast) {
   global $config, $redistypes, $server, $redis;
 
+  // Is this also a key and not just a namespace?
+  if (isset($item['__phpredisadmin__'])) {
+    // Unset it so we won't loop over it when printing this namespace.
+    unset($item['__phpredisadmin__']);
 
-  // true means it's a key and not a namespace.
-  if ($item === true) {
     $type = $redis->type($fullkey);
 
     if (!isset($redistypes[$type])) {
@@ -114,7 +118,10 @@ function print_namespace($item, $name, $fullkey, $islast) {
     <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
     </li>
     <?php
-  } else { // It's a namespace, recursively call this function on all it's members.
+  }
+  
+  // Does this namespace also contain subkeys?
+  if (count($item) > 0) {
     ?>
     <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>"><div class="icon"><?php echo format_html($name)?> <span class="info">(<?php echo count($item)?>)</span></div>
     <ul>
