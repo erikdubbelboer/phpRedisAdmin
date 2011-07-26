@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: private');
 
 ?><!DOCTYPE html>
-<html lang=nl>
+<html lang=en>
 <head>
 <meta charset=utf-8>
 
