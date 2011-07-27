@@ -5,6 +5,7 @@ require_once 'common.inc.php';
 
 
 
+// This mess could need some cleanup!
 if (isset($_POST['commands'])) {
   $commands = explode("\n", $_POST['commands']);
 
@@ -22,6 +23,8 @@ if (isset($_POST['commands'])) {
       // We can't just explode since we might have \" inside the key. So do a preg_split on " with a negative lookbehind assertions to make sure it isn't a \".
       $key = preg_split('/(?<!\\\\)"/', substr($command[1], 1), 2);
 
+      $key[0] = stripslashes($key[0]);
+
       // Strip the seperating space
       $key[1] = substr($key[1], 1);
     } else {
@@ -30,8 +33,13 @@ if (isset($_POST['commands'])) {
 
     switch ($command[0]) {
       case 'SET': {
-        // Trim the optional "" acount th value.
-        $redis->set($key[0], trim($key[1], '"'));
+        if ($key[1][0] == '"') {
+          $val = stripslashes(trim($key[1], '"'));
+        } else {
+          $val = $key[1];
+        }
+
+        $redis->set($key[0], $val);
         break;
       }
 
@@ -39,6 +47,8 @@ if (isset($_POST['commands'])) {
         if ($key[1][0] == '"') {
           // See preg_split above.
           $hkey = preg_split('/(?<!\\\\)"/', substr($key[1], 1), 2);
+
+          $hkey[0] = stripslashes($hkey[0]);
       
           // Strip the seperating space
           $hkey[1] = substr($hkey[1], 1);
@@ -46,17 +56,35 @@ if (isset($_POST['commands'])) {
           $hkey = explode(' ', $key[1], 2);
         }
 
-        $redis->hSet($key[0], $hkey[0], trim($hkey[1], '"'));
+        if ($hkey[1][0] == '"') {
+          $val = stripslashes(trim($hkey[1], '"'));
+        } else {
+          $val = $hkey[1];
+        }
+
+        $redis->hSet($key[0], $hkey[0], $val);
         break;
       }
 
       case 'RPUSH': {
-        $redis->rPush($key[0], trim($key[1], '"'));
+        if ($key[1][0] == '"') {
+          $val = stripslashes(trim($key[1], '"'));
+        } else {
+          $val = $key[1];
+        }
+
+        $redis->rPush($key[0], $val);
         break;
       }
 
       case 'SADD': {
-        $redis->sAdd($key[0], trim($key[1], '"'));
+        if ($key[1][0] == '"') {
+          $val = stripslashes(trim($key[1], '"'));
+        } else {
+          $val = $key[1];
+        }
+
+        $redis->sAdd($key[0], $val);
         break;
       }
 
@@ -64,6 +92,8 @@ if (isset($_POST['commands'])) {
         if ($key[1][0] == '"') {
           // See preg_split ebove.
           $score = preg_split('/(?<!\\\\)"/', substr($key[1], 1), 2);
+
+          $score[0] = stripslashes($score[0]);
       
           // Strip the seperating space
           $score[1] = substr($score[1], 1);
@@ -71,14 +101,19 @@ if (isset($_POST['commands'])) {
           $score = explode(' ', $key[1], 2);
         }
 
-        $redis->zAdd($key[0], $score[0], trim($score[1], '"'));
+        if ($score[1][0] == '"') {
+          $val = stripslashes(trim($score[1], '"'));
+        } else {
+          $val = $score[1];
+        }
+
+        $redis->zAdd($key[0], $score[0], $val);
         break;
       }
 
       // We ignore commands we don't know (Could produce a warning).
     }
   }
-
 
 
   // Refresh the top so the key tree is updated.
