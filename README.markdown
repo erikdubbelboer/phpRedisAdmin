@@ -24,7 +24,6 @@ TODO
 ====
 
 * Javascript sorting of tables
-* Make delete a POST request
 * Better error handling
 * Move or Copy key to different server
 * Importing JSON

@@ -1,7 +1,12 @@
 <?php
 
-require_once 'common.inc.php';
 
+if (!isset($_POST['post'])) {
+  die('Javascript needs to be enabled for you to delete keys.');
+}
+
+
+require_once 'common.inc.php';
 
 
 if (isset($_GET['key'])) {
@@ -41,18 +46,7 @@ if (isset($_GET['key'])) {
   }
 
 
-
-  // Refresh the top so the key tree is updated.
-  require 'header.inc.php';
-
-  ?>
-  <script>
-  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&key=<?php echo urlencode($_GET['key'])?>';
-  </script>
-  <?php
-
-  require 'footer.inc.php';
-  die;
+  die('?view&s='.$server['id'].'&key='.urlencode($_GET['key']));
 }
 
 ?>

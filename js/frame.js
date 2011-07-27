@@ -12,15 +12,18 @@ $(function() {
   }).change();
 
 
-  $('.delkey').click(function(e) {
-    if (!confirm('Are you sure you want to delete this key and all it\'s values?')) {
-      e.preventDefault();
-    }
-  });
+  $('.delkey, .delval').click(function(e) {
+    e.preventDefault();
 
-  $('.delval').click(function(e) {
-    if (!confirm('Are you sure you want to delete this value?')) {
-      e.preventDefault();
+    if (confirm($(this).hasClass('delkey') ? 'Are you sure you want to delete this key and all it\'s values?' : 'Are you sure you want to delete this value?')) {
+      $.ajax({
+        type: "POST",
+        url: this.href,
+        data: 'post=1',
+        success: function(url) {
+          top.location.href = top.location.pathname+url;
+        }
+      });
     }
   });
 });
