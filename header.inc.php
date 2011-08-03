@@ -13,10 +13,13 @@ header('Cache-Control: private');
   ?><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><?php
 } ?>
 
-<meta name=author content="https://github.com/ErikDubbelboer/">
+<?php /* Disable phone number detection on apple devices. */?>
+<meta name=format-detection content="telephone=no">
 
 <?php /* I don't think we ever want this to be indexed*/ ?>
 <meta name=robots content="noindex,nofollow,noarchive">
+
+<meta name=author content="https://github.com/ErikDubbelboer/">
 
 <title><?php echo format_html($server['host'])?> - phpRedisAdmin</title>
 
