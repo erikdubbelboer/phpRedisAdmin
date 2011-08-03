@@ -8,6 +8,10 @@ require_once 'common.inc.php';
 $info = array();
 
 foreach ($config['servers'] as $i => $server) {
+  if (!isset($server['db'])) {
+      $server['db'] = 0;
+  }
+
   // Setup a connection to this Redis server.
   $redis->close();
 
@@ -23,6 +27,14 @@ foreach ($config['servers'] as $i => $server) {
       die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
     }
   }
+
+
+  if ($server['db'] != 0) {
+    if (!$redis->select($server['db'])) {
+      die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
+    }
+  }
+
 
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();

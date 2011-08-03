@@ -65,6 +65,12 @@ if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['
 $server       = $config['servers'][$i];
 $server['id'] = $i;
 
+
+if (!isset($server['db'])) {
+  $server['db'] = 0;
+}
+
+
 // Setup a connection to Redis.
 $redis = new Redis();
 
@@ -78,6 +84,13 @@ try {
 if (isset($server['auth'])) {
   if (!$redis->auth($server['auth'])) {
     die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
+  }
+}
+
+
+if ($server['db'] != 0) {
+  if (!$redis->select($server['db'])) {
+    die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
   }
 }
 
