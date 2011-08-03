@@ -36,7 +36,13 @@ $config = array(
   /*'login' => array(
     // Username => Password
     // Multiple combinations can be used
-    'username' => 'password'
+    'admin' => array(
+      'password' => 'adminpassword',
+    ),
+    'guest' => array(
+      'password' => '',
+      'servers'  => array(1) // Optional list of servers this user can access.
+    )
   ),*/
 
 

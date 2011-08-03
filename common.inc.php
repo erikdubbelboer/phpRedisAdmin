@@ -56,7 +56,12 @@ $redistypes = array(
 
 
 
-$i = 0;
+if (isset($login['servers'])) {
+  $i = current($login['servers']);
+} else {
+  $i = 0;
+}
+
 
 if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['servers']))) {
   $i = $_GET['s'];
@@ -64,6 +69,19 @@ if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['
 
 $server       = $config['servers'][$i];
 $server['id'] = $i;
+
+
+if (isset($login, $login['servers'])) {
+  if (array_search($i, $login['servers']) === false) {
+    die('You are not allowed to access this database.');
+  }
+
+  foreach ($config['servers'] as $key => $ignore) {
+    if (array_search($key, $login['servers']) === false) {
+      unset($config['servers'][$key]);
+    }
+  }
+}
 
 
 if (!isset($server['db'])) {

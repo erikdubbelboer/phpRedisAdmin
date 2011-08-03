@@ -9,7 +9,7 @@ $realm = 'phpRedisAdmin';
 $opaque = md5('phpRedisAdmin'.$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
 
 
-if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
+if (!isset($_SERVER['PHP_AUTH_DIGEST']) || empty($_SERVER['PHP_AUTH_DIGEST'])) {
   header('HTTP/1.1 401 Unauthorized');
   header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
   die;
@@ -47,7 +47,10 @@ if (!isset($config['login'][$data['username']])) {
   die('Invalid username and/or password combination.');
 }
 
-$password = md5($data['username'].':'.$realm.':'.$config['login'][$data['username']]);
+$login         = $config['login'][$data['username']];
+$login['name'] = $data['username'];
+
+$password = md5($login['name'].':'.$realm.':'.$login['password']);
 
 $response = md5($password.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']));
 
