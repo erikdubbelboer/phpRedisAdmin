@@ -10,108 +10,60 @@ if (isset($_POST['commands'])) {
   $commands = explode("\n", $_POST['commands']);
 
   foreach ($commands as $command) {
-    // The command and it's arguments are always seperated by a space
-    $command = explode(' ', trim($command), 2);
+    $command = str_getcsv($command, ' ');
 
-    if (!isset($command[1])) {
-      // It's just an empty line or simple command which we don't support.
+    // Is it an empty line?
+    if (is_null($command[0])) {
       continue;
     }
 
-    // Is the key enclosed in ""?
-    if ($command[1][0] == '"') {
-      // We can't just explode since we might have \" inside the key. So do a preg_split on " with a negative lookbehind assertions to make sure it isn't a \".
-      $key = preg_split('/(?<!\\\\)"/', substr($command[1], 1), 2);
-
-      $key[0] = stripslashes($key[0]);
-
-      // Strip the seperating space
-      $key[1] = substr($key[1], 1);
-    } else {
-      $key = explode(' ', $command[1], 2);
+    // Do we have enough arguments?
+    if (count($command) < 3) {
+      continue;
     }
+
+    // Some commands need 3 arguments, make sure we always have a 3e argument.
+    if (!isset($command[3])) {
+      $command[3] = '';
+    }
+
+    $command[0] = strtoupper($command[0]);
 
     switch ($command[0]) {
       case 'SET': {
-        if ($key[1][0] == '"') {
-          $val = stripslashes(trim($key[1], '"'));
-        } else {
-          $val = $key[1];
-        }
-
-        $redis->set($key[0], $val);
+        $redis->set($command[1], $command[2]);
         break;
       }
 
       case 'HSET': {
-        if ($key[1][0] == '"') {
-          // See preg_split above.
-          $hkey = preg_split('/(?<!\\\\)"/', substr($key[1], 1), 2);
-
-          $hkey[0] = stripslashes($hkey[0]);
+        $redis->hSet($command[1], $command[2], $command[3]);
+        break;
+      }
       
-          // Strip the seperating space
-          $hkey[1] = substr($hkey[1], 1);
-        } else {
-          $hkey = explode(' ', $key[1], 2);
-        }
-
-        if ($hkey[1][0] == '"') {
-          $val = stripslashes(trim($hkey[1], '"'));
-        } else {
-          $val = $hkey[1];
-        }
-
-        $redis->hSet($key[0], $hkey[0], $val);
+      case 'LPUSH': {
+        $redis->lPush($command[1], $command[2]);
         break;
       }
 
       case 'RPUSH': {
-        if ($key[1][0] == '"') {
-          $val = stripslashes(trim($key[1], '"'));
-        } else {
-          $val = $key[1];
-        }
+        $redis->rPush($command[1], $command[2]);
+        break;
+      }
 
-        $redis->rPush($key[0], $val);
+      case 'LSET': {
+        $redis->lSet($command[1], $command[2], $command[3]);
         break;
       }
 
       case 'SADD': {
-        if ($key[1][0] == '"') {
-          $val = stripslashes(trim($key[1], '"'));
-        } else {
-          $val = $key[1];
-        }
-
-        $redis->sAdd($key[0], $val);
+        $redis->sAdd($command[1], $command[2]);
         break;
       }
 
       case 'ZADD': {
-        if ($key[1][0] == '"') {
-          // See preg_split ebove.
-          $score = preg_split('/(?<!\\\\)"/', substr($key[1], 1), 2);
-
-          $score[0] = stripslashes($score[0]);
-      
-          // Strip the seperating space
-          $score[1] = substr($score[1], 1);
-        } else {
-          $score = explode(' ', $key[1], 2);
-        }
-
-        if ($score[1][0] == '"') {
-          $val = stripslashes(trim($score[1], '"'));
-        } else {
-          $val = $score[1];
-        }
-
-        $redis->zAdd($key[0], $score[0], $val);
+        $redis->zAdd($command[1], $command[2], $command[3]);
         break;
       }
-
-      // We ignore commands we don't know (Could produce a warning).
     }
   }
 
@@ -148,7 +100,9 @@ require 'header.inc.php';
 Valid are:<br>
 SET<br>
 HSET<br>
+LPUSH<br>
 RPUSH<br>
+LSET<br>
 SADD<br>
 ZADD
 </span>
