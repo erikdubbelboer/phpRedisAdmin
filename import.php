@@ -7,61 +7,60 @@ require_once 'common.inc.php';
 
 // This mess could need some cleanup!
 if (isset($_POST['commands'])) {
-  $commands = explode("\n", $_POST['commands']);
+  $commands = str_getcsv(str_replace("\n", ' ', $_POST['commands']).'    ', ' ');
 
-  foreach ($commands as $command) {
-    $command = str_getcsv($command, ' ');
+  foreach ($commands as &$command) {
+    $command = stripslashes($command);
+  }
+  unset($command);
 
-    // Is it an empty line?
-    if (is_null($command[0])) {
+  for ($i = 0; $i < count($commands); ++$i) {
+    if (empty($commands[$i])) {
       continue;
     }
 
-    // Do we have enough arguments?
-    if (count($command) < 3) {
-      continue;
-    }
+    $commands[$i] = strtoupper($commands[$i]);
 
-    // Some commands need 3 arguments, make sure we always have a 3e argument.
-    if (!isset($command[3])) {
-      $command[3] = '';
-    }
-
-    $command[0] = strtoupper($command[0]);
-
-    switch ($command[0]) {
+    switch ($commands[$i]) {
       case 'SET': {
-        $redis->set($command[1], $command[2]);
+        $redis->set($commands[$i+1], $commands[$i+2]);
+        $i =+ 2;
         break;
       }
 
       case 'HSET': {
-        $redis->hSet($command[1], $command[2], $command[3]);
+        $redis->hSet($commands[$i+1], $commands[$i+2], $commands[$i+3]);
+        $i += 3;
         break;
       }
       
       case 'LPUSH': {
-        $redis->lPush($command[1], $command[2]);
+        $redis->lPush($commands[$i+1], $commands[$i+2]);
+        $i += 2;
         break;
       }
 
       case 'RPUSH': {
-        $redis->rPush($command[1], $command[2]);
+        $redis->rPush($commands[$i+1], $commands[$i+2]);
+        $i += 2;
         break;
       }
 
       case 'LSET': {
-        $redis->lSet($command[1], $command[2], $command[3]);
+        $redis->lSet($commands[$i+1], $commands[$i+2], $commands[$i+3]);
+        $i += 3;
         break;
       }
 
       case 'SADD': {
-        $redis->sAdd($command[1], $command[2]);
+        $redis->sAdd($commands[$i+1], $commands[$i+2]);
+        $i += 2;
         break;
       }
 
       case 'ZADD': {
-        $redis->zAdd($command[1], $command[2], $command[3]);
+        $redis->zAdd($commands[$i+1], $commands[$i+2], $commands[$i+3]);
+        $i += 3;
         break;
       }
     }
