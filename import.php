@@ -7,7 +7,8 @@ require_once 'common.inc.php';
 
 // This mess could need some cleanup!
 if (isset($_POST['commands'])) {
-  $commands = str_getcsv(str_replace("\n", ' ', $_POST['commands']).'    ', ' ');
+  // Append some spaces at the end to make sure we always have enough arguments for the last function.
+  $commands = str_getcsv(str_replace(array("\r", "\n"), array('', ' '), $_POST['commands']).'    ', ' ');
 
   foreach ($commands as &$command) {
     $command = stripslashes($command);
@@ -24,7 +25,7 @@ if (isset($_POST['commands'])) {
     switch ($commands[$i]) {
       case 'SET': {
         $redis->set($commands[$i+1], $commands[$i+2]);
-        $i =+ 2;
+        $i += 2;
         break;
       }
 
