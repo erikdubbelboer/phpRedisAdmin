@@ -56,5 +56,33 @@ $(function() {
   $('li a').click(function() {
     $(this).parent().addClass('current');
   });
+
+
+  $('#filter').focus(function() {
+    if ($(this).hasClass('info')) {
+      $(this).removeClass('info').val('');
+    }
+  }).keyup(function() {
+    var val = $(this).val();
+
+    $('li:not(.folder)').each(function(i, el) {
+      var key = $('a', el).get(0);
+      var key = unescape(key.href.substr(key.href.indexOf('key=') + 4));
+
+      if (key.indexOf(val) == -1) {
+        $(el).addClass('hidden');
+      } else {
+        $(el).removeClass('hidden');
+      }
+    });
+
+    $('li.folder').each(function(i, el) {
+      if ($('li:not(.hidden, .folder)', el).length == 0) {
+        $(el).addClass('hidden');
+      } else {
+        $(el).removeClass('hidden');
+      }
+    });
+  });
 });
 

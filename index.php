@@ -181,6 +181,10 @@ require 'header.inc.php';
 <a href="?edit&amp;s=<?php echo $server['id']?>" class="add">Add another key</a>
 </p>
 
+<p>
+<input type="text" id="filter" size="24" value="type here to filter" class="info">
+</p>
+
 <div id="keys">
 <ul>
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>

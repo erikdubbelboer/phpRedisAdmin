@@ -26,7 +26,7 @@ text-decoration: underline;
 
 #keys {
 position: fixed;
-top: 12.5em;
+top: 15.5em;
 bottom: 0;
 width: 18em;
 padding-bottom: 1em;
@@ -50,6 +50,10 @@ margin-top: .05em;
 
 #keys li.current a {
 background-color: #eee;
+}
+
+#keys li.hidden {
+display: none;
 }
 
 #keys .icon {
