@@ -29,7 +29,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
     $size = $redis->lSize($_POST['key']);
 
-    if (empty($_POST['index']) ||
+    if (($_POST['index'] == '') ||
         ($_POST['index'] == $size) ||
         ($_POST['index'] == -1)) {
       // Push it at the end
