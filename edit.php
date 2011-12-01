@@ -5,6 +5,22 @@ require_once 'common.inc.php';
 
 
 
+// Are we editing or creating a new key?
+$edit = false;
+
+if (isset($_GET['key'], $_GET['type'])) {
+  if (($_GET['type'] == 'string') ||
+      (($_GET['type'] == 'hash') && isset($_GET['hkey']))  ||
+      (($_GET['type'] == 'list') && isset($_GET['index'])) ||
+      (($_GET['type'] == 'set' ) && isset($_GET['value'])) ||
+      (($_GET['type'] == 'zset') && isset($_GET['value']))) {
+    $edit = true;
+  }
+}
+
+
+
+
 if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   // Don't allow keys that are to long (Redis supports keys that can be way to long to put in an url).
   if (strlen($_POST['key']) > $config['maxkeylen']) {
@@ -23,6 +39,11 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
     }
 
     $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
+
+    if ($edit) {
+      $redis->hDel($_POST['key'], $_GET['hkey']);
+    }
+
   }
 
   // List
@@ -74,22 +95,6 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   require 'footer.inc.php';
   die;
-}
-
-
-
-
-// Are we editing or creating a new key?
-$edit = false;
-
-if (isset($_GET['key'], $_GET['type'])) {
-  if (($_GET['type'] == 'string') ||
-      (($_GET['type'] == 'hash') && isset($_GET['hkey']))  ||
-      (($_GET['type'] == 'list') && isset($_GET['index'])) ||
-      (($_GET['type'] == 'set' ) && isset($_GET['value'])) ||
-      (($_GET['type'] == 'zset') && isset($_GET['value']))) {
-    $edit = true;
-  }
 }
 
 
