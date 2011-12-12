@@ -38,12 +38,11 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
       die('ERROR: Your hash key is to long (max length is '.$config['maxkeylen'].')');
     }
 
-    $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
-
-    if ($edit) {
+    if ($edit && !$redis->hExists($_POST['key'], $_POST['hkey'])) {
       $redis->hDel($_POST['key'], $_GET['hkey']);
     }
 
+    $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
   }
 
   // List
