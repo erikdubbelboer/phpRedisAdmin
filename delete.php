@@ -49,4 +49,15 @@ if (isset($_GET['key'])) {
   die('?view&s='.$server['id'].'&key='.urlencode($_GET['key']));
 }
 
+
+if (isset($_GET['tree'])) {
+  $keys = $redis->keys($_GET['tree'].'*');
+
+  foreach ($keys as $key) {
+    $redis->delete($key);
+  }
+  
+  die;
+}
+
 ?>

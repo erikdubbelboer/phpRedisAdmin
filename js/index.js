@@ -84,5 +84,20 @@ $(function() {
       }
     });
   });
+
+  $('.deltree').click(function(e) {
+    e.preventDefault();
+
+    if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
+      $.ajax({
+        type: "POST",
+        url: this.href,
+        data: 'post=1',
+        success: function(url) {
+          top.location.href = top.location.pathname;
+        }
+      });
+    }
+  });
 });
 

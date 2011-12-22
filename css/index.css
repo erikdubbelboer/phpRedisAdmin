@@ -4,7 +4,7 @@ position: absolute;
 top: 0;
 bottom: 0; 
 left: 0;
-width: 18em;
+width: 24em;
 height: 100%;
 padding-left: 1em;
 border-right: 1px solid #000;
@@ -28,7 +28,7 @@ text-decoration: underline;
 position: fixed;
 top: 15.5em;
 bottom: 0;
-width: 18em;
+width: 24em;
 padding-bottom: 1em;
 overflow: auto;
 }
@@ -59,6 +59,7 @@ display: none;
 #keys .icon {
 padding: 1px 0 1px 20px;
 background: url(../images/folder-open.png) left center no-repeat;
+white-space: nowrap;
 }
 
 #keys li.collapsed ul {
@@ -96,11 +97,19 @@ background-image: url(../images/tree-lastnode-expanded.gif);
 background-image: url(../images/tree-lastnode-collapsed.gif);
 }
 
+#keys .deltree {
+display: none;
+}
+
+#keys .icon:hover .deltree {
+display: inline;
+}
+
 
 #frame {
 position: fixed;
 top: 0; 
-left: 19em;
+left: 25em;
 right: 0;
 bottom: 0;
 padding-left: 1em;
