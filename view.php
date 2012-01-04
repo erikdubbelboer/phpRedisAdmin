@@ -110,7 +110,7 @@ if ($type == 'string') { ?>
 </div></td></tr>
 </table>
 
-<?php } 
+<?php }
 
 
 
@@ -134,7 +134,7 @@ else if ($type == 'hash') { ?>
 
 // List
 else if ($type == 'list') { ?>
-      
+
 <table>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
@@ -159,8 +159,10 @@ else if ($type == 'set') {
 <table>
 <tr><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<?php foreach ($values as $value) { ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+<?php foreach ($values as $value) {
+  $display_value = $redis->exists($value) ? '<a href="view.php?s=' . $server['id'] . '&key=' . urlencode($value) . '">' . $value . '</a>' : nl2br(format_html($value));
+?>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -179,8 +181,9 @@ else if ($type == 'zset') { ?>
 
 <?php foreach ($values as $value) {
   $score = $redis->zScore($_GET['key'], $value);
+  $display_value = $redis->exists($value) ? '<a href="view.php?s=' . $server['id'] . '&key=' . urlencode($value) . '">' . $value . '</a>' : nl2br(format_html($value));
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=zset&amp;key=<?php echo urlencode($_GET['key'])?>&amp;score=<?php echo $score?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;type=zset&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
