@@ -94,7 +94,7 @@ $(function() {
         url: this.href,
         data: 'post=1',
         success: function(url) {
-          top.location.href = top.location.pathname;
+          top.location.href = top.location.pathname+url;
         }
       });
     }

@@ -57,7 +57,7 @@ if (isset($_GET['tree'])) {
     $redis->delete($key);
   }
   
-  die;
+  die('?&s='.$server['id']);
 }
 
 ?>

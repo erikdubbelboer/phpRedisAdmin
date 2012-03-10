@@ -34,7 +34,7 @@ foreach ($keys as $key) {
     $d = &$d[$key[$i]];
   }
 
-  // Containing an item named __phpredisadmin__ means it's also a key.
+  // Nodes containing an item named __phpredisadmin__ are also a key, not just a directory.
   // This means that creating an actual key named __phpredisadmin__ will make this bug.
   $d[$key[count($key) - 1]] = array('__phpredisadmin__' => true);
 
