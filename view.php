@@ -49,7 +49,6 @@ if (!$exists) {
 
 
 $alt      = false;
-$type     = $redistypes[$type];
 $ttl      = $redis->ttl($_GET['key']);
 $encoding = $redis->object('encoding', $_GET['key']);
 
@@ -66,7 +65,7 @@ switch ($type) {
     break;
 
   case 'list':
-    $size = $redis->lSize($_GET['key']);
+    $size = $redis->lLen($_GET['key']);
     break;
 
   case 'set':
@@ -139,7 +138,7 @@ else if ($type == 'list') { ?>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php for ($i = 0; $i < $size; ++$i) {
-  $value = $redis->lGet($_GET['key'], $i);
+  $value = $redis->lIndex($_GET['key'], $i);
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>

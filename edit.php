@@ -47,7 +47,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   // List
   else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
-    $size = $redis->lSize($_POST['key']);
+    $size = $redis->lLen($_POST['key']);
 
     if (($_POST['index'] == '') ||
         ($_POST['index'] == $size) ||
@@ -76,7 +76,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
     if ($_POST['value'] != $_POST['oldvalue']) {
       // The only way to edit a ZSet value is to add it and remove the old value.
-      $redis->zDelete($_POST['key'], $_POST['oldvalue']);
+      $redis->zRem($_POST['key'], $_POST['oldvalue']);
       $redis->zAdd($_POST['key'], $_POST['score'], $_POST['value']);
     }
   }
@@ -115,7 +115,7 @@ if ($edit) {
 
   // List
   else if (($_GET['type'] == 'list') && isset($_GET['index'])) {
-    $value = $redis->lGet($_GET['key'], $_GET['index']);
+    $value = $redis->lIndex($_GET['key'], $_GET['index']);
   }
 
   // Set, ZSet

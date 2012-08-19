@@ -45,7 +45,7 @@ foreach ($info as $key => $value) {
   }
 
   ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($key)?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td></tr>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($key)?></div></td><td><div><?php echo nl2br(format_html(is_array($value) ? print_r($value, true) : $value))?></div></td></tr>
   <?php
 
   $alt = !$alt;

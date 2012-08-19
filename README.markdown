@@ -9,13 +9,11 @@ You can send comments, patches, questions [here on github](https://github.com/Er
 Example
 =======
 
-You can find an example database at [http://dubbelboer.com/phpRedisAdmin/](http://dubbelboer.com/phpRedisAdmin/?view&key=example:hash)
+You can find an example database at [http://dubbelboer.com/phpRedisAdmin/](http://dubbelboer.com/phpRedisAdmin/)
 
 
 Installing/Configuring
 ======================
-
-You will need [phpredis](https://github.com/nicolasff/phpredis). See phpredis for install instructions.
 
 You will need to edit config.inc.php with your redis information. You might also want to uncomment and change the login information in config.inc.php.
 

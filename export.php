@@ -7,16 +7,10 @@ require_once 'common.inc.php';
 
 // Export to redis-cli commands
 function export_redis($key) {
-  global $redistypes, $redis;  
+  global $redis;  
 
   $type = $redis->type($key);
 
-  if (!isset($redistypes[$type])) {
-    return;
-  }
-
-  $type = $redistypes[$type];
-  
 
   // String
   if ($type == 'string') {
@@ -34,10 +28,10 @@ function export_redis($key) {
 
   // List
   else if ($type == 'list') {
-    $size = $redis->lSize($key);
+    $size = $redis->lLen($key);
 
     for ($i = 0; $i < $size; ++$i) {
-      echo 'RPUSH "',addslashes($key),'" "',addslashes($redis->lGet($key, $i)),'"',PHP_EOL;
+      echo 'RPUSH "',addslashes($key),'" "',addslashes($redis->lIndex($key, $i)),'"',PHP_EOL;
     }
   }
 
@@ -66,16 +60,10 @@ function export_redis($key) {
 
 // Return the JSON for this key
 function export_json($key) {
-  global $redistypes, $redis;
+  global $redis;
 
   $type = $redis->type($key);
 
-  if (!isset($redistypes[$type])) {
-    return 'undefined';
-  }
-
-  $type = $redistypes[$type];
-  
 
   // String
   if ($type == 'string') {
@@ -89,11 +77,11 @@ function export_json($key) {
 
   // List
   else if ($type == 'list') {
-    $size  = $redis->lSize($key);
+    $size  = $redis->lLen($key);
     $value = array();
 
     for ($i = 0; $i < $size; ++$i) {
-      $value[] = $redis->lGet($key, $i);
+      $value[] = $redis->lIndex($key, $i);
     }
   }
 

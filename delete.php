@@ -13,7 +13,7 @@ if (isset($_GET['key'])) {
   // String
   if (!isset($_GET['type']) || ($_GET['type'] == 'string')) {
     // Delete the whole key.
-    $redis->delete($_GET['key']);
+    $redis->del($_GET['key']);
   }
 
   // Hash
@@ -30,7 +30,7 @@ if (isset($_GET['key'])) {
 
     // This code assumes $value is not present in the list. To make sure of this we would need to check the whole list and place a Watch on it to make sure the list isn't modified in between.
     $redis->lSet($_GET['key'], $_GET['index'], $value);
-    $redis->lRem($_GET['key'], $value, 1);
+    $redis->lRem($_GET['key'], 1, $value);
   }
 
   // Set
@@ -42,7 +42,7 @@ if (isset($_GET['key'])) {
   // ZSet
   else if (($_GET['type'] == 'zset') && isset($_GET['value'])) {
     // Removing members from a zset can only be done by supplying the value.
-    $redis->zDelete($_GET['key'], $_GET['value']);
+    $redis->zRem($_GET['key'], $_GET['value']);
   }
 
 
@@ -54,7 +54,7 @@ if (isset($_GET['tree'])) {
   $keys = $redis->keys($_GET['tree'].'*');
 
   foreach ($keys as $key) {
-    $redis->delete($key);
+    $redis->del($key);
   }
   
   die('?&s='.$server['id']);

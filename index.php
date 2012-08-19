@@ -65,20 +65,14 @@ if (count($_GET) == 0) {
 
 // Recursive function used to print the namespaces.
 function print_namespace($item, $name, $fullkey, $islast) {
-  global $config, $redistypes, $server, $redis;
+  global $config, $server, $redis;
 
   // Is this also a key and not just a namespace?
   if (isset($item['__phpredisadmin__'])) {
     // Unset it so we won't loop over it when printing this namespace.
     unset($item['__phpredisadmin__']);
 
-    $type = $redis->type($fullkey);
-
-    if (!isset($redistypes[$type])) {
-      return;
-    }
-
-    $type  = $redistypes[$type];
+    $type  = $redis->type($fullkey);
     $class = array();
     $len   = false;
 
@@ -97,7 +91,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
           break;
 
         case 'list':
-          $len = $redis->lSize($fullkey);
+          $len = $redis->lLen($fullkey);
           break;
 
         case 'set':
