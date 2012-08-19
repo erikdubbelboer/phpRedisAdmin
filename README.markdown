@@ -15,7 +15,16 @@ You can find an example database at [http://dubbelboer.com/phpRedisAdmin/](http:
 Installing/Configuring
 ======================
 
-You will need to edit config.inc.php with your redis information. You might also want to uncomment and change the login information in config.inc.php.
+To install phpRedisAdmin in the current directory you need to execute the following commands:
+
+```
+git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
+cd phpRedisAdmin
+git submodule init
+git submodule update
+```
+
+You will also need to edit config.inc.php with your redis information.
 
 
 TODO
