@@ -70,6 +70,9 @@ if (!isset($server['db'])) {
   $server['db'] = 0;
 }
 
+if (!isset($server['filter'])) {
+  $server['filter'] = '*';
+}
 
 // Setup a connection to Redis.
 $redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
