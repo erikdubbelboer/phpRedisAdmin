@@ -5,8 +5,8 @@ require_once 'common.inc.php';
 
 
 
-// Get all keys from Redis.
-$keys = $redis->keys('*');
+// Get keys from Redis according to server-config.
+$keys = $redis->keys($server['filter']);
 
 sort($keys);
 
