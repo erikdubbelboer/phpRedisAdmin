@@ -50,7 +50,12 @@ if (!$exists) {
 
 $alt      = false;
 $ttl      = $redis->ttl($_GET['key']);
-$encoding = $redis->object('encoding', $_GET['key']);
+
+try {
+  $encoding = $redis->object('encoding', $_GET['key']);
+} catch (Exception $e) {
+  $encoding = null;
+}
 
 
 switch ($type) {
@@ -87,7 +92,9 @@ switch ($type) {
 
 <tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($_GET['key'])?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
+<?php if (!is_null($encoding)) { ?>
 <tr><td><div>Encoding:</div></td><td><div><?php echo format_html($encoding)?></div></td></tr>
+<?php } ?>
 
 <tr><td><div>Size:</div></td><td><div><?php echo $size?> <?php echo ($type == 'string') ? 'characters' : 'items'?></div></td></tr>
 
