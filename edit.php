@@ -169,7 +169,7 @@ require 'header.inc.php';
 
 <p>
 <label for="value">Value:</label>
-<textarea name="value" id="value" cols="80" rows="20"><?php echo nl2br(format_html($value))?></textarea>
+<textarea name="value" id="value" cols="80" rows="20"><?php echo format_html($value)?></textarea>
 </p>
 
 <input type="hidden" name="oldvalue" value="<?php echo format_html($value)?>">
