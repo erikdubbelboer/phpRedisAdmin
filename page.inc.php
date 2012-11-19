@@ -16,7 +16,7 @@ function is_ie() {
 
 $page = array(
   'css' => array('common'),
-  'js'  => array()
+  'js'  => array('jquery')
 );
 
 ?>
