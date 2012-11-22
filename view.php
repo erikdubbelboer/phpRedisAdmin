@@ -1,6 +1,6 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
@@ -8,7 +8,7 @@ require_once 'common.inc.php';
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 
 
@@ -17,7 +17,7 @@ if (!isset($_GET['key'])) {
   Invalid key
   <?php
 
-  require 'footer.inc.php';
+  require 'includes/footer.inc.php';
   die;
 }
 
@@ -42,7 +42,7 @@ if (!$exists) {
   This key does not exist.
   <?php
 
-  require 'footer.inc.php';
+  require 'includes/footer.inc.php';
   die;
 }
 
@@ -209,5 +209,5 @@ if ($type != 'string') { ?>
 <?php }
 
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 

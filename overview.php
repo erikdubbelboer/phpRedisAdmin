@@ -1,6 +1,6 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
@@ -32,10 +32,10 @@ foreach ($config['servers'] as $i => $server) {
 
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();
-  
+
   if ($info[$i]['redis_version'] < '2.6') {
     $info[$i]['rdb_last_save_time'] = $info[$i]['last_save_time'];
-  }		
+  }
 }
 
 
@@ -44,7 +44,7 @@ foreach ($config['servers'] as $i => $server) {
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 ?>
 
@@ -77,6 +77,6 @@ require 'header.inc.php';
 </p>
 <?php
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 
 ?>
