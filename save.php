@@ -1,6 +1,6 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
@@ -8,7 +8,7 @@ require_once 'common.inc.php';
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 ?>
 <h2>Saving</h2>
@@ -25,6 +25,6 @@ $redis->save();
  done.
 <?php
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 
 ?>
