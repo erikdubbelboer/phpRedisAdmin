@@ -1,6 +1,6 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
@@ -84,7 +84,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
 
   // Refresh the top so the key tree is updated.
-  require 'header.inc.php';
+  require 'includes/header.inc.php';
 
   ?>
   <script>
@@ -92,7 +92,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   </script>
   <?php
 
-  require 'footer.inc.php';
+  require 'includes/footer.inc.php';
   die;
 }
 
@@ -130,7 +130,7 @@ if ($edit) {
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 ?>
 <h2><?php echo $edit ? 'Edit' : 'Add'?></h2>
@@ -181,6 +181,6 @@ require 'header.inc.php';
 </form>
 <?php
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 
 ?>

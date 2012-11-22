@@ -1,10 +1,10 @@
-<?php 
-
+<?php
+define('PHPREDIS_ADMIN_PATH', dirname(__DIR__));
 
 // Undo magic quotes (both in keys and values)
 if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
   $process = array(&$_GET, &$_POST);
-  
+
   while (list($key, $val) = each($process)) {
     foreach ($val as $k => $v) {
       unset($process[$key][$k]);
@@ -25,14 +25,14 @@ if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 
 
 // These includes are needed by each script.
-require_once 'config.inc.php';
-require_once 'functions.inc.php';
-require_once 'page.inc.php';
-require_once 'predis/autoload.php';
+require_once PHPREDIS_ADMIN_PATH . '/includes/config.inc.php';
+require_once PHPREDIS_ADMIN_PATH . '/includes/functions.inc.php';
+require_once PHPREDIS_ADMIN_PATH . '/includes/page.inc.php';
+require_once PHPREDIS_ADMIN_PATH . '/predis/autoload.php';
 
 
 if (isset($config['login'])) {
-  require_once 'login.inc.php';
+  require_once PHPREDIS_ADMIN_PATH . '/includes/login.inc.php';
 }
 
 

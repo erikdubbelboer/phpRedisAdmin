@@ -1,6 +1,6 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
@@ -113,7 +113,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
     </li>
     <?php
   }
-  
+
   // Does this namespace also contain subkeys?
   if (count($item) > 0) {
     ?>
@@ -149,7 +149,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
 $page['css'][] = 'index';
 $page['js'][]  = 'index';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 ?>
 <div id="sidebar">
@@ -194,6 +194,6 @@ require 'header.inc.php';
 </div><!-- #sidebar -->
 <?php
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 
 ?>

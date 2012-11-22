@@ -1,13 +1,13 @@
 <?php
 
-require_once 'common.inc.php';
+require_once 'includes/common.inc.php';
 
 
 
 
 // Export to redis-cli commands
 function export_redis($key) {
-  global $redis;  
+  global $redis;
 
   $type = $redis->type($key);
 
@@ -115,9 +115,9 @@ if (isset($_POST['type'])) {
 
   header('Content-type: '.$ct.'; charset=utf-8');
   header('Content-Disposition: inline; filename="export.'.$ext.'"');
-    
- 
-  // JSON 
+
+
+  // JSON
   if ($_POST['type'] == 'json') {
     // Single key
     if (isset($_GET['key'])) {
@@ -158,7 +158,7 @@ if (isset($_POST['type'])) {
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
-require 'header.inc.php';
+require 'includes/header.inc.php';
 
 ?>
 <h2>Export <?php echo isset($_GET['key']) ? format_html($_GET['key']) : ''?></h2>
@@ -180,6 +180,6 @@ require 'header.inc.php';
 </form>
 <?php
 
-require 'footer.inc.php';
+require 'includes/footer.inc.php';
 
 ?>

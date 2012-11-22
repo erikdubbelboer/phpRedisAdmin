@@ -31,7 +31,7 @@ if (!isset($_GET['nonce'])) {
 if ($data['nonce'] == $_GET['nonce']) {
   unset($_SERVER['PHP_AUTH_DIGEST']);
 
-  require 'login.inc.php';
+  require 'includes/login.inc.php';
 }
 
 
