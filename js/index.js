@@ -1,4 +1,3 @@
-
 $(function() {
   $('#sidebar a').click(function(e) {
     if (e.currentTarget.href.indexOf('/?') == -1) {
