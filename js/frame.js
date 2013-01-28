@@ -1,4 +1,3 @@
-
 $(function() {
   if (history.replaceState) {
     window.parent.history.replaceState({}, '', document.location.href.replace('?', '&').replace(/([a-z]*)\.php/, '?$1'));
