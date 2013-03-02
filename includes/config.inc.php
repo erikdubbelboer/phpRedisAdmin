@@ -2,7 +2,7 @@
 
 $config = array(
   'servers' => array(
-    0 => array(
+    array(
       'name' => 'local server', // Optional name.
       'host' => '127.0.0.1',
       'port' => 6379,
@@ -12,12 +12,12 @@ $config = array(
       //'auth' => 'redispasswordhere' // Warning: The password is sent in plain-text to the Redis server.
     ),
 
-    /*1 => array(
+    /*array(
       'host' => 'localhost',
       'port' => 6380
     ),*/
 
-    /*2 => array(
+    /*array(
       'name' => 'local db 2',
       'host' => 'localhost',
       'port' => 6379,
