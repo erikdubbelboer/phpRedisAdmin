@@ -33,7 +33,7 @@ foreach ($config['servers'] as $i => $server) {
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();
 
-  if ($info[$i]['redis_version'] < '2.6') {
+  if ((floatval($info[$i]['redis_version']) < 2.6) && isset($info[$i]['last_save_time'])) {
     $info[$i]['rdb_last_save_time'] = $info[$i]['last_save_time'];
   }
 }
@@ -62,7 +62,7 @@ require 'includes/header.inc.php';
 
   <tr><td><div>Uptime:</div></td><td><div><?php echo format_ago($info[$i]['uptime_in_seconds'])?></div></td></tr>
 
-  <tr><td><div>Last save:</div></td><td><div><?php echo format_ago(time() - $info[$i]['rdb_last_save_time'], true)?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
+  <tr><td><div>Last save:</div></td><td><div><?php if (isset($info[$i]['rdb_last_save_time'])) { echo format_ago(time() - $info[$i]['rdb_last_save_time'], true); } else { echo 'never'; } ?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
 
   </table>
   </div>
