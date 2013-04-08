@@ -26,7 +26,7 @@ foreach ($keys as $key) {
      */
     if (count($key) > 1 && array_key_exists($key[0], $namespaces)) {
       continue;
-  }
+    }
 
   // $d will be a reference to the current namespace.
   $d = &$namespaces;
@@ -79,7 +79,6 @@ function print_namespace($item, $name, $fullkey, $islast) {
     // Unset it so we won't loop over it when printing this namespace.
     unset($item['__phpredisadmin__']);
 
-    $type  = $redis->type($fullkey);
     $class = array();
     $len   = false;
 
@@ -140,6 +139,10 @@ require 'includes/header.inc.php';
 
 <h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>">phpRedisAdmin</a></h1>
 
+    <script>
+        serverId = <?php echo $server['id']; ?>
+    </script>
+
 <p>
 <select id="server">
 <?php foreach ($config['servers'] as $i => $srv) { ?>
@@ -169,6 +172,7 @@ require 'includes/header.inc.php';
 <ul class="keysContainer">
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
 </ul>
+<div id="load"></div>
 </div><!-- #keys -->
 
 <div id="frame">

@@ -39,6 +39,13 @@ foreach ($keys as $key) {
 
     $key = explode($config['seperator'], trim($key));
 
+    /**
+     * Skip namespaces
+     */
+    if (count($key) > 1 && array_key_exists($key[0], $namespaces)) {
+        continue;
+    }
+
     // $d will be a reference to the current namespace.
     $d = &$namespaces;
 
@@ -66,15 +73,14 @@ foreach ($keys as $key) {
 }
 
 // Recursive function used to print the namespaces.
-function print_namespace($item, $name, $fullkey, $islast, $collapsed = true) {
-    global $config, $server, $redis;
+function print_namespace($item, $name, $fullkey, $islast, $loaded = false) {
+    global $config, $server;
 
     // Is this also a key and not just a namespace?
     if (isset($item['__phpredisadmin__'])) {
         // Unset it so we won't loop over it when printing this namespace.
         unset($item['__phpredisadmin__']);
 
-        $type  = $redis->type($fullkey);
         $class = array();
         $len   = false;
 
@@ -96,9 +102,9 @@ function print_namespace($item, $name, $fullkey, $islast, $collapsed = true) {
     // Does this namespace also contain subkeys?
     if (count($item) > 0) {
         ?>
-        <li class="folder<?php echo empty($fullkey) || !$collapsed  ? '' : ' collapsed'?><?php echo $islast ? ' last'
-            : ''?>
-        loaded">
+        <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last'
+            : ''?><?php echo $loaded ? ' loaded'  : ''?>
+        ">
             <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info"></span>
                 <?php if (!empty($fullkey)) { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
             </div><ul>
@@ -124,10 +130,11 @@ function print_namespace($item, $name, $fullkey, $islast, $collapsed = true) {
     }
 }
 
-$parentKey = str_replace(':', '', $parentKey);
+$parentKeyParts[] = $lastNamespace;
+$fullKey = implode(':', $parentKeyParts);
 
  foreach ($namespaces as $key => $item) {
-     print_namespace($item, $key, $parentKey, empty($item));
+     print_namespace($item, $key, $fullKey, empty($item), true);
  }
 
 

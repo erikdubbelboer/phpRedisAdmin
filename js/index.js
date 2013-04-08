@@ -46,11 +46,17 @@ $(function () {
             e.stopPropagation();
             t.toggleClass('collapsed');
 
-            var keyName = $(this).find('a.deltree').attr('href').replace('delete.php?s=0&tree=', '');
+            var keyName = $(this).find('a.deltree').attr('href').replace('delete.php?s=' + serverId +'&tree=', '');
 
             if (!t.hasClass('collapsed') && !t.hasClass('loaded')) {
-                $.get('/loader.php', {action: 'lazyLoadKeys', key: keyName}).done(function (data) {
-                    $(t).replaceWith(data);
+                $('#load').show();
+                $.get('loader.php', {action: 'lazyLoadKeys', key: keyName}).done(function (data) {
+
+                    var res = $(data);
+                    res.removeClass('collapsed');
+                    $(t).replaceWith(res);
+
+                    $('#load').hide();
                 });
             }
         }

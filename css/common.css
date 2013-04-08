@@ -50,3 +50,10 @@ padding: 3px 0 1px 20px;
 background: url(../images/add.png) left center no-repeat;
 }
 
+#load {
+    background-color: rgba(226, 228, 221, 0.40);
+    height: 100%;
+    position: relative;
+    top: -150px;
+    display: none;
+}
