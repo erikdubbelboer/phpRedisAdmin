@@ -44,6 +44,14 @@ if (isset($login['servers'])) {
 }
 
 
+$action = null;
+$parentKey = null;
+
+if (!empty($_GET['action']) && !empty($_GET['key'])) {
+    $action = $_GET['action'];
+    $parentKey = urldecode($_GET['key']);
+}
+
 if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['servers']))) {
   $i = $_GET['s'];
 }
@@ -90,4 +98,8 @@ if ($server['db'] != 0) {
   }
 }
 
+error_reporting(1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('memory_limit', '500M');
 ?>

@@ -19,7 +19,14 @@ foreach ($keys as $key) {
     continue;
   }
 
-  $key = explode($config['seperator'], $key);
+  $key = explode($config['seperator'], trim($key));
+
+    /**
+     * Skip namespaces
+     */
+    if (count($key) > 1 && array_key_exists($key[0], $namespaces)) {
+      continue;
+  }
 
   // $d will be a reference to the current namespace.
   $d = &$namespaces;
@@ -83,29 +90,6 @@ function print_namespace($item, $name, $fullkey, $islast) {
       $class[] = 'last';
     }
 
-    // Get the number of items in the key.
-    if (!isset($config['faster']) || !$config['faster']) {
-      switch ($type) {
-        case 'hash':
-          $len = $redis->hLen($fullkey);
-          break;
-
-        case 'list':
-          $len = $redis->lLen($fullkey);
-          break;
-
-        case 'set':
-          // This is currently the only way to do this, this can be slow since we need to retrieve all keys
-          $len = count($redis->sMembers($fullkey));
-          break;
-
-        case 'zset':
-          // This is currently the only way to do this, this can be slow since we need to retrieve all keys
-          $len = count($redis->zRange($fullkey, 0, -1));
-          break;
-      }
-    }
-
 
     ?>
     <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
@@ -118,7 +102,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
   if (count($item) > 0) {
     ?>
     <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
-    <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
+    <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info"></span>
     <?php if (!empty($fullkey)) { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
     </div><ul>
     <?php
@@ -182,7 +166,7 @@ require 'includes/header.inc.php';
 </p>
 
 <div id="keys">
-<ul>
+<ul class="keysContainer">
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
 </ul>
 </div><!-- #keys -->
