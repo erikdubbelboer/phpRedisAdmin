@@ -57,8 +57,15 @@ try {
   $encoding = null;
 }
 
+$types = array(
+    Redis::REDIS_ZSET   => 'zset',
+    Redis::REDIS_HASH   => 'hash',
+    Redis::REDIS_LIST   => 'list',
+    Redis::REDIS_SET    => 'set',
+    Redis::REDIS_STRING => 'string'
+);
 
-switch ($type) {
+switch ($types[$type]) {
   case 'string':
     $value = $redis->get($_GET['key']);
     $size  = strlen($value);
@@ -88,7 +95,7 @@ switch ($type) {
 ?>
 <table>
 
-<tr><td><div>Type:</div></td><td><div><?php echo format_html($type)?></div></td></tr>
+<tr><td><div>Type:</div></td><td><div><?php echo format_html($types[$type])?></div></td></tr>
 
 <tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($_GET['key'])?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
@@ -96,7 +103,7 @@ switch ($type) {
 <tr><td><div>Encoding:</div></td><td><div><?php echo format_html($encoding)?></div></td></tr>
 <?php } ?>
 
-<tr><td><div>Size:</div></td><td><div><?php echo $size?> <?php echo ($type == 'string') ? 'characters' : 'items'?></div></td></tr>
+<tr><td><div>Size:</div></td><td><div><?php echo $size?> <?php echo ($types[$type] == 'string') ? 'characters' : 'items'?></div></td></tr>
 
 </table>
 
@@ -106,7 +113,7 @@ switch ($type) {
 
 
 // String
-if ($type == 'string') { ?>
+if ($types[$type] == 'string') { ?>
 
 <table>
 <tr><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
@@ -121,7 +128,7 @@ if ($type == 'string') { ?>
 
 
 // Hash
-else if ($type == 'hash') { ?>
+else if ($types[$type] == 'hash') { ?>
 
 <table>
 <tr><th><div>Key</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -139,7 +146,7 @@ else if ($type == 'hash') { ?>
 
 
 // List
-else if ($type == 'list') { ?>
+else if ($types[$type] == 'list') { ?>
 
 <table>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -159,7 +166,7 @@ else if ($type == 'list') { ?>
 
 
 // Set
-else if ($type == 'set') {
+else if ($types[$type] == 'set') {
 
 ?>
 <table>
@@ -180,7 +187,7 @@ else if ($type == 'set') {
 
 
 // ZSet
-else if ($type == 'zset') { ?>
+else if ($types[$type] == 'zset') { ?>
 
 <table>
 <tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
@@ -200,11 +207,11 @@ else if ($type == 'zset') { ?>
 
 
 
-if ($type != 'string') { ?>
+if ($types[$type] != 'string') { ?>
   </table>
 
   <p>
-  <a href="edit.php?s=<?php echo $server['id']?>&amp;type=<?php echo $type?>&amp;key=<?php echo urlencode($_GET['key'])?>" class="add">Add another value</a>
+  <a href="edit.php?s=<?php echo $server['id']?>&amp;type=<?php echo $types[$type]?>&amp;key=<?php echo urlencode($_GET['key'])?>" class="add">Add another value</a>
   </p>
 <?php }
 
