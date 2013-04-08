@@ -29,6 +29,7 @@ array_pop($parentKeyParts);
 $lastNamespace = array_pop($parentKeyParts);
 
 $namespaces = array(); // Array to hold our top namespaces.
+$lineNamespaces = array();
 
 // Build an array of nested arrays containing all our namespaces and containing keys.
 foreach ($keys as $key) {
@@ -39,10 +40,13 @@ foreach ($keys as $key) {
 
     $key = explode($config['seperator'], trim($key));
 
+
     /**
      * Skip namespaces
      */
-    if (count($key) > 1 && array_key_exists($key[0], $namespaces)) {
+    $currLevelKey = $key[count($parentKeyParts) + 1];
+
+    if (count($key) > 1 && in_array($currLevelKey, $lineNamespaces)) {
         continue;
     }
 
@@ -62,6 +66,10 @@ foreach ($keys as $key) {
         }
 
         $d = &$d[$key[$i]];
+
+        if (!in_array($key[$i], $lineNamespaces)) {
+            $lineNamespaces[] = $key[$i];
+        }
     }
 
     // Nodes containing an item named __phpredisadmin__ are also a key, not just a directory.
