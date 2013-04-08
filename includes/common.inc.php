@@ -28,7 +28,6 @@ if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 require_once PHPREDIS_ADMIN_PATH . '/includes/config.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/functions.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/page.inc.php';
-require_once PHPREDIS_ADMIN_PATH . '/predis/autoload.php';
 
 
 if (isset($config['login'])) {
@@ -75,7 +74,8 @@ if (!isset($server['filter'])) {
 }
 
 // Setup a connection to Redis.
-$redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+$redis = new Redis();
+$redis->connect($server['host'], $server['port']);
 
 if (isset($server['auth'])) {
   if (!$redis->auth($server['auth'])) {
