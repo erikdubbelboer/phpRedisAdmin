@@ -82,13 +82,14 @@ foreach ($keys as $key) {
 
 // Recursive function used to print the namespaces.
 function print_namespace($item, $name, $fullkey, $islast, $loaded = false) {
-    global $config, $server;
+    global $config, $server, $redis, $types;
 
     // Is this also a key and not just a namespace?
     if (isset($item['__phpredisadmin__'])) {
         // Unset it so we won't loop over it when printing this namespace.
         unset($item['__phpredisadmin__']);
 
+        $type  = $types[$redis->type($fullkey)];
         $class = array();
         $len   = false;
 
@@ -97,6 +98,29 @@ function print_namespace($item, $name, $fullkey, $islast, $loaded = false) {
         }
         if ($islast) {
             $class[] = 'last';
+        }
+
+        // Get the number of items in the key.
+        if (!isset($config['faster']) || !$config['faster']) {
+            switch ($type) {
+                case 'hash':
+                    $len = $redis->hLen($fullkey);
+                    break;
+
+                case 'list':
+                    $len = $redis->lLen($fullkey);
+                    break;
+
+                case 'set':
+                    // This is currently the only way to do this, this can be slow since we need to retrieve all keys
+                    $len = count($redis->sMembers($fullkey));
+                    break;
+
+                case 'zset':
+                    // This is currently the only way to do this, this can be slow since we need to retrieve all keys
+                    $len = count($redis->zRange($fullkey, 0, -1));
+                    break;
+            }
         }
 
 

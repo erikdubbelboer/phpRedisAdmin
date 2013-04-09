@@ -57,13 +57,7 @@ try {
   $encoding = null;
 }
 
-$types = array(
-    Redis::REDIS_ZSET   => 'zset',
-    Redis::REDIS_HASH   => 'hash',
-    Redis::REDIS_LIST   => 'list',
-    Redis::REDIS_SET    => 'set',
-    Redis::REDIS_STRING => 'string'
-);
+
 
 switch ($types[$type]) {
   case 'string':

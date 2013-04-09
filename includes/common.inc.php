@@ -102,4 +102,14 @@ error_reporting(1);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 ini_set('memory_limit', '500M');
+
+
+$types = array(
+    Redis::REDIS_ZSET   => 'zset',
+    Redis::REDIS_HASH   => 'hash',
+    Redis::REDIS_LIST   => 'list',
+    Redis::REDIS_SET    => 'set',
+    Redis::REDIS_STRING => 'string'
+);
+
 ?>
