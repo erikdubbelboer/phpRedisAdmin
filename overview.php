@@ -13,7 +13,8 @@ foreach ($config['servers'] as $i => $server) {
   }
 
   // Setup a connection to this Redis server.
-  $redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+  $redis = new Redis();
+  $redis->connect($server['host'], $server['port']);
 
 
   if (isset($server['auth'])) {

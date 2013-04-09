@@ -28,7 +28,6 @@ if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 require_once PHPREDIS_ADMIN_PATH . '/includes/config.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/functions.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/page.inc.php';
-require_once PHPREDIS_ADMIN_PATH . '/predis/autoload.php';
 
 
 if (isset($config['login'])) {
@@ -44,6 +43,14 @@ if (isset($login['servers'])) {
   $i = 0;
 }
 
+
+$action = null;
+$parentKey = null;
+
+if (!empty($_GET['action']) && !empty($_GET['key'])) {
+    $action = $_GET['action'];
+    $parentKey = urldecode($_GET['key']);
+}
 
 if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['servers']))) {
   $i = $_GET['s'];
@@ -75,7 +82,8 @@ if (!isset($server['filter'])) {
 }
 
 // Setup a connection to Redis.
-$redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+$redis = new Redis();
+$redis->connect($server['host'], $server['port']);
 
 if (isset($server['auth'])) {
   if (!$redis->auth($server['auth'])) {
@@ -89,5 +97,19 @@ if ($server['db'] != 0) {
     die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
   }
 }
+
+error_reporting(1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+ini_set('memory_limit', '500M');
+
+
+$types = array(
+    Redis::REDIS_ZSET   => 'zset',
+    Redis::REDIS_HASH   => 'hash',
+    Redis::REDIS_LIST   => 'list',
+    Redis::REDIS_SET    => 'set',
+    Redis::REDIS_STRING => 'string'
+);
 
 ?>

@@ -19,7 +19,14 @@ foreach ($keys as $key) {
     continue;
   }
 
-  $key = explode($config['seperator'], $key);
+  $key = explode($config['seperator'], trim($key));
+
+    /**
+     * Skip namespaces
+     */
+    if (count($key) > 1 && array_key_exists($key[0], $namespaces)) {
+      continue;
+    }
 
   // $d will be a reference to the current namespace.
   $d = &$namespaces;
@@ -65,14 +72,14 @@ if (count($_GET) == 0) {
 
 // Recursive function used to print the namespaces.
 function print_namespace($item, $name, $fullkey, $islast) {
-  global $config, $server, $redis;
+  global $config, $server, $redis, $types;
 
   // Is this also a key and not just a namespace?
   if (isset($item['__phpredisadmin__'])) {
     // Unset it so we won't loop over it when printing this namespace.
     unset($item['__phpredisadmin__']);
 
-    $type  = $redis->type($fullkey);
+    $type  = $types[$redis->type($fullkey)];
     $class = array();
     $len   = false;
 
@@ -118,7 +125,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
   if (count($item) > 0) {
     ?>
     <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
-    <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
+    <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info"></span>
     <?php if (!empty($fullkey)) { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
     </div><ul>
     <?php
@@ -156,6 +163,10 @@ require 'includes/header.inc.php';
 
 <h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>">phpRedisAdmin</a></h1>
 
+    <script>
+        serverId = <?php echo $server['id']; ?>
+    </script>
+
 <p>
 <select id="server">
 <?php foreach ($config['servers'] as $i => $srv) { ?>
@@ -182,9 +193,10 @@ require 'includes/header.inc.php';
 </p>
 
 <div id="keys">
-<ul>
+<ul class="keysContainer">
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
 </ul>
+<div id="load"></div>
 </div><!-- #keys -->
 
 <div id="frame">
