@@ -1,4 +1,5 @@
 <?php
+//Copy this file to config.inc.php and make changes to that file to customize your configuration.
 
 $config = array(
   'servers' => array(
