@@ -24,7 +24,7 @@ git submodule init
 git submodule update
 ```
 
-You will also need to edit config.inc.php with your redis information.
+You may also want to copy include/config.simple.inc.php to include/config.inc.php and edit it with your specific redis configuration.
 
 
 TODO
