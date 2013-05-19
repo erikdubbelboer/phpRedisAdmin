@@ -33,8 +33,16 @@ foreach ($config['servers'] as $i => $server) {
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();
 
+  if (!isset($info[$i]['redis_version']) && isset($info[$i]['Server']['redis_version'])) {
+    $info[$i]['redis_version'] = $info[$i]['Server']['redis_version'];
+  }
+
   if ((floatval($info[$i]['redis_version']) < 2.6) && isset($info[$i]['last_save_time'])) {
     $info[$i]['rdb_last_save_time'] = $info[$i]['last_save_time'];
+  }
+
+  if (!isset($info[$i]['used_memory']) && isset($info[$i]['Memory']['used_memory'])) {
+    $info[$i]['used_memory'] = $info[$i]['Memory']['used_memory'];
   }
 }
 
