@@ -32,18 +32,6 @@ foreach ($config['servers'] as $i => $server) {
 
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();
-
-  if (!isset($info[$i]['redis_version']) && isset($info[$i]['Server']['redis_version'])) {
-    $info[$i]['redis_version'] = $info[$i]['Server']['redis_version'];
-  }
-
-  if ((floatval($info[$i]['redis_version']) < 2.6) && isset($info[$i]['last_save_time'])) {
-    $info[$i]['rdb_last_save_time'] = $info[$i]['last_save_time'];
-  }
-
-  if (!isset($info[$i]['used_memory']) && isset($info[$i]['Memory']['used_memory'])) {
-    $info[$i]['used_memory'] = $info[$i]['Memory']['used_memory'];
-  }
 }
 
 
@@ -62,15 +50,15 @@ require 'includes/header.inc.php';
 
   <table>
 
-  <tr><td><div>Redis version:</div></td><td><div><?php echo $info[$i]['redis_version']?></div></td></tr>
+  <tr><td><div>Redis version:</div></td><td><div><?php echo $info[$i]['Server']['redis_version']?></div></td></tr>
 
   <tr><td><div>Keys:</div></td><td><div><?php echo $info[$i]['size']?></div></td></tr>
 
-  <tr><td><div>Memory used:</div></td><td><div><?php echo format_size($info[$i]['used_memory'])?></div></td></tr>
+  <tr><td><div>Memory used:</div></td><td><div><?php echo format_size($info[$i]['Memory']['used_memory'])?></div></td></tr>
 
-  <tr><td><div>Uptime:</div></td><td><div><?php echo format_ago($info[$i]['uptime_in_seconds'])?></div></td></tr>
+  <tr><td><div>Uptime:</div></td><td><div><?php echo format_ago($info[$i]['Server']['uptime_in_seconds'])?></div></td></tr>
 
-  <tr><td><div>Last save:</div></td><td><div><?php if (isset($info[$i]['rdb_last_save_time'])) { echo format_ago(time() - $info[$i]['rdb_last_save_time'], true); } else { echo 'never'; } ?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
+  <tr><td><div>Last save:</div></td><td><div><?php if (isset($info[$i]['Persistence']['rdb_last_save_time'])) { echo format_ago(time() - $info[$i]['Persistence']['rdb_last_save_time'], true); } else { echo 'never'; } ?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
 
   </table>
   </div>

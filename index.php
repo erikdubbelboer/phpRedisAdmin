@@ -117,9 +117,9 @@ function print_namespace($item, $name, $fullkey, $islast) {
   // Does this namespace also contain subkeys?
   if (count($item) > 0) {
     ?>
-    <li class="folder<?php echo empty($fullkey) ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
+    <li class="folder<?php echo ($fullkey === '') ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
     <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
-    <?php if (!empty($fullkey)) { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
+    <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
     </div><ul>
     <?php
 
@@ -127,7 +127,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
 
     foreach ($item as $childname => $childitem) {
       // $fullkey will be empty on the first call.
-      if (empty($fullkey)) {
+      if ($fullkey === '') {
         $childfullkey = $childname;
       } else {
         $childfullkey = $fullkey.$config['seperator'].$childname;
