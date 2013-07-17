@@ -1,15 +1,21 @@
 phpRedisAdmin
 =============
 
-phpRedisAdmin is a simple web interface to manage [Redis](http://redis.io/) databases. It is released under the [Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/). This code is being developed and maintained by [Erik Dubbelboer](https://github.com/ErikDubbelboer/).
+phpRedisAdmin is a simple web interface to manage [Redis](http://redis.io/)
+databases. It is released under the
+[Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/).
+This code is being developed and maintained by [Erik Dubbelboer](https://github.com/ErikDubbelboer/).
 
-You can send comments, patches, questions [here on github](https://github.com/ErikDubbelboer/phpRedisAdmin/issues) or to erik@dubbelboer.com.
+You can send comments, patches, questions
+[here on github](https://github.com/ErikDubbelboer/phpRedisAdmin/issues)
+or to erik@dubbelboer.com.
 
 
 Example
 =======
 
-You can find an example database at [http://dubbelboer.com/phpRedisAdmin/](http://dubbelboer.com/phpRedisAdmin/)
+You can find an example database at
+[http://dubbelboer.com/phpRedisAdmin/](http://dubbelboer.com/phpRedisAdmin/)
 
 
 Installing/Configuring
@@ -20,11 +26,12 @@ To install phpRedisAdmin in the current directory you need to execute the follow
 ```
 git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
 cd phpRedisAdmin
-git submodule init
-git submodule update
+curl -s http://getcomposer.org/installer | php
+php composer.phar install
 ```
 
-You may also want to copy include/config.simple.inc.php to include/config.inc.php and edit it with your specific redis configuration.
+You may also want to copy include/config.simple.inc.php to include/config.inc.php
+and edit it with your specific redis configuration.
 
 
 TODO
