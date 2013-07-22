@@ -33,6 +33,13 @@ php composer.phar install
 You may also want to copy include/config.simple.inc.php to include/config.inc.php
 and edit it with your specific redis configuration.
 
+Instead of using [composer](http://getcomposer.org/) you can also do a manual install using:
+
+```
+git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
+cd phpRedisAdmin
+git clone https://github.com/nrk/predis.git vendor
+```
 
 TODO
 ====

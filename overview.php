@@ -32,6 +32,18 @@ foreach ($config['servers'] as $i => $server) {
 
   $info[$i]         = $redis->info();
   $info[$i]['size'] = $redis->dbSize();
+
+  if (!isset($info[$i]['Server'])) {
+    $info[$i]['Server'] = array(
+      'redis_version'     => $info[$i]['redis_version'],
+      'uptime_in_seconds' => $info[$i]['uptime_in_seconds']
+    );
+  }
+  if (!isset($info[$i]['Memory'])) {
+    $info[$i]['Memory'] = array(
+      'used_memory' => $info[$i]['used_memory']
+    );
+  }
 }
 
 
