@@ -2,8 +2,9 @@
 
 require_once 'includes/common.inc.php';
 
-
-
+$count_elements_page = isset($config['count_elements_page']) ? $config['count_elements_page'] : false;
+$page_num_request = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page_num_request = $page_num_request === 0 ? 1 : $page_num_request;
 
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
@@ -67,6 +68,9 @@ switch ($type) {
   case 'hash':
     $values = $redis->hGetAll($_GET['key']);
     $size   = count($values);
+    if($count_elements_page !== false) {
+      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
+    }
     break;
 
   case 'list':
@@ -76,11 +80,17 @@ switch ($type) {
   case 'set':
     $values = $redis->sMembers($_GET['key']);
     $size   = count($values);
+    if($count_elements_page !== false) {
+      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
+    }
     break;
 
   case 'zset':
     $values = $redis->zRange($_GET['key'], 0, -1);
     $size   = count($values);
+    if($count_elements_page !== false) {
+      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
+    }
     break;
 }
 
@@ -103,7 +113,26 @@ switch ($type) {
 <p>
 <?php
 
+$pagging = '';
+// make pagging div
+if($count_elements_page !== false && in_array($type, array('hash', 'set', 'zset')) && $size > $count_elements_page) {
+  $pagging .= '<div style="width: inherit; word-wrap: break-word;">';
+  $url = preg_replace('/&page=(\d+)/i', '', $_SERVER['REQUEST_URI']);
+  for ($i = 0; $i < ceil($size/$count_elements_page); ++$i) {
+    $page_num = $i+1;
+    if($page_num === $page_num_request) {
+      $pagging .= $page_num.'&nbsp;';
+    }
+    else {
+      $pagging .= '<a href="'.$url.'&page='.$page_num.'">'.$page_num."</a>&nbsp;";
+    }
+  }
+  $pagging .= '</div>';
+}
 
+if(!empty($pagging)) {
+  echo $pagging;
+}
 
 // String
 if ($type == 'string') { ?>
@@ -135,7 +164,6 @@ else if ($type == 'hash') { ?>
 <?php $alt = !$alt; } ?>
 
 <?php }
-
 
 
 // List
@@ -197,9 +225,6 @@ else if ($type == 'zset') { ?>
 
 <?php }
 
-
-
-
 if ($type != 'string') { ?>
   </table>
 
@@ -208,6 +233,9 @@ if ($type != 'string') { ?>
   </p>
 <?php }
 
+if(!empty($pagging)) {
+  echo $pagging;
+}
 
 require 'includes/footer.inc.php';
 

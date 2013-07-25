@@ -178,7 +178,7 @@ require 'includes/header.inc.php';
 </p>
 
 <p>
-<input type="text" id="filter" size="24" value="type here to filter" class="info">
+<input type="text" id="filter" size="24" value="type here to filter" placeholder="type here to filter" class="info">
 </p>
 
 <div id="keys">
