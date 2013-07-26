@@ -53,8 +53,8 @@ $config = array(
 
   // You can ignore settings below this point.
 
-  'maxkeylen' => 100,
-  'count_elements_page' => 10
+  'maxkeylen'           => 100,
+  'count_elements_page' => 100
 );
 
 ?>

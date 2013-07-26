@@ -2,10 +2,6 @@
 
 require_once 'includes/common.inc.php';
 
-$count_elements_page = isset($config['count_elements_page']) ? $config['count_elements_page'] : false;
-$page_num_request = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$page_num_request = $page_num_request === 0 ? 1 : $page_num_request;
-
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
@@ -26,6 +22,11 @@ if (!isset($_GET['key'])) {
 
 $type   = $redis->type($_GET['key']);
 $exists = $redis->exists($_GET['key']);
+
+$count_elements_page = isset($config['count_elements_page']) ? $config['count_elements_page'] : false;
+$page_num_request    = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page_num_request    = $page_num_request === 0 ? 1 : $page_num_request;
+
 
 
 ?>
@@ -68,9 +69,6 @@ switch ($type) {
   case 'hash':
     $values = $redis->hGetAll($_GET['key']);
     $size   = count($values);
-    if($count_elements_page !== false) {
-      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
-    }
     break;
 
   case 'list':
@@ -80,20 +78,17 @@ switch ($type) {
   case 'set':
     $values = $redis->sMembers($_GET['key']);
     $size   = count($values);
-    if($count_elements_page !== false) {
-      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
-    }
     break;
 
   case 'zset':
     $values = $redis->zRange($_GET['key'], 0, -1);
     $size   = count($values);
-    if($count_elements_page !== false) {
-      $values = array_slice($values, $count_elements_page*($page_num_request-1), $count_elements_page);
-    }
     break;
 }
-
+  
+if (isset($values) && ($count_elements_page !== false)) {
+  $values = array_slice($values, $count_elements_page * ($page_num_request - 1), $count_elements_page);
+}
 
 ?>
 <table>
@@ -113,26 +108,30 @@ switch ($type) {
 <p>
 <?php
 
-$pagging = '';
-// make pagging div
-if($count_elements_page !== false && in_array($type, array('hash', 'set', 'zset')) && $size > $count_elements_page) {
-  $pagging .= '<div style="width: inherit; word-wrap: break-word;">';
-  $url = preg_replace('/&page=(\d+)/i', '', $_SERVER['REQUEST_URI']);
-  for ($i = 0; $i < ceil($size/$count_elements_page); ++$i) {
-    $page_num = $i+1;
-    if($page_num === $page_num_request) {
-      $pagging .= $page_num.'&nbsp;';
-    }
-    else {
-      $pagging .= '<a href="'.$url.'&page='.$page_num.'">'.$page_num."</a>&nbsp;";
+
+// Build pagination div.
+if (($count_elements_page !== false) && in_array($type, array('hash', 'list', 'set', 'zset')) && ($size > $count_elements_page)) {
+  $pagination = '<div style="width: inherit; word-wrap: break-word;">';
+  $url        = preg_replace('/&page=(\d+)/i', '', $_SERVER['REQUEST_URI']);
+
+  for ($i = 0; $i < ceil($size / $count_elements_page); ++$i) {
+    $page_num = $i + 1;
+
+    if ($page_num === $page_num_request) {
+      $pagination .= $page_num . '&nbsp;';
+    } else {
+      $pagination .= '<a href="' . $url . '&page=' . $page_num . '">' . $page_num . "</a>&nbsp;";
     }
   }
-  $pagging .= '</div>';
+
+  $pagination .= '</div>';
 }
 
-if(!empty($pagging)) {
-  echo $pagging;
+
+if (isset($pagination)) {
+  echo $pagination;
 }
+
 
 // String
 if ($type == 'string') { ?>
@@ -172,8 +171,17 @@ else if ($type == 'list') { ?>
 <table>
 <tr><th><div>Index</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<?php for ($i = 0; $i < $size; ++$i) {
-  $value = $redis->lIndex($_GET['key'], $i);
+<?php 
+  if (($count_elements_page === false) && ($size > $count_elements_page)) {
+    $start = 0;
+    $end   = $size;
+  } else {
+    $start = $count_elements_page * ($page_num_request - 1);
+    $end   = min($start + $count_elements_page, $size);
+  }
+
+  for ($i = $start; $i < $end; ++$i) {
+    $value = $redis->lIndex($_GET['key'], $i);
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
@@ -233,8 +241,8 @@ if ($type != 'string') { ?>
   </p>
 <?php }
 
-if(!empty($pagging)) {
-  echo $pagging;
+if (isset($pagination)) {
+  echo $pagination;
 }
 
 require 'includes/footer.inc.php';
