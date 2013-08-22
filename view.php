@@ -87,7 +87,7 @@ switch ($type) {
 }
   
 if (isset($values) && ($count_elements_page !== false)) {
-  $values = array_slice($values, $count_elements_page * ($page_num_request - 1), $count_elements_page);
+  $values = array_slice($values, $count_elements_page * ($page_num_request - 1), $count_elements_page,true);
 }
 
 ?>
