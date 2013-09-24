@@ -1,3 +1,4 @@
 config.inc.php
 *.phar
 vendor
+/nbproject/private/
