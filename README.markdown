@@ -21,19 +21,17 @@ You can find an example database at
 Installing/Configuring
 ======================
 
-To install phpRedisAdmin in the current directory you need to execute the following commands:
+To install phpRedisAdmin through [composer](http://getcomposer.org/) you need to execute the following commands:
 
 ```
-git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
-cd phpRedisAdmin
 curl -s http://getcomposer.org/installer | php
-php composer.phar install
+php composer.phar create-project erik-dubbelboer/php-redis-admin path/to/install
 ```
 
 You may also want to copy include/config.simple.inc.php to include/config.inc.php
 and edit it with your specific redis configuration.
 
-Instead of using [composer](http://getcomposer.org/) you can also do a manual install using:
+Instead of using composer, you can also do a manual install using:
 
 ```
 git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
@@ -57,4 +55,3 @@ Credits
 Icons by [http://p.yusukekamiyamane.com/](http://p.yusukekamiyamane.com/) ([https://github.com/yusukekamiyamane/fugue-icons/tree/master/icons-shadowless](https://github.com/yusukekamiyamane/fugue-icons/tree/master/icons-shadowless))
 
 Favicon from [https://github.com/antirez/redis-io/blob/master/public/images/favicon.png](https://github.com/antirez/redis-io/blob/master/public/images/favicon.png)
-
