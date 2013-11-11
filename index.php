@@ -3,10 +3,12 @@
 require_once 'includes/common.inc.php';
 
 
-
-
-// Get keys from Redis according to server-config.
-$keys = $redis->keys($server['filter']);
+try {
+  // Get keys from Redis according to server-config.
+  $keys = $redis->keys($server['filter']);
+} catch (Exception $e) {
+  die('ERROR: Can\'t connect to Redis');
+}
 
 sort($keys);
 
