@@ -7,7 +7,7 @@ $config = array(
       'name' => 'local server', // Optional name.
       'host' => '127.0.0.1',
       'port' => 6379,
-      'filter' => '*'
+      'filter' => '*',
 
       // Optional Redis authentication.
       //'auth' => 'redispasswordhere' // Warning: The password is sent in plain-text to the Redis server.
@@ -24,6 +24,7 @@ $config = array(
       'port' => 6379,
       'db'   => 1 // Optional database number, see http://redis.io/commands/select
       'filter' => 'something:*' // Show only parts of database for speed or security reasons
+      'seperator' => '/', // Use a different seperator on this database
     )*/
   ),
 

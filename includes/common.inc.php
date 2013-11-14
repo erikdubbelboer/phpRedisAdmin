@@ -78,6 +78,10 @@ if (!isset($server['filter'])) {
   $server['filter'] = '*';
 }
 
+if (!isset($server['seperator'])) {
+  $server['seperator'] = $config['seperator'];
+}
+
 // Setup a connection to Redis.
 $redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
 
