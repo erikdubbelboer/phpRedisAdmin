@@ -21,7 +21,7 @@ foreach ($keys as $key) {
     continue;
   }
 
-  $key = explode($config['seperator'], $key);
+  $key = explode($server['seperator'], $key);
 
   // $d will be a reference to the current namespace.
   $d = &$namespaces;
@@ -132,7 +132,7 @@ function print_namespace($item, $name, $fullkey, $islast) {
       if ($fullkey === '') {
         $childfullkey = $childname;
       } else {
-        $childfullkey = $fullkey.$config['seperator'].$childname;
+        $childfullkey = $fullkey.$server['seperator'].$childname;
       }
 
       print_namespace($childitem, $childname, $childfullkey, (--$l == 0));
