@@ -20,8 +20,21 @@ $(function() {
         href += '.php';
       }
     }
-
-    $('#iframe').attr('src', href);
+    
+    if (href.indexOf('flush.php') == 0) {
+      if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
+        $.ajax({
+          type: "POST",
+          url: href,
+          data: 'post=1',
+          success: function() {
+            window.location.reload();
+          }
+        });
+      }
+    } else {
+      $('#iframe').attr('src', href);
+    }
   });
 
 
@@ -98,5 +111,6 @@ $(function() {
       });
     }
   });
+
 });
 

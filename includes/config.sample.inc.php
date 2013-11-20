@@ -25,6 +25,7 @@ $config = array(
       'db'   => 1 // Optional database number, see http://redis.io/commands/select
       'filter' => 'something:*' // Show only parts of database for speed or security reasons
       'seperator' => '/', // Use a different seperator on this database
+      'flush' => false // Set to true to enable the flushdb button for this instance.
     )*/
   ),
 
@@ -48,8 +49,6 @@ $config = array(
       'servers'  => array(1) // Optional list of servers this user can access.
     )
   ),*/
-
-
 
 
   // You can ignore settings below this point.
