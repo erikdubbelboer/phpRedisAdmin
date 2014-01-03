@@ -25,7 +25,7 @@ To install phpRedisAdmin through [composer](http://getcomposer.org/) you need to
 
 ```
 curl -s http://getcomposer.org/installer | php
-php composer.phar -s dev create-project erik-dubbelboer/php-redis-admin path/to/install
+php composer.phar create-project -s dev erik-dubbelboer/php-redis-admin path/to/install
 ```
 
 You may also want to copy include/config.simple.inc.php to include/config.inc.php

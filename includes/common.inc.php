@@ -83,7 +83,7 @@ if (!isset($server['seperator'])) {
 }
 
 // Setup a connection to Redis.
-$redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+$redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
 
 if (isset($server['auth'])) {
   if (!$redis->auth($server['auth'])) {
