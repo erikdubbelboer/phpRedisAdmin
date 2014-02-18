@@ -9,7 +9,7 @@ if (isset($_POST['key'], $_POST['ttl'])) {
   if ($_POST['ttl'] == -1) {
     $redis->persist($_POST['key']);
   } else {
-    $redis->setTimeout($_POST['key'], $_POST['ttl']);
+    $redis->expire($_POST['key'], $_POST['ttl']);
   }
 
   header('Location: view.php?key='.urlencode($_POST['key']));
