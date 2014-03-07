@@ -12,38 +12,45 @@ foreach ($config['servers'] as $i => $server) {
       $server['db'] = 0;
   }
 
-  // Setup a connection to this Redis server.
-  $redis = new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+  // Setup a connection to Redis.
+  $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+  try {
+    $redis->connect();
+  } catch (Predis\CommunicationException $exception) {
+    $redis = false;
+  }
 
+  if(!$redis) {
+      $info[$i] = false;
+  } else {
+      if (isset($server['auth'])) {
+        if (!$redis->auth($server['auth'])) {
+          die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
+        }
+      }
+      if ($server['db'] != 0) {
+        if (!$redis->select($server['db'])) {
+          die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
+        }
+      }
 
-  if (isset($server['auth'])) {
-    if (!$redis->auth($server['auth'])) {
-      die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
-    }
+      $info[$i]         = $redis->info();
+      $info[$i]['size'] = $redis->dbSize();
+
+      if (!isset($info[$i]['Server'])) {
+        $info[$i]['Server'] = array(
+          'redis_version'     => $info[$i]['redis_version'],
+          'uptime_in_seconds' => $info[$i]['uptime_in_seconds']
+        );
+      }
+      if (!isset($info[$i]['Memory'])) {
+        $info[$i]['Memory'] = array(
+          'used_memory' => $info[$i]['used_memory']
+        );
+      }
   }
 
 
-  if ($server['db'] != 0) {
-    if (!$redis->select($server['db'])) {
-      die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
-    }
-  }
-
-
-  $info[$i]         = $redis->info();
-  $info[$i]['size'] = $redis->dbSize();
-
-  if (!isset($info[$i]['Server'])) {
-    $info[$i]['Server'] = array(
-      'redis_version'     => $info[$i]['redis_version'],
-      'uptime_in_seconds' => $info[$i]['uptime_in_seconds']
-    );
-  }
-  if (!isset($info[$i]['Memory'])) {
-    $info[$i]['Memory'] = array(
-      'used_memory' => $info[$i]['used_memory']
-    );
-  }
 }
 
 
@@ -60,6 +67,10 @@ require 'includes/header.inc.php';
   <div class="server">
   <h2><?php echo isset($server['name']) ? $server['name'] : format_html($server['host'])?></h2>
 
+  <?php if(!$info[$i]): ?>
+  <div style="text-align:center;color:red">Server Down</div>
+  <?php else: ?>
+
   <table>
 
   <tr><td><div>Redis version:</div></td><td><div><?php echo $info[$i]['Server']['redis_version']?></div></td></tr>
@@ -73,6 +84,7 @@ require 'includes/header.inc.php';
   <tr><td><div>Last save:</div></td><td><div><?php if (isset($info[$i]['Persistence']['rdb_last_save_time'])) { echo format_ago(time() - $info[$i]['Persistence']['rdb_last_save_time'], true); } else { echo 'never'; } ?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
 
   </table>
+  <?php endif; ?>
   </div>
 <?php } ?>
 
