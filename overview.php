@@ -65,7 +65,7 @@ require 'includes/header.inc.php';
 
 <?php foreach ($config['servers'] as $i => $server) { ?>
   <div class="server">
-  <h2><?php echo isset($server['name']) ? $server['name'] : format_html($server['host'])?></h2>
+  <h2><?php echo isset($server['name']) ? format_html($server['name']) : format_html($server['host'])?></h2>
 
   <?php if(!$info[$i]): ?>
   <div style="text-align:center;color:red">Server Down</div>

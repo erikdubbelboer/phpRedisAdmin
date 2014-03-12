@@ -137,7 +137,7 @@ if (isset($pagination)) {
 if ($type == 'string') { ?>
 
 <table>
-<tr><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+<tr><td><div><?php echo nl2br(format_html($value, $server['charset']))?></div></td><td><div>
   <a href="edit.php?s=<?php echo $server['id']?>&amp;type=string&amp;key=<?php echo urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
 </div></td><td><div>
   <a href="delete.php?s=<?php echo $server['id']?>&amp;type=string&amp;key=<?php echo urlencode($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -155,7 +155,7 @@ else if ($type == 'hash') { ?>
 <tr><th><div>Key</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php foreach ($values as $hkey => $value) { ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($hkey)?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($hkey, $server['charset'])?></div></td><td><div><?php echo nl2br(format_html($value, $server['charset']))?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -183,7 +183,7 @@ else if ($type == 'list') { ?>
   for ($i = $start; $i < $end; ++$i) {
     $value = $redis->lIndex($_GET['key'], $i);
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div><?php echo nl2br(format_html($value, $server['charset']))?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -202,7 +202,7 @@ else if ($type == 'set') {
 <tr><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php foreach ($values as $value) {
-  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value)).'</a>' : nl2br(format_html($value));
+  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
@@ -223,7 +223,7 @@ else if ($type == 'zset') { ?>
 
 <?php foreach ($values as $value) {
   $score         = $redis->zScore($_GET['key'], $value);
-  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value)).'</a>' : nl2br(format_html($value));
+  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=zset&amp;key=<?php echo urlencode($_GET['key'])?>&amp;score=<?php echo $score?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>

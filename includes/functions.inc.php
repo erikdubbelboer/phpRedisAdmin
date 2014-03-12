@@ -1,10 +1,10 @@
 <?php
 
-
-function format_html($str) {
-  return htmlentities($str, ENT_COMPAT, 'UTF-8');
+function format_html($str, $from_encoding = FALSE) {
+  $res = $from_encoding ? mb_convert_encoding($str, 'utf-8', $from_encoding) : $str;
+  $res = htmlentities($res, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8');
+  return ($res || !$str) ? $res :  '(' . strlen($str) . ' bytes)';
 }
-
 
 function format_ago($time, $ago = false) {
   $minute = 60;
