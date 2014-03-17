@@ -55,6 +55,7 @@ if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['
 
 $server       = $config['servers'][$i];
 $server['id'] = $i;
+$server['charset'] = isset($server['charset']) && $server['charset'] ? $server['charset'] : mb_internal_encoding();
 
 
 if (isset($login, $login['servers'])) {

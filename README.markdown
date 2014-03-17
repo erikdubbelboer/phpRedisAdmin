@@ -42,6 +42,7 @@ git clone https://github.com/nrk/predis.git vendor
 TODO
 ====
 
+* Encoding support for editing
 * Javascript sorting of tables
 * Better error handling
 * Move or Copy key to different server
