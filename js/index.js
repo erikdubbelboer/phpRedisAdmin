@@ -20,7 +20,7 @@ $(function() {
         href += '.php';
       }
     }
-    
+
     if (href.indexOf('flush.php') == 0) {
       if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
         $.ajax({
@@ -69,6 +69,16 @@ $(function() {
     $(this).parent().addClass('current');
   });
 
+  $('#btn_server_filter').click(function() {
+    var filter = $('#server_filter').val();
+    location.href = top.location.pathname + '?overview&s=' + $('#server').val() + '&filter=' + filter;
+  });
+
+  $('#server_filter').keydown(function(e){
+    if (e.keyCode == 13) {
+      $('#btn_server_filter').click();
+    }
+  });
 
   $('#filter').focus(function() {
     if ($(this).hasClass('info')) {
