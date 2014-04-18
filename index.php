@@ -176,6 +176,11 @@ require 'includes/header.inc.php';
 </p>
 
 <p>
+<input type="text" id="server_filter" size="14" value="<?php echo format_html($server['filter']); ?>" placeholder="type here to server filter" class="info">
+<button id="btn_server_filter">Filter!</button>
+</p>
+
+<p>
 <input type="text" id="filter" size="24" value="type here to filter" placeholder="type here to filter" class="info">
 </p>
 

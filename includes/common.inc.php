@@ -79,6 +79,14 @@ if (!isset($server['filter'])) {
   $server['filter'] = '*';
 }
 
+// filter from GET param
+if (isset($_GET['filter']) && $_GET['filter'] != '') {
+    $server['filter'] = $_GET['filter'];
+    if (strpos($server['filter'], '*') === false) {
+      $server['filter'].= '*';
+    }
+}
+
 if (!isset($server['seperator'])) {
   $server['seperator'] = $config['seperator'];
 }
