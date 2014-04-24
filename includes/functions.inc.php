@@ -2,7 +2,7 @@
 
 function format_html($str, $from_encoding = FALSE) {
   $res = $from_encoding ? mb_convert_encoding($str, 'utf-8', $from_encoding) : $str;
-  $res = htmlentities($res, ENT_QUOTES | ENT_SUBSTITUTE, 'utf-8');
+  $res = htmlentities($res, defined('ENT_SUBSTITUTE') ? (ENT_QUOTES | ENT_SUBSTITUTE) : ENT_QUOTES, 'utf-8');
   return ($res || !$str) ? $res :  '(' . strlen($str) . ' bytes)';
 }
 
