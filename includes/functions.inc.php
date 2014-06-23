@@ -64,3 +64,15 @@ function str_rand($length) {
   return $r;
 }
 
+/**
+ * Return relative file URL with actual timestamp (last mod)
+ *
+ * @author Fabian Lenczewski
+ * @since 2014-06-23
+ *
+ * @param $name
+ * @return string
+ */
+function loadStaticFile($name) {
+    return file_exists($name) ? $name .'?rev='. filemtime($name) : $name;
+}
