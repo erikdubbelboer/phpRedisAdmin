@@ -49,7 +49,6 @@ if($redis) {
         // Unset it so we won't loop over it when printing this namespace.
         unset($item['__phpredisadmin__']);
 
-        $type  = $redis->type($fullkey);
         $class = array();
         $len   = false;
 
@@ -62,7 +61,7 @@ if($redis) {
 
         // Get the number of items in the key.
         if (!isset($config['faster']) || !$config['faster']) {
-          switch ($type) {
+          switch ($redis->type($fullkey)) {
             case 'hash':
               $len = $redis->hLen($fullkey);
               break;
