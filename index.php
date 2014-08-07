@@ -71,13 +71,11 @@ if($redis) {
               break;
 
             case 'set':
-              // This is currently the only way to do this, this can be slow since we need to retrieve all keys
-              $len = count($redis->sMembers($fullkey));
+              $len = count($redis->sCard($fullkey));
               break;
 
             case 'zset':
-              // This is currently the only way to do this, this can be slow since we need to retrieve all keys
-              $len = count($redis->zRange($fullkey, 0, -1));
+              $len = count($redis->zCard($fullkey));
               break;
           }
         }
