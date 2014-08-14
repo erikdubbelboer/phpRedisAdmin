@@ -71,11 +71,11 @@ if($redis) {
               break;
 
             case 'set':
-              $len = count($redis->sCard($fullkey));
+              $len = $redis->sCard($fullkey);
               break;
 
             case 'zset':
-              $len = count($redis->zCard($fullkey));
+              $len = $redis->zCard($fullkey);
               break;
           }
         }

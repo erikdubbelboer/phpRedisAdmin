@@ -76,12 +76,12 @@ switch ($type) {
     break;
 
   case 'set':
-    $values = $redis->sCard($_GET['key']);
+    $values = $redis->sMembers($_GET['key']);
     $size   = count($values);
     break;
 
   case 'zset':
-    $values = $redis->zCard($_GET['key']);
+    $values = $redis->zRange($_GET['key'], 0, -1);
     $size   = count($values);
     break;
 }
