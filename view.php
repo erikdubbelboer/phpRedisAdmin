@@ -90,6 +90,7 @@ case 'hash':
   case 'list':
     $size = $redis->lLen($key);
     $values = $redis->lRange($key, $start, $end);
+    $count = count($values);
     break;
 
   case 'set':
@@ -98,6 +99,7 @@ case 'hash':
     break;
 
   case 'zset':
+    $size = $redis->zCard($key);
     if ($cursorType == 'index') {
         $values = $redis->zRange($key, $start, $end, 'WITHSCORES');
     } else {
@@ -105,7 +107,7 @@ case 'hash':
             array('WITHSCORES' =>true,'LIMIT'=>array(0, $count_elements_page))
         );
     }
-    $size = $redis->zCard($key);
+    $count = count($values);
     break;
 }
 
@@ -122,6 +124,9 @@ case 'hash':
 <?php } ?>
 
 <tr><td><div>Size:</div></td><td><div><?php echo $size?> <?php echo ($type == 'string') ? 'characters' : 'items'?></div></td></tr>
+<?php if (isset ($count)) {?>
+<tr><td><div>Returns:</div></td><td><div><?php echo $count?></div></td></tr>
+<?php }?>
 
 </table>
 
@@ -148,7 +153,7 @@ if (($count_elements_page !== false) && in_array($type, array('hash', 'list', 's
 }
 
 
-if (isset($pagination)) {
+if (isset($pagination) && strlen($pagination) < 2048) {
   echo $pagination;
 }
 
@@ -244,13 +249,10 @@ else if ($type == 'zset') { ?>
 <table>
 <tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<?php foreach ($values as $arrValue) {
-    list ($value, $score) = $arrValue;
+<?php foreach ($values as $value => $score) {
     $value_unsrlzd = @unserialize($value);
     if ($value_unsrlzd != null){ // unserialize success!
-        $value_export = var_export($value_unsrlzd, true);
-    } else {
-        $value_export = $value;
+        $value = var_export($value_unsrlzd, true);
     }
     $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
