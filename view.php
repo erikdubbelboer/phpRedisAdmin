@@ -27,12 +27,18 @@ $count_elements_page = isset($config['count_elements_page']) ? $config['count_el
 $page_num_request    = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 
 //parameters `from` and `to` have higher priority than `page`
-$susors = array('index', 'timestamp', 'datetime');
+//
+$cursors = array('index', 'score', 'datetime');
 $cursorType = isset ($_GET['cursor']) && in_array($_GET['cursor'], $cursors) ? $_GET['cursor'] : 'index';
 if (isset ($_GET['from'])) {
-    $start = $_GET['from'];
-    $end = isset ($_GET['to']) ? $_GET['to'] : $count_elements_page -1;
-    $page_num_request = $start / $count_elements_page +1;
+    if ($cursorType == 'datetime') {
+        $start = strtotime($_GET['from']);
+        $end = isset ($_GET['to']) ? strtotime($_GET['to']) : '+inf';
+        $page_num_request = $start / $count_elements_page +1;
+    } else {
+        $start = $_GET['from'];
+        $end = isset ($_GET['to']) ? $_GET['to'] : $count_elements_page -1;
+    }
 } else {
     $start = ($page_num_request-1) * $count_elements_page;
     $end = $start + $count_elements_page -1;
@@ -92,8 +98,14 @@ case 'hash':
     break;
 
   case 'zset':
-    $values = $redis->zRange($key, $start, $end, 'WITHSCORES');
-    $size   = $redis->zCard($key);
+    if ($cursorType == 'index') {
+        $values = $redis->zRange($key, $start, $end, 'WITHSCORES');
+    } else {
+        $values = $redis->zRangeByScore($key, $start, $end, 
+            array('WITHSCORES' =>true,'LIMIT'=>array(0, $count_elements_page))
+        );
+    }
+    $size = $redis->zCard($key);
     break;
 }
 
@@ -103,7 +115,7 @@ case 'hash':
 
 <tr><td><div>Type:</div></td><td><div><?php echo format_html($type)?></div></td></tr>
 
-<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($_GET['key'])?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
+<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($key)?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
 <?php if (!is_null($encoding)) { ?>
 <tr><td><div>Encoding:</div></td><td><div><?php echo format_html($encoding)?></div></td></tr>
@@ -176,9 +188,9 @@ else if ($type == 'hash') { ?>
     }
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($hkey, $server['charset'])?></div></td><td><div><?php echo nl2br(format_html($value, $server['charset']))?></div></td><td><div>
-    <a href="edit.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+    <a href="edit.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($key)?>&amp;hkey=<?php echo urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
-    <a href="delete.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+    <a href="delete.php?s=<?php echo $server['id']?>&amp;type=hash&amp;key=<?php echo urlencode($key)?>&amp;hkey=<?php echo urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
 <?php $alt = !$alt; } ?>
 
@@ -216,9 +228,9 @@ else if ($type == 'set') {
   $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
   <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $display_value ?></div></td><td><div>
-    <a href="edit.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
+    <a href="edit.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($key)?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
-    <a href="delete.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
+    <a href="delete.php?s=<?php echo $server['id']?>&amp;type=set&amp;key=<?php echo urlencode($key)?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
 <?php $alt = !$alt; } ?>
 
@@ -254,7 +266,7 @@ if ($type != 'string') { ?>
   </table>
 
   <p>
-  <a href="edit.php?s=<?php echo $server['id']?>&amp;type=<?php echo $type?>&amp;key=<?php echo urlencode($_GET['key'])?>" class="add">Add another value</a>
+  <a href="edit.php?s=<?php echo $server['id']?>&amp;type=<?php echo $type?>&amp;key=<?php echo urlencode($key)?>" class="add">Add another value</a>
   </p>
 <?php }
 
