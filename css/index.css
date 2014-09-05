@@ -3,11 +3,14 @@ position: absolute;
 top: 0;
 bottom: 0;
 left: 0;
-width: 24em;
+width: 30em;
 height: 100%;
 padding-left: 1em;
 border-right: 1px solid #000;
 overflow: hidden;
+}
+#filter_input_form {
+width: 24em;
 }
 
 #sidebar a, #sidebar a:visited {
@@ -108,7 +111,7 @@ display: inline;
 #frame {
 position: fixed;
 top: 0;
-left: 25em;
+left: 32em;
 right: 0;
 bottom: 0;
 padding-left: 1em;

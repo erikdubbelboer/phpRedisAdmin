@@ -8,7 +8,8 @@ $config = array(
       'host' => '127.0.0.1',
       'port' => 6379,
       'filter' => '*',
-
+      //Slow queries such as `keys` are allowed only in debug mode. If you are operate an online redis, please set it to false.
+      'debug' => true,
       // Optional Redis authentication.
       //'auth' => 'redispasswordhere' // Warning: The password is sent in plain-text to the Redis server.
     ),

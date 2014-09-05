@@ -7,7 +7,7 @@ require_once 'includes/common.inc.php';
 
 // Export to redis-cli commands
 function export_redis($key) {
-  global $redis;
+  global $redis, $server;
 
   $type = $redis->type($key);
 
@@ -123,7 +123,7 @@ if (isset($_POST['type'])) {
     if (isset($_GET['key'])) {
       echo json_encode(export_json($_GET['key']));
     } else { // All keys
-      $keys = $redis->keys('*');
+      $keys = $server['debug'] == true ? $redis->keys('*') : array();
       $vals = array();
 
       foreach ($keys as $key) {
@@ -140,7 +140,7 @@ if (isset($_POST['type'])) {
     if (isset($_GET['key'])) {
       export_redis($_GET['key']);
     } else { // All keys
-      $keys = $redis->keys('*');
+      $keys = $server['debug'] == true ? $redis->keys('*') : array();
 
       foreach ($keys as $key) {
         export_redis($key);

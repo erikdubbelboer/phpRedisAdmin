@@ -8,6 +8,10 @@ if (!isset($_POST['post'])) {
 
 require_once 'includes/common.inc.php';
 
+if ($server['debug'] == true) {
+    $redis->flushdb();
+else {
+    die ("Forbidden operation!");
+}
 
-$redis->flushdb();
 

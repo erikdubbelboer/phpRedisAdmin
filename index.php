@@ -4,7 +4,7 @@ require_once 'includes/common.inc.php';
 
 if($redis) {
 
-    $keys = $redis->keys($server['filter']);
+    $keys = $server['debug'] == true ? $redis->keys($server['filter']) : array();
 
     sort($keys);
 
