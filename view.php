@@ -153,7 +153,7 @@ if (($count_elements_page !== false) && in_array($type, array('hash', 'list', 's
 }
 
 
-if (isset($pagination)) {
+if (isset($pagination) && strlen($pagination) < 2048) {
   echo $pagination;
 }
 
@@ -249,13 +249,10 @@ else if ($type == 'zset') { ?>
 <table>
 <tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
-<?php foreach ($values as $arrValue) {
-    list ($value, $score) = $arrValue;
+<?php foreach ($values as $value => $score) {
     $value_unsrlzd = @unserialize($value);
     if ($value_unsrlzd != null){ // unserialize success!
-        $value_export = var_export($value_unsrlzd, true);
-    } else {
-        $value_export = $value;
+        $value = var_export($value_unsrlzd, true);
     }
     $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.urlencode($value).'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
