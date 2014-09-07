@@ -4,7 +4,9 @@ require_once 'includes/common.inc.php';
 
 if($redis) {
 
-    $keys = $server['debug'] == true ? $redis->keys($server['filter']) : array();
+    $keys = $server['debug'] == true 
+        ? $redis->keys($server['filter']) 
+        : array(substr($server['filter'], 0, -1));
 
     sort($keys);
 
@@ -17,7 +19,9 @@ if($redis) {
         continue;
       }
 
-      $key = explode($server['seperator'], $key);
+      $key = $server['debug'] == true
+          ? explode($server['seperator'], $key)
+          : array($key);
 
       // $d will be a reference to the current namespace.
       $d = &$namespaces;
