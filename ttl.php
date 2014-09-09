@@ -12,7 +12,7 @@ if (isset($_POST['key'], $_POST['ttl'])) {
     $redis->expire($_POST['key'], $_POST['ttl']);
   }
 
-  header('Location: view.php?key='.urlencode($_POST['key']));
+  header('Location: view.php?key='.$_POST['key']);
   die;
 }
 
