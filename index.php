@@ -6,7 +6,8 @@ if($redis) {
 
     $keys = $server['debug'] == true 
         ? $redis->keys($server['filter']) 
-        : array(substr($server['filter'], 0, -1));
+        //: array(substr($server['filter'], 0, -1));
+        : array();
 
     sort($keys);
 
