@@ -4,10 +4,13 @@ require_once 'includes/common.inc.php';
 
 if($redis) {
 
-    $keys = $server['debug'] == true 
-        ? $redis->keys($server['filter']) 
-        //: array(substr($server['filter'], 0, -1));
-        : array();
+    if ($server['debug'] == true) {
+        $keys = $redis->keys($server['filter']);
+    } else {
+        $keys = strlen($server['filter']) > 1
+            ? array(substr($server['filter'], 0, -1))
+            : array();
+    }
 
     sort($keys);
 
