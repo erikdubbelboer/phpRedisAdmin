@@ -91,7 +91,7 @@ if($redis) {
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-        <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
+        <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo $fullkey?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
       }
@@ -101,7 +101,7 @@ if($redis) {
         ?>
         <li class="folder<?php echo ($fullkey === '') ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
         <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
-        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
+        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo $fullkey?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
         </div><ul>
         <?php
 
