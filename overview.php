@@ -1,10 +1,14 @@
 <?php
 
 require_once 'includes/common.inc.php';
+?>
 
+<div><strong>Tips:</strong>
+<p>You can use URL parameter <strong>`from`</strong>&amp; <strong>`to`</strong> to custermize page range in case of List and zSet.<br/>
+We even support zRangeByScore now，Just assing URL parameter <strong>`cursor=score&amp;from=123&amp;to=456`</strong>.<br/>
+If you specify <strong>`cursor`</strong> to <strong>'datetime'</strong>, `from` &amp; `to` could even assigned as datetime format.</p>
 
-
-
+<?php
 $info = array();
 
 foreach ($config['servers'] as $i => $server) {

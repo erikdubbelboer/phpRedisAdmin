@@ -4,7 +4,13 @@ require_once 'includes/common.inc.php';
 
 if($redis) {
 
-    $keys = $redis->keys($server['filter']);
+    if ($server['debug'] == true) {
+        $keys = $redis->keys($server['filter']);
+    } else {
+        $keys = strlen($server['filter']) > 1
+            ? array(substr($server['filter'], 0, -1))
+            : array();
+    }
 
     sort($keys);
 
@@ -17,7 +23,9 @@ if($redis) {
         continue;
       }
 
-      $key = explode($server['seperator'], $key);
+      $key = $server['debug'] == true
+          ? explode($server['seperator'], $key)
+          : array($key);
 
       // $d will be a reference to the current namespace.
       $d = &$namespaces;
@@ -83,7 +91,7 @@ if($redis) {
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-        <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
+        <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo $fullkey?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
       }
@@ -93,7 +101,7 @@ if($redis) {
         ?>
         <li class="folder<?php echo ($fullkey === '') ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
         <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
-        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
+        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo $fullkey?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
         </div><ul>
         <?php
 

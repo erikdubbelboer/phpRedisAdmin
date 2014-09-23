@@ -9,6 +9,9 @@ padding-left: 1em;
 border-right: 1px solid #000;
 overflow: hidden;
 }
+#filter_input_form {
+width: 24em;
+}
 
 #sidebar a, #sidebar a:visited {
 color: #000;

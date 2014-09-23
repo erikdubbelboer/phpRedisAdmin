@@ -88,7 +88,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&key=<?php echo urlencode($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&key=<?php echo $_POST['key']?>';
   </script>
   <?php
 
@@ -149,12 +149,12 @@ require 'includes/header.inc.php';
 
 <p>
 <label for="key">Key:</label>
-<input type="text" name="key" id="key" size="30" maxlength="30" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+<input type="text" name="key" id="key" size="80" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
 <p id="hkeyp">
 <label for="khey">Hash key:</label>
-<input type="text" name="hkey" id="hkey" size="30" maxlength="30" <?php echo isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
+<input type="text" name="hkey" id="hkey" size="30" <?php echo isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
 </p>
 
 <p id="indexp">

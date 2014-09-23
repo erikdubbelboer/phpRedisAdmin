@@ -1,3 +1,5 @@
 config.inc.php
 *.phar
 vendor
+tags
+cscope*
