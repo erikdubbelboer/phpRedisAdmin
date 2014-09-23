@@ -247,16 +247,17 @@ else if ($type == 'set') {
 else if ($type == 'zset') { ?>
 
 <table>
-<tr><th><div>Score</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
+<tr><th><div>Score</div></th><th><div>Value</div></th><th><div>Parse score as date</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php foreach ($values as $value => $score) {
+    $score_parsed = $score > 1300000000 ? @date('Y-m-d H:i:s', (int)$score) : 0;
     $value_unsrlzd = @unserialize($value);
     if ($value_unsrlzd != null){ // unserialize success!
         $value = var_export($value_unsrlzd, true);
     }
     $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&key='.$value.'">'.nl2br(format_html($value, $server['charset'])).'</a>' : nl2br(format_html($value, $server['charset']));
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo $display_value ?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo $display_value ?></div></td><td><div><?php echo $score_parsed ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;type=zset&amp;key=<?php echo $key?>&amp;score=<?php echo $score?>&amp;value=<?php echo $value?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;type=zset&amp;key=<?php echo $key?>&amp;value=<?php echo $value?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
