@@ -22,12 +22,12 @@ $config = array(
       'name' => 'local db 2',
       'host' => 'localhost',
       'port' => 6379,
-      'db'   => 1 // Optional database number, see http://redis.io/commands/select
-      'filter' => 'something:*' // Show only parts of database for speed or security reasons
+      'db'   => 1, // Optional database number, see http://redis.io/commands/select
+      'filter' => 'something:*', // Show only parts of database for speed or security reasons
       'seperator' => '/', // Use a different seperator on this database
       'flush' => false, // Set to true to enable the flushdb button for this instance.
       'encoding' => 'cp1251', // Set for view values in other encoding
-    )*/
+    ),*/
   ),
 
 
