@@ -4,9 +4,9 @@
 $config = array(
   'servers' => array(
     array(
-      'name' => 'local server', // Optional name.
-      'host' => '127.0.0.1',
-      'port' => 6379,
+      'name'   => 'local server', // Optional name.
+      'host'   => '127.0.0.1',
+      'port'   => 6379,
       'filter' => '*',
 
       // Optional Redis authentication.
@@ -19,14 +19,14 @@ $config = array(
     ),*/
 
     /*array(
-      'name' => 'local db 2',
-      'host' => 'localhost',
-      'port' => 6379,
-      'db'   => 1, // Optional database number, see http://redis.io/commands/select
-      'filter' => 'something:*', // Show only parts of database for speed or security reasons
-      'seperator' => '/', // Use a different seperator on this database
-      'flush' => false, // Set to true to enable the flushdb button for this instance.
-      'encoding' => 'cp1251', // Set for view values in other encoding
+      'name'      => 'local db 2',
+      'host'      => 'localhost',
+      'port'      => 6379,
+      'db'        => 1,             // Optional database number, see http://redis.io/commands/select
+      'filter'    => 'something:*', // Show only parts of database for speed or security reasons.
+      'seperator' => '/',           // Use a different seperator on this database.
+      'flush'     => false,         // Set to true to enable the flushdb button for this instance.
+      'charset'   => 'cp1251',      // Keys and values are stored in redis using this encoding (default utf-8).
     ),*/
   ),
 

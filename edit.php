@@ -29,7 +29,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   // String
   if ($_POST['type'] == 'string') {
-    $redis->set($_POST['key'], $_POST['value']);
+    $redis->set(input_convert($_POST['key']), input_convert($_POST['value']));
   }
 
   // Hash
@@ -38,26 +38,26 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
       die('ERROR: Your hash key is to long (max length is '.$config['maxkeylen'].')');
     }
 
-    if ($edit && !$redis->hExists($_POST['key'], $_POST['hkey'])) {
-      $redis->hDel($_POST['key'], $_GET['hkey']);
+    if ($edit && !$redis->hExists(input_convert($_POST['key']), input_convert($_POST['hkey']))) {
+      $redis->hDel(input_convert($_POST['key']), input_convert($_GET['hkey']));
     }
 
-    $redis->hSet($_POST['key'], $_POST['hkey'], $_POST['value']);
+    $redis->hSet(input_convert($_POST['key']), input_convert($_POST['hkey']), input_convert($_POST['value']));
   }
 
   // List
   else if (($_POST['type'] == 'list') && isset($_POST['index'])) {
-    $size = $redis->lLen($_POST['key']);
+    $size = $redis->lLen(input_convert($_POST['key']));
 
     if (($_POST['index'] == '') ||
         ($_POST['index'] == $size) ||
         ($_POST['index'] == -1)) {
       // Push it at the end
-      $redis->rPush($_POST['key'], $_POST['value']);
+      $redis->rPush(input_convert($_POST['key']), input_convert($_POST['value']));
     } else if (($_POST['index'] >= 0) &&
                ($_POST['index'] < $size)) {
       // Overwrite an index
-      $redis->lSet($_POST['key'], $_POST['index'], $_POST['value']);
+      $redis->lSet(input_convert($_POST['key']), input_convert($_POST['index']), input_convert($_POST['value']));
     } else {
       die('ERROR: Out of bounds index');
     }
@@ -67,8 +67,8 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   else if ($_POST['type'] == 'set') {
     if ($_POST['value'] != $_POST['oldvalue']) {
       // The only way to edit a Set value is to add it and remove the old value.
-      $redis->sRem($_POST['key'], $_POST['oldvalue']);
-      $redis->sAdd($_POST['key'], $_POST['value']);
+      $redis->sRem(input_convert($_POST['key']), input_convert($_POST['oldvalue']));
+      $redis->sAdd(input_convert($_POST['key']), input_convert($_POST['value']));
     }
   }
 
@@ -76,8 +76,8 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
     if ($_POST['value'] != $_POST['oldvalue']) {
       // The only way to edit a ZSet value is to add it and remove the old value.
-      $redis->zRem($_POST['key'], $_POST['oldvalue']);
-      $redis->zAdd($_POST['key'], $_POST['score'], $_POST['value']);
+      $redis->zRem(input_convert($_POST['key']), input_convert($_POST['oldvalue']));
+      $redis->zAdd(input_convert($_POST['key']), input_convert($_POST['score']), input_convert($_POST['value']));
     }
   }
 

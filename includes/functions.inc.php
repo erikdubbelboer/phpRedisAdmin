@@ -1,10 +1,28 @@
 <?php
 
-function format_html($str, $from_encoding = FALSE) {
-  $res = $from_encoding ? mb_convert_encoding($str, 'utf-8', $from_encoding) : $str;
+function format_html($str) {
+  global $server;
+
+  if (isset($server['charset']) && $server['charset']) {
+    $res = mb_convert_encoding($str, 'utf-8', $server['charset']);
+  } else {
+    $res = $str;
+  }
+
   $res = htmlentities($res, defined('ENT_SUBSTITUTE') ? (ENT_QUOTES | ENT_SUBSTITUTE) : ENT_QUOTES, 'utf-8');
+
   return ($res || !$str) ? $res :  '(' . strlen($str) . ' bytes)';
 }
+
+
+function input_convert($str) {
+  if (isset($server['charset']) && $server['charset']) {
+    return mb_convert_encoding($str, $server['charset'], 'utf-8');
+  } else {
+    return $str;
+  }
+}
+
 
 function format_ago($time, $ago = false) {
   $minute = 60;
