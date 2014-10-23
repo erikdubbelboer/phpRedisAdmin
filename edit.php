@@ -74,11 +74,9 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
 
   // ZSet
   else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
-    if ($_POST['value'] != $_POST['oldvalue']) {
-      // The only way to edit a ZSet value is to add it and remove the old value.
-      $redis->zRem(input_convert($_POST['key']), input_convert($_POST['oldvalue']));
-      $redis->zAdd(input_convert($_POST['key']), input_convert($_POST['score']), input_convert($_POST['value']));
-    }
+    // The only way to edit a ZSet value is to add it and remove the old value.
+    $redis->zRem(input_convert($_POST['key']), input_convert($_POST['oldvalue']));
+    $redis->zAdd(input_convert($_POST['key']), input_convert($_POST['score']), input_convert($_POST['value']));
   }
 
 
