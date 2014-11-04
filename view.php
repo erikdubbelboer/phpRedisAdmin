@@ -111,25 +111,60 @@ if (isset($values) && ($count_elements_page !== false)) {
 
 // Build pagination div.
 if (($count_elements_page !== false) && in_array($type, array('hash', 'list', 'set', 'zset')) && ($size > $count_elements_page)) {
-  $pagination = '<div style="width: inherit; word-wrap: break-word;">';
-  $url        = preg_replace('/&page=(\d+)/i', '', $_SERVER['REQUEST_URI']);
+    $prev       = $page_num_request - 1;
+    $next       = $page_num_request + 1;
+    $lastpage   = ceil($size / $count_elements_page);
+    $lpm1       = $lastpage - 1;
+    $adjacents  = 3;
+    $pagination = '<div style="width: inherit; word-wrap: break-word;">';
+    $url        = preg_replace('/&page=(\d+)/i', '', $_SERVER['REQUEST_URI']);
 
-  for ($i = 0; $i < ceil($size / $count_elements_page); ++$i) {
-    $page_num = $i + 1;
+    if ($page_num_request > 1) $pagination .= "<a href=\"$url&page=$prev\">&#8592;</a>&nbsp;"; else
+        $pagination .= "&#8592;&nbsp;";
 
-    if ($page_num === $page_num_request) {
-      $pagination .= $page_num . '&nbsp;';
-    } else {
-      $pagination .= '<a href="' . $url . '&page=' . $page_num . '">' . $page_num . "</a>&nbsp;";
+    if ($lastpage < 7 + ($adjacents * 2)) { //not enough pages to bother breaking it up
+        for ($counter = 1; $counter <= $lastpage; $counter++) {
+            if ($counter == $page_num_request) $pagination .= $page_num_request . '&nbsp;'; else
+                $pagination .= "<a href=\"$url&page=$counter\">$counter</a>&nbsp;";
+        }
+    } elseif ($lastpage > 5 + ($adjacents * 2)) { //enough pages to hide some
+
+        if ($page_num_request < 1 + ($adjacents * 2)) { //close to beginning; only hide later pages
+            for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
+                if ($counter == $page_num_request) $pagination .= $page_num_request . '&nbsp;'; else
+                    $pagination .= "<a href=\"$url&page=$counter\">$counter</a>&nbsp;";
+            }
+            $pagination .= "...&nbsp;";
+            $pagination .= "<a href=\"$url&page=$lpm1\">$lpm1</a>&nbsp;";
+            $pagination .= "<a href=\"$url&page=$lastpage\">$lastpage</a>&nbsp;";
+        } elseif ($lastpage - ($adjacents * 2) > $page_num_request && $page_num_request > ($adjacents * 2)) { //in middle; hide some front and some back
+            $pagination .= "<a href=\"$url&page=1\">1</a>&nbsp;";
+            $pagination .= "<a href=\"$url&page=2\">2</a>&nbsp;";
+            $pagination .= "...&nbsp;";
+            for ($counter = $page_num_request - $adjacents; $counter <= $page_num_request + $adjacents; $counter++) {
+                if ($counter == $page_num_request) $pagination .= $page_num_request . '&nbsp;'; else
+                    $pagination .= "<a href=\"$url&page=$counter\">$counter</a>&nbsp;";
+            }
+            $pagination .= "...&nbsp;";
+            $pagination .= "<a href=\"$url&page=$lpm1\">$lpm1</a>&nbsp;";
+            $pagination .= "<a href=\"$url&page=$lastpage\">$lastpage</a>&nbsp;";
+        } else { //close to end; only hide early pages
+            $pagination .= "<a href=\"$url&page=1\">1</a>&nbsp;";
+            $pagination .= "<a href=\"$url&page=2\">2</a>&nbsp;";
+            $pagination .= "...&nbsp;";
+            for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++) {
+                if ($counter == $page_num_request) $pagination .= $page_num_request . '&nbsp;'; else
+                    $pagination .= "<a href=\"$url&page=$counter\">$counter</a>&nbsp;";
+            }
+        }
     }
-  }
-
-  $pagination .= '</div>';
+    if ($page_num_request < $counter - 1) $pagination .= "<a href=\"$url&page=$next\">&#8594;</a>&nbsp;"; else
+        $pagination .= "&#8594;&nbsp;";
+    $pagination .= "</div>";
 }
 
-
 if (isset($pagination)) {
-  echo $pagination;
+    echo $pagination;
 }
 
 
