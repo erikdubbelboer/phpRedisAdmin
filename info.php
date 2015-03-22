@@ -31,7 +31,7 @@ require 'includes/header.inc.php';
 
 <?php if (method_exists($redis, 'resetStat')) { ?>
 <p>
-<a href="?reset&amp;s=<?php echo $server['id']?>" class="reset">Reset usage statistics</a>
+<a href="?reset&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>" class="reset">Reset usage statistics</a>
 </p>
 <?php } ?>
 

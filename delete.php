@@ -46,7 +46,7 @@ if (isset($_GET['key'])) {
   }
 
 
-  die('?view&s='.$server['id'].'&key='.urlencode($_GET['key']));
+  die('?view&s='.$server['id'].'&d='.$server['db'].'&key='.urlencode($_GET['key']));
 }
 
 
@@ -57,7 +57,7 @@ if (isset($_GET['tree'])) {
     $redis->del($key);
   }
 
-  die('?view&s='.$server['id']);
+  die('?view&s='.$server['id'].'&d='.$server['db']);
 }
 
 ?>

@@ -40,8 +40,6 @@ if (isset($config['login'])) {
 }
 
 
-
-
 if (isset($login['servers'])) {
   $i = current($login['servers']);
 } else {
@@ -53,8 +51,8 @@ if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['
   $i = $_GET['s'];
 }
 
-$server       = $config['servers'][$i];
-$server['id'] = $i;
+$server            = $config['servers'][$i];
+$server['id']      = $i;
 $server['charset'] = isset($server['charset']) && $server['charset'] ? $server['charset'] : false;
 
 
@@ -75,8 +73,13 @@ if (isset($login, $login['servers'])) {
 
 
 if (!isset($server['db'])) {
-  $server['db'] = 0;
+  if (isset($_GET['d']) && is_numeric($_GET['d'])) {
+    $server['db'] = $_GET['d'];
+  } else {
+    $server['db'] = 0;
+  }
 }
+
 
 if (!isset($server['filter'])) {
   $server['filter'] = '*';
@@ -92,6 +95,14 @@ if (isset($_GET['filter']) && $_GET['filter'] != '') {
 
 if (!isset($server['seperator'])) {
   $server['seperator'] = $config['seperator'];
+}
+
+if (!isset($server['keys'])) {
+  $server['keys'] = $config['keys'];
+}
+
+if (!isset($server['scansize'])) {
+  $server['scansize'] = $config['scansize'];
 }
 
 // Setup a connection to Redis.

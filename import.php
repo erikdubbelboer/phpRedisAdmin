@@ -73,7 +73,7 @@ if (isset($_POST['commands'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?overview&s=<?php echo $server['id']?>';
+  top.location.href = top.location.pathname+'?overview&s=<?php echo $server['id']?>&d=<?php echo $server['db']?>';
   </script>
   <?php
 

@@ -24,9 +24,11 @@ $config = array(
       'port'      => 6379,
       'db'        => 1,             // Optional database number, see http://redis.io/commands/select
       'filter'    => 'something:*', // Show only parts of database for speed or security reasons.
-      'seperator' => '/',           // Use a different seperator on this database.
+      'seperator' => '/',           // Use a different seperator on this database (default uses config default).
       'flush'     => false,         // Set to true to enable the flushdb button for this instance.
       'charset'   => 'cp1251',      // Keys and values are stored in redis using this encoding (default utf-8).
+      'keys'      => false,         // Use the old KEYS command instead of SCAN to fetch all keys for this server (default uses config default).
+      'scansize'  => 1000           // How many entries to fetch using each SCAN command for this server (default uses config default).
     ),*/
   ),
 
@@ -55,7 +57,14 @@ $config = array(
   // You can ignore settings below this point.
 
   'maxkeylen'           => 100,
-  'count_elements_page' => 100
+  'count_elements_page' => 100,
+
+
+  // Use the old KEYS command instead of SCAN to fetch all keys.
+  'keys' => false,
+
+  // How many entries to fetch using each SCAN command.
+  'scansize' => 1000
 );
 
 ?>

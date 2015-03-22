@@ -4,7 +4,23 @@ require_once 'includes/common.inc.php';
 
 if($redis) {
 
-    $keys = $redis->keys($server['filter']);
+    if (!empty($server['keys'])) {
+        $keys = $redis->keys($server['filter']);
+    } else {
+        $next = 0;
+        $keys = array();
+
+        while (true) {
+            $r = $redis->scan($next, 'MATCH', $server['filter'], 'COUNT', $server['scansize']);
+
+            $next = $r[0];
+            $keys = array_merge($keys, $r[1]);
+
+            if ($next == 0) {
+                break;
+            }
+        }
+    }
 
     sort($keys);
 
@@ -83,7 +99,7 @@ if($redis) {
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-        <a href="?view&amp;s=<?php echo $server['id']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
+        <a href="?view&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
       }
@@ -93,7 +109,7 @@ if($redis) {
         ?>
         <li class="folder<?php echo ($fullkey === '') ? '' : ' collapsed'?><?php echo $islast ? ' last' : ''?>">
         <div class="icon"><?php echo format_html($name)?>&nbsp;<span class="info">(<?php echo count($item)?>)</span>
-        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
+        <?php if ($fullkey !== '') { ?><a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;tree=<?php echo urlencode($fullkey)?>:" class="deltree"><img src="images/delete.png" width="10" height="10" title="Delete tree" alt="[X]"></a><?php } ?>
         </div><ul>
         <?php
 
@@ -144,7 +160,7 @@ require 'includes/header.inc.php';
 ?>
 <div id="sidebar">
 
-<h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>">phpRedisAdmin</a></h1>
+<h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>">phpRedisAdmin</a></h1>
 
 <p>
 <select id="server">
@@ -152,24 +168,35 @@ require 'includes/header.inc.php';
 <option value="<?php echo $i?>" <?php echo ($server['id'] == $i) ? 'selected="selected"' : ''?>><?php echo isset($srv['name']) ? format_html($srv['name']) : $srv['host'].':'.$srv['port']?></option>
 <?php } ?>
 </select>
-</p>
 
-<?php if($redis): ?>
+<?php if($redis) { ?>
+
+<?php
+$databases = $redis->config('GET', 'databases');
+$databases = $databases['databases'];
+if ($databases > 1) { ?>
+  <select id="database">
+  <?php for ($d = 0; $d < $databases; ++$d) { ?>
+  <option value="<?php echo $d?>" <?php echo ($server['db'] == $d) ? 'selected="selected"' : ''?>>database <?php echo $d?></option>
+  <?php } ?>
+  </select>
+<?php } ?>
+</p>
 
 <p>
 <?php if (isset($login)) { ?>
 <a href="logout.php"><img src="images/logout.png" width="16" height="16" title="Logout" alt="[L]"></a>
 <?php } ?>
-<a href="?info&amp;s=<?php echo $server['id']?>"><img src="images/info.png" width="16" height="16" title="Info" alt="[I]"></a>
-<a href="?export&amp;s=<?php echo $server['id']?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
-<a href="?import&amp;s=<?php echo $server['id']?>"><img src="images/import.png" width="16" height="16" title="Import" alt="[I]"></a>
+<a href="?info&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>"><img src="images/info.png" width="16" height="16" title="Info" alt="[I]"></a>
+<a href="?export&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>"><img src="images/export.png" width="16" height="16" title="Export" alt="[E]"></a>
+<a href="?import&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>"><img src="images/import.png" width="16" height="16" title="Import" alt="[I]"></a>
 <?php if (isset($server['flush']) && $server['flush']) { ?>
-<a href="?flush&amp;s=<?php echo $server['id']?>" id="flush"><img src="images/flush.png" width="16" height="16" title="Flush" alt="[F]"></a>
+<a href="?flush&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>" id="flush"><img src="images/flush.png" width="16" height="16" title="Flush" alt="[F]"></a>
 <?php } ?>
 </p>
 
 <p>
-<a href="?edit&amp;s=<?php echo $server['id']?>" class="add">Add another key</a>
+<a href="?edit&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>" class="add">Add another key</a>
 </p>
 
 <p>
@@ -187,9 +214,10 @@ require 'includes/header.inc.php';
 </ul>
 </div><!-- #keys -->
 
-<?php else: ?>
+<?php } else { ?>
+</p>
 <div style="color:red">Can't connect to this server</div>
-<?php endif; ?>
+<?php } ?>
 
 <div id="frame">
 <iframe src="<?php echo format_html($iframe)?>" id="iframe" frameborder="0" scrolling="0"></iframe>
