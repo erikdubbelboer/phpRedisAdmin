@@ -147,12 +147,12 @@ require 'includes/header.inc.php';
 
 <p>
 <label for="key">Key:</label>
-<input type="text" name="key" id="key" size="30" maxlength="30" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
+<input type="text" name="key" id="key" size="30" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
 <p id="hkeyp">
 <label for="khey">Hash key:</label>
-<input type="text" name="hkey" id="hkey" size="30" maxlength="30" <?php echo isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
+<input type="text" name="hkey" id="hkey" size="30" <?php echo isset($_GET['hkey']) ? 'value="'.format_html($_GET['hkey']).'"' : ''?>>
 </p>
 
 <p id="indexp">
