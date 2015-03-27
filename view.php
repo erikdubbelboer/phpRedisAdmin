@@ -69,6 +69,7 @@ switch ($type) {
   case 'hash':
     $values = $redis->hGetAll($_GET['key']);
     $size   = count($values);
+    ksort($values);
     break;
 
   case 'list':
@@ -78,11 +79,13 @@ switch ($type) {
   case 'set':
     $values = $redis->sMembers($_GET['key']);
     $size   = count($values);
+    sort($values);
     break;
 
   case 'zset':
     $values = $redis->zRange($_GET['key'], 0, -1);
     $size   = count($values);
+    ksort($values);
     break;
 }
   
