@@ -85,7 +85,6 @@ switch ($type) {
   case 'zset':
     $values = $redis->zRange($_GET['key'], 0, -1);
     $size   = count($values);
-    ksort($values);
     break;
 }
   
