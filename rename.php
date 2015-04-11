@@ -18,7 +18,7 @@ if (isset($_POST['old'], $_POST['key'])) {
 
   ?>
   <script>
-  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&key=<?php echo urlencode($_POST['key'])?>';
+  top.location.href = top.location.pathname+'?view&s=<?php echo $server['id']?>&d=<?php echo $server['db']?>&key=<?php echo urlencode($_POST['key'])?>';
   </script>
   <?php
 
