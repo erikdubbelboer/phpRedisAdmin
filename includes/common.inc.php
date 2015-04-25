@@ -105,6 +105,12 @@ if (!isset($server['scansize'])) {
   $server['scansize'] = $config['scansize'];
 }
 
+if (!isset($server['serialization'])) {
+  if (isset($config['serialization'])) {
+    $server['serialization'] = $config['serialization'];
+  }
+}
+
 // Setup a connection to Redis.
 $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
 try {

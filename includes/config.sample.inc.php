@@ -54,11 +54,20 @@ $config = array(
   ),*/
 
 
+  /*'serialization' => array(
+    'foo*' => array( // Match like KEYS
+      // Function called when saving to redis.
+      'save' => function($data) { return json_encode(json_decode($data)); },
+      // Function called when loading from redis.
+      'load' => function($data) { return json_encode(json_decode($data), JSON_PRETTY_PRINT); },
+    ),
+  ),*/
+
+
   // You can ignore settings below this point.
 
   'maxkeylen'           => 100,
   'count_elements_page' => 100,
-
 
   // Use the old KEYS command instead of SCAN to fetch all keys.
   'keys' => false,
