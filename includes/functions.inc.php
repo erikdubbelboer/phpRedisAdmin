@@ -16,6 +16,8 @@ function format_html($str) {
 
 
 function input_convert($str) {
+  global $server;
+
   if (isset($server['charset']) && $server['charset']) {
     return mb_convert_encoding($str, $server['charset'], 'utf-8');
   } else {
@@ -80,5 +82,22 @@ function str_rand($length) {
   }
 
   return $r;
+}
+
+
+function encodeOrDecode($action, $key, $data) {
+  global $server;
+
+  if (isset($_GET['raw']) || !isset($server['serialization'])) {
+    return $data;
+  }
+
+  foreach ($server['serialization'] as $pattern => $closures) {
+    if (fnmatch($pattern, $key)) {
+      return $closures[$action]($data);
+    }
+  }
+
+  return $data;
 }
 

@@ -50,3 +50,8 @@ padding: 3px 0 1px 20px;
 background: url(../images/add.png) left center no-repeat;
 }
 
+
+.data {
+white-space: pre;
+}
+

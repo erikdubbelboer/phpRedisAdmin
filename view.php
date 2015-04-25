@@ -63,12 +63,16 @@ try {
 switch ($type) {
   case 'string':
     $value = $redis->get($_GET['key']);
+    $value = encodeOrDecode('load', $_GET['key'], $value);
     $size  = strlen($value);
     break;
 
   case 'hash':
     $values = $redis->hGetAll($_GET['key']);
-    $size   = count($values);
+    foreach ($values as $k => $value) {
+      $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
+    }
+    $size = count($values);
     ksort($values);
     break;
 
@@ -78,13 +82,19 @@ switch ($type) {
 
   case 'set':
     $values = $redis->sMembers($_GET['key']);
-    $size   = count($values);
+    foreach ($values as $k => $value) {
+      $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
+    }
+    $size = count($values);
     sort($values);
     break;
 
   case 'zset':
     $values = $redis->zRange($_GET['key'], 0, -1);
-    $size   = count($values);
+    foreach ($values as $k => $value) {
+      $values[$k] = encodeOrDecode('load', $_GET['key'], $value);
+    }
+    $size = count($values);
     break;
 }
   
@@ -174,7 +184,7 @@ if (isset($pagination)) {
 if ($type == 'string') { ?>
 
 <table>
-<tr><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+<tr><td><div class=data><?php echo format_html($value)?></div></td><td><div>
   <a href="edit.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=string&amp;key=<?php echo urlencode($_GET['key'])?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
 </div></td><td><div>
   <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=string&amp;key=<?php echo urlencode($_GET['key'])?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -192,7 +202,7 @@ else if ($type == 'hash') { ?>
 <tr><th><div>Key</div></th><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php foreach ($values as $hkey => $value) { ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($hkey)?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo format_html($hkey)?></div></td><td><div class=data><?php echo format_html($value)?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=hash&amp;key=<?php echo urlencode($_GET['key'])?>&amp;hkey=<?php echo urlencode($hkey)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -219,8 +229,9 @@ else if ($type == 'list') { ?>
 
   for ($i = $start; $i < $end; ++$i) {
     $value = $redis->lIndex($_GET['key'], $i);
+    $value = encodeOrDecode('load', $_GET['key'], $value);
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div><?php echo nl2br(format_html($value))?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $i?></div></td><td><div class=data><?php echo format_html($value)?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=list&amp;key=<?php echo urlencode($_GET['key'])?>&amp;index=<?php echo $i?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -239,9 +250,9 @@ else if ($type == 'set') {
 <tr><th><div>Value</div></th><th><div>&nbsp;</div></th><th><div>&nbsp;</div></th></tr>
 
 <?php foreach ($values as $value) {
-  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&d='.$server['db'].'&key='.urlencode($value).'">'.nl2br(format_html($value)).'</a>' : nl2br(format_html($value));
+  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&d='.$server['db'].'&key='.urlencode($value).'">'.format_html($value).'</a>' : format_html($value);
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $display_value ?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div class=data><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
   </div></td><td><div>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=set&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
@@ -260,9 +271,9 @@ else if ($type == 'zset') { ?>
 
 <?php foreach ($values as $value) {
   $score         = $redis->zScore($_GET['key'], $value);
-  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&d='.$server['db'].'&key='.urlencode($value).'">'.nl2br(format_html($value)).'</a>' : nl2br(format_html($value));
+  $display_value = $redis->exists($value) ? '<a href="view.php?s='.$server['id'].'&d='.$server['db'].'&key='.urlencode($value).'">'.format_html($value).'</a>' : format_html($value);
 ?>
-  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div><?php echo $display_value ?></div></td><td><div>
+  <tr <?php echo $alt ? 'class="alt"' : ''?>><td><div><?php echo $score?></div></td><td><div class=data><?php echo $display_value ?></div></td><td><div>
     <a href="edit.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=zset&amp;key=<?php echo urlencode($_GET['key'])?>&amp;score=<?php echo $score?>&amp;value=<?php echo urlencode($value)?>"><img src="images/edit.png" width="16" height="16" title="Edit" alt="[E]"></a>
     <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;type=zset&amp;key=<?php echo urlencode($_GET['key'])?>&amp;value=<?php echo urlencode($value)?>" class="delval"><img src="images/delete.png" width="16" height="16" title="Delete" alt="[X]"></a>
   </div></td></tr>
