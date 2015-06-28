@@ -3,11 +3,10 @@ position: absolute;
 top: 0;
 bottom: 0;
 left: 0;
-width: 24em;
+width: 290px;
 height: 100%;
-padding-left: 1em;
+padding-left: 10px;
 border-right: 1px solid #000;
-overflow: hidden;
 }
 
 #sidebar a, #sidebar a:visited {
@@ -24,11 +23,12 @@ text-decoration: underline;
 
 
 #keys {
-position: fixed;
+position: absolute;
 top: 18.5em;
+left: 0;
 bottom: 0;
-width: 24em;
-padding-bottom: 1em;
+width: 290px;
+padding-left: 10px;
 overflow: auto;
 }
 
@@ -104,14 +104,35 @@ display: none;
 display: inline;
 }
 
+#resize {
+position: fixed;
+top: 0;
+left: 300px;
+bottom: 0;
+width: 5px;
+background-color: #aaa;
+cursor: col-resize;
+padding: 0;
+margin: 0;
+}
+
+#resize-layover {
+position: fixed;
+top: 0;
+left: 305px;
+right: 0;
+bottom: 0;
+width: 100%;
+z-index: 1000;
+}
 
 #frame {
 position: fixed;
 top: 0;
-left: 25em;
+left: 305px;
 right: 0;
 bottom: 0;
-padding-left: 1em;
+padding-left: 2em;
 }
 
 #frame iframe {
