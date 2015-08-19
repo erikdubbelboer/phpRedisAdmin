@@ -173,8 +173,12 @@ require 'includes/header.inc.php';
 <?php if($redis) { ?>
 
 <?php
-$databases = $redis->config('GET', 'databases');
-$databases = $databases['databases'];
+if (isset($server['database'])) {
+  $databases = $server['database'];
+} else {
+  $databases = $redis->config('GET', 'databases');
+  $databases = $databases['databases'];
+}
 if ($databases > 1) { ?>
   <select id="database">
   <?php for ($d = 0; $d < $databases; ++$d) { ?>

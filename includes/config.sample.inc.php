@@ -23,6 +23,7 @@ $config = array(
       'host'      => 'localhost',
       'port'      => 6379,
       'db'        => 1,             // Optional database number, see http://redis.io/commands/select
+      'databases' => 1,             // Optional number of databases (prevents use of CONFIG command).
       'filter'    => 'something:*', // Show only parts of database for speed or security reasons.
       'seperator' => '/',           // Use a different seperator on this database (default uses config default).
       'flush'     => false,         // Set to true to enable the flushdb button for this instance.
