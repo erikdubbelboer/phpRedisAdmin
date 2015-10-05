@@ -173,8 +173,8 @@ require 'includes/header.inc.php';
 <?php if($redis) { ?>
 
 <?php
-if (isset($server['database'])) {
-  $databases = $server['database'];
+if (isset($server['databases'])) {
+  $databases = $server['databases'];
 } else {
   $databases = $redis->config('GET', 'databases');
   $databases = $databases['databases'];
