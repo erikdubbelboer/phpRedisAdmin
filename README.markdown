@@ -21,7 +21,7 @@ You can find an example database at
 Installing/Configuring
 ======================
 
-To install phpRedisAdmin through [composer](http://getcomposer.org/) you need to execute the following commands:
+To install [phpRedisAdmin](https://packagist.org/packages/erik-dubbelboer/php-redis-admin) through [composer](http://getcomposer.org/) you need to execute the following commands:
 
 ```
 curl -s http://getcomposer.org/installer | php
