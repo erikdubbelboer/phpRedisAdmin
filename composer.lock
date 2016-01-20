@@ -1,23 +1,24 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0695856c109266b2eabff6d53d879c0",
+    "hash": "e81aef935c2a6d36cf7690dbdb9d129a",
+    "content-hash": "3212fc4e8463f3bf5ff7db4655eecbf0",
     "packages": [
         {
             "name": "predis/predis",
-            "version": "v1.0.1",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "7a170b3d8123c556597b4fbdb88631f99de180c2"
+                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/7a170b3d8123c556597b4fbdb88631f99de180c2",
-                "reference": "7a170b3d8123c556597b4fbdb88631f99de180c2",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/84060b9034d756b4d79641667d7f9efe1aeb8e04",
+                "reference": "84060b9034d756b4d79641667d7f9efe1aeb8e04",
                 "shasum": ""
             },
             "require": {
@@ -54,7 +55,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2015-01-02 12:51:34"
+            "time": "2015-07-30 18:34:15"
         }
     ],
     "packages-dev": [],
