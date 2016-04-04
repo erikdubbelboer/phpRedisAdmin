@@ -8,6 +8,8 @@ $config = array(
       'host'   => '127.0.0.1',
       'port'   => 6379,
       'filter' => '*',
+      'scheme' => 'tcp', // Optional. Connection scheme. 'tcp' - for TCP connection, 'unix' - for connection by unix domain socket
+      'path'   => '' // Optional. Path to unix domain socket. Uses only if 'scheme' => 'unix'. Example: '/var/run/redis/redis.sock'
 
       // Optional Redis authentication.
       //'auth' => 'redispasswordhere' // Warning: The password is sent in plain-text to the Redis server.
