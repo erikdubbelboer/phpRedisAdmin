@@ -49,6 +49,9 @@ $(function() {
       } else {
         $('#iframe').attr('src', href);
       }
+
+      $('li.current').removeClass('current');
+      $(this).parent().addClass('current');
     }
   });
 
