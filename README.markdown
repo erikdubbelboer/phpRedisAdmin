@@ -1,5 +1,5 @@
-phpRedisAdmin
-=============
+phpRedisAdmin 1.6.0
+===================
 
 phpRedisAdmin is a simple web interface to manage [Redis](http://redis.io/)
 databases. It is released under the
