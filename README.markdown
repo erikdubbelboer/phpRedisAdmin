@@ -28,7 +28,7 @@ curl -s http://getcomposer.org/installer | php
 php composer.phar create-project -s dev erik-dubbelboer/php-redis-admin path/to/install
 ```
 
-You may also want to copy includes/config.simple.inc.php to includes/config.inc.php
+You may also want to copy includes/config.sample.inc.php to includes/config.inc.php
 and edit it with your specific redis configuration.
 
 Instead of using composer, you can also do a manual install using:
