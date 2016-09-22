@@ -121,7 +121,7 @@ if(isset($server['scheme']) && $server['scheme'] === 'unix' && $server['path']) 
 try {
     $redis->connect();
 } catch (Predis\CommunicationException $exception) {
-    $redis = false;
+    die('ERROR: ' . $exception->getMessage());
 }
 
 if (isset($server['auth'])) {
