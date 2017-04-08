@@ -107,7 +107,7 @@ if (isset($values) && ($count_elements_page !== false)) {
 
 <tr><td><div>Type:</div></td><td><div><?php echo format_html($type)?></div></td></tr>
 
-<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : $ttl?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($_GET['key'])?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
+<tr><td><div><abbr title="Time To Live">TTL</abbr>:</div></td><td><div><?php echo ($ttl == -1) ? 'does not expire' : format_ttl($ttl) ?> <a href="ttl.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($_GET['key'])?>&amp;ttl=<?php echo $ttl?>"><img src="images/edit.png" width="16" height="16" title="Edit TTL" alt="[E]" class="imgbut"></a></div></td></tr>
 
 <?php if (!is_null($encoding)) { ?>
 <tr><td><div>Encoding:</div></td><td><div><?php echo format_html($encoding)?></div></td></tr>
