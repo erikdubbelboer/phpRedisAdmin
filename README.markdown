@@ -10,6 +10,11 @@ You can send comments, patches, questions
 [here on github](https://github.com/ErikDubbelboer/phpRedisAdmin/issues)
 or to erik@dubbelboer.com.
 
+Redis Version
+=============
+
+Please make sure your redis >= 2.8
+
 
 Example
 =======
