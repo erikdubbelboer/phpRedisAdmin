@@ -23,10 +23,6 @@ text-decoration: underline;
 
 
 #keys {
-position: absolute;
-top: 18.5em;
-left: 0;
-bottom: 0;
 width: 290px;
 padding-left: 10px;
 overflow: auto;
@@ -45,6 +41,7 @@ font-weight: normal;
 #keys li.folder {
 font-weight: bold;
 margin-top: .05em;
+cursor: pointer;
 }
 
 #keys li.current a {
