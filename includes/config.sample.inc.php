@@ -56,6 +56,9 @@ $config = array(
     )
   ),*/
 
+  // Use HTML form/cookie-based auth instead of HTTP Basic/Digest auth
+  'cookie_auth' => false,
+
 
   /*'serialization' => array(
     'foo*' => array( // Match like KEYS
