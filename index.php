@@ -154,6 +154,7 @@ if (count($_GET) == 0) {
 
 $page['css'][] = 'index';
 $page['js'][]  = 'index';
+$page['js'][]  = 'jquery-cookie';
 
 require 'includes/header.inc.php';
 
@@ -172,8 +173,12 @@ require 'includes/header.inc.php';
 <?php if($redis) { ?>
 
 <?php
-$databases = $redis->config('GET', 'databases');
-$databases = $databases['databases'];
+if (isset($server['databases'])) {
+  $databases = $server['databases'];
+} else {
+  $databases = $redis->config('GET', 'databases');
+  $databases = $databases['databases'];
+}
 if ($databases > 1) { ?>
   <select id="database">
   <?php for ($d = 0; $d < $databases; ++$d) { ?>
@@ -219,11 +224,15 @@ if ($databases > 1) { ?>
 <div style="color:red">Can't connect to this server</div>
 <?php } ?>
 
+</div><!-- #sidebar -->
+
+<div id="resize"></div>
+<div id="resize-layover"></div>
+
 <div id="frame">
 <iframe src="<?php echo format_html($iframe)?>" id="iframe" frameborder="0" scrolling="0"></iframe>
 </div><!-- #frame -->
 
-</div><!-- #sidebar -->
 <?php
 
 require 'includes/footer.inc.php';

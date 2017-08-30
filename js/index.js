@@ -1,42 +1,59 @@
 $(function() {
-  $('#sidebar a').click(function(e) {
-    if (e.currentTarget.href.indexOf('/?') == -1) {
-      return;
-    }
+  $('#sidebar').on('click', 'a', function(e) {
+    if (e.currentTarget.className.indexOf('deltree') !== -1) {
+      e.preventDefault();
 
-    e.preventDefault();
-
-    var href;
-
-    if ((e.currentTarget.href.indexOf('?') == -1) ||
-        (e.currentTarget.href.indexOf('?') == (e.currentTarget.href.length - 1))) {
-      href = 'overview.php';
-    } else {
-      href = e.currentTarget.href.substr(e.currentTarget.href.indexOf('?') + 1);
-
-      if (href.indexOf('&') != -1) {
-        href = href.replace('&', '.php?');
-      } else {
-        href += '.php';
-      }
-    }
-
-    if (href.indexOf('flush.php') == 0) {
-      if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
+      if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
         $.ajax({
           type: "POST",
-          url: href,
+          url: this.href,
           data: 'post=1',
-          success: function() {
-            window.location.reload();
+          success: function(url) {
+            top.location.href = top.location.pathname+url;
           }
         });
       }
     } else {
-      $('#iframe').attr('src', href);
+      if (e.currentTarget.href.indexOf('/?') == -1) {
+        return;
+      }
+  
+      e.preventDefault();
+  
+      var href;
+  
+      if ((e.currentTarget.href.indexOf('?') == -1) ||
+          (e.currentTarget.href.indexOf('?') == (e.currentTarget.href.length - 1))) {
+        href = 'overview.php';
+      } else {
+        href = e.currentTarget.href.substr(e.currentTarget.href.indexOf('?') + 1);
+  
+        if (href.indexOf('&') != -1) {
+          href = href.replace('&', '.php?');
+        } else {
+          href += '.php';
+        }
+      }
+  
+      if (href.indexOf('flush.php') == 0) {
+        if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
+          $.ajax({
+            type: "POST",
+            url: href,
+            data: 'post=1',
+            success: function() {
+              window.location.reload();
+            }
+          });
+        }
+      } else {
+        $('#iframe').attr('src', href);
+      }
+
+      $('li.current').removeClass('current');
+      $(this).parent().addClass('current');
     }
   });
-
 
   $('#server').change(function(e) {
     if (location.href.indexOf('?') == -1) {
@@ -62,7 +79,7 @@ $(function() {
 
   $('li.current').parents('li.folder').removeClass('collapsed');
 
-  $('li.folder').click(function(e) {
+  $('#sidebar').on('click', 'li.folder', function(e) {
     var t = $(this);
 
     if ((e.pageY >= t.offset().top) &&
@@ -70,14 +87,6 @@ $(function() {
       e.stopPropagation();
       t.toggleClass('collapsed');
     }
-  });
-
-  $('a').click(function() {
-    $('li.current').removeClass('current');
-  });
-
-  $('li a').click(function() {
-    $(this).parent().addClass('current');
   });
 
   $('#btn_server_filter').click(function() {
@@ -118,20 +127,46 @@ $(function() {
     });
   });
 
-  $('.deltree').click(function(e) {
+  var isResizing = false;
+  var lastDownX  = 0;
+  var lastWidth  = 0;
+
+  var resizeSidebar = function(w) {
+    $('#sidebar').css('width', w);
+    $('#keys').css('width', w);
+    $('#resize').css('left', w + 10);
+    $('#resize-layover').css('left', w + 15);
+    $('#frame').css('left', w + 15);
+  };
+
+  if (parseInt($.cookie('sidebar')) > 0) {
+    resizeSidebar(parseInt($.cookie('sidebar')));
+  }
+
+  $('#resize').on('mousedown', function (e) {
+    isResizing = true;
+    lastDownX  = e.clientX;
+    lastWidth  = $('#sidebar').width();
+    $('#resize-layover').css('z-index', 1000);
     e.preventDefault();
-
-    if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
-      $.ajax({
-        type: "POST",
-        url: this.href,
-        data: 'post=1',
-        success: function(url) {
-          top.location.href = top.location.pathname+url;
-        }
-      });
-    }
   });
+  $(document).on('mousemove', function (e) {
+    if (!isResizing) {
+      return;
+    }
 
+    var w = lastWidth - (lastDownX - e.clientX);
+    if (w < 250 ) {
+      w = 250;
+    } else if (w > 1000) {
+      w = 1000;
+    }
+
+    resizeSidebar(w);
+    $.cookie('sidebar', w);
+  }).on('mouseup', function (e) {
+    isResizing = false;
+    $('#resize-layover').css('z-index', 0);
+  });
 });
 

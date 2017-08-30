@@ -112,11 +112,16 @@ if (!isset($server['serialization'])) {
 }
 
 // Setup a connection to Redis.
-$redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+if(isset($server['scheme']) && $server['scheme'] === 'unix' && $server['path']) {
+  $redis = new Predis\Client(array('scheme' => 'unix', 'path' => $server['path']));
+} else {
+  $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
+}
+
 try {
     $redis->connect();
 } catch (Predis\CommunicationException $exception) {
-    $redis = false;
+    die('ERROR: ' . $exception->getMessage());
 }
 
 if (isset($server['auth'])) {

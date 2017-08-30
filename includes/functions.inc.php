@@ -74,6 +74,15 @@ function format_size($size) {
 }
 
 
+function format_ttl($seconds) {
+	if ($seconds > 60) {
+		return sprintf('%d (%s)', $seconds, format_ago($seconds));
+	} else {
+		return $seconds;
+	}
+}
+
+
 function str_rand($length) {
   $r = '';
 
