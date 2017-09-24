@@ -109,7 +109,7 @@ function authCookie()
 
     if (isset($_POST['username'], $_POST['password'])) {
         // Login form submitted; correctly?
-        if ($config['login'][$_POST['username']]) {
+        if (isset($config['login'][$_POST['username']])) {
             $userData = $config['login'][$_POST['username']];
             if ($_POST['password'] === $userData['password']) {
                 // Correct username & password. Set cookie and redirect to home page
