@@ -23,7 +23,7 @@ function export_redis($key, $filter = false, $transform = false) {
 
   // Hash
   else if ($type == 'hash') {
-    $values = $redis->hGetAll($outputKey);
+    $values = $redis->hGetAll($key);
 
     foreach ($values as $k => $v) {
       echo 'HSET "',addslashes($outputKey),'" "',addslashes($k),'" "',addslashes($v),'"',PHP_EOL;
