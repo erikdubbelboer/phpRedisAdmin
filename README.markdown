@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ferikdubbelboer%2FphpRedisAdmin.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ferikdubbelboer%2FphpRedisAdmin?ref=badge_shield)
+
 phpRedisAdmin
 =============
 
@@ -56,3 +58,7 @@ Credits
 Icons by [http://p.yusukekamiyamane.com/](http://p.yusukekamiyamane.com/) ([https://github.com/yusukekamiyamane/fugue-icons/tree/master/icons-shadowless](https://github.com/yusukekamiyamane/fugue-icons/tree/master/icons-shadowless))
 
 Favicon from [https://github.com/antirez/redis-io/blob/master/public/images/favicon.png](https://github.com/antirez/redis-io/blob/master/public/images/favicon.png)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ferikdubbelboer%2FphpRedisAdmin.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ferikdubbelboer%2FphpRedisAdmin?ref=badge_large)
