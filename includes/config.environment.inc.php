@@ -14,6 +14,7 @@ if (!empty($admin_user)) {
 }
 
 $i=1;
+$config['servers'] = array();
 
 while (TRUE) {
 
