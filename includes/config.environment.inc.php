@@ -23,7 +23,8 @@ while (TRUE) {
   $server_name = getenv($prefix . 'NAME');
   $server_host = getenv($prefix . 'HOST');
   $server_port = getenv($prefix . 'PORT');
-
+  $server_auth = getenv($prefix . 'AUTH');
+ 
   if (empty($server_host)) {
     break;
   }
@@ -40,6 +41,7 @@ while (TRUE) {
       'name'   => $server_name,
       'host'   => $server_host,
       'port'   => $server_port,
+      'auth'   => $server_auth,
       'filter' => '*',
   );
 
