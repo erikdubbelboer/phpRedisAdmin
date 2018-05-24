@@ -24,7 +24,7 @@ while (TRUE) {
   $server_host = getenv($prefix . 'HOST');
   $server_port = getenv($prefix . 'PORT');
   $server_auth = getenv($prefix . 'AUTH');
- 
+
   if (empty($server_host)) {
     break;
   }
@@ -32,6 +32,10 @@ while (TRUE) {
   if (empty($server_name)) {
     $server_name = $server_host;
   }
+  
+  if (empty($server_auth)) {
+    $server_auth = "";
+  } 
 
   if (empty($server_port)) {
     $server_port = 6379;
@@ -41,9 +45,12 @@ while (TRUE) {
       'name'   => $server_name,
       'host'   => $server_host,
       'port'   => $server_port,
-      'auth'   => $server_auth,
       'filter' => '*',
   );
+  
+  if (!empty($server_auth)) {
+    $config['servers'][$i-1]['auth'] = $server_auth;
+  } 
 
   $i++;
 }
