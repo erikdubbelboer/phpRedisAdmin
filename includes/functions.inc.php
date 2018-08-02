@@ -26,39 +26,30 @@ function input_convert($str) {
 }
 
 
-function format_ago($time, $ago = false) {
+function format_ago($time) {
   $minute = 60;
   $hour   = $minute * 60;
   $day    = $hour   * 24;
 
   $when = $time;
 
-  if ($when >= 0)
-    $suffix = 'ago';
-  else {
-    $when = -$when;
-    $suffix = 'in the future';
-  }
-
   if ($when > $day) {
-    $when = round($when / $day);
-    $what = 'day';
+    $tmpday = floor($when / $day);
+    $tmphour = floor(($when / $hour) - (24*$tmpday));
+    $tmpminute = floor(($when / $minute) - (24*60*$tmpday) - ($tmphour * 60));
+    $tmpsec = floor($when - (24*60*60*$tmpday) - ($tmphour * 60 * 60) - ($tmpminute * 60));
+    return sprintf("%d day %d hour %d minute %d sec",$tmpday,$tmphour,$tmpminute,$tmpsec);
   } else if ($when > $hour) {
-    $when = round($when / $hour);
-    $what = 'hour';
+    $tmphour = floor($when / $hour);
+    $tmpminute = floor(($when / $minute) - ($tmphour * 60));
+    $tmpsec = floor($when - ($tmphour * 60 * 60) - ($tmpminute * 60));
+    return sprintf("%d hour %d min %d sec",$tmphour,$tmpminute,$tmpsec);
   } else if ($when > $minute) {
-    $when = round($when / $minute);
-    $what = 'minute';
+    $tmpminute = floor($when / $minute);
+    $tmpsec = floor($when - ($tmpminute * 60));
+    return sprintf("%d min %d sec",$tmpminute,$tmpsec);
   } else {
-    $what = 'second';
-  }
-
-  if ($when != 1) $what .= 's';
-
-  if ($ago) {
-    return "$when $what $suffix";
-  } else {
-    return "$when $what";
+    return sprintf("%d sec",$when);
   }
 }
 
