@@ -26,7 +26,7 @@ function input_convert($str) {
 }
 
 
-function format_ago($time) {
+function format_time($time) {
   $minute = 60;
   $hour   = $minute * 60;
   $day    = $hour   * 24;
@@ -67,7 +67,7 @@ function format_size($size) {
 
 function format_ttl($seconds) {
 	if ($seconds > 60) {
-		return sprintf('%d (%s)', $seconds, format_ago($seconds));
+		return sprintf('%d (%s)', $seconds, format_time($seconds));
 	} else {
 		return $seconds;
 	}
