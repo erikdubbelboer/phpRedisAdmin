@@ -38,18 +38,18 @@ function format_ago($time) {
     $tmphour = floor(($when / $hour) - (24*$tmpday));
     $tmpminute = floor(($when / $minute) - (24*60*$tmpday) - ($tmphour * 60));
     $tmpsec = floor($when - (24*60*60*$tmpday) - ($tmphour * 60 * 60) - ($tmpminute * 60));
-    return sprintf("%d day %d hour %d minute %d sec",$tmpday,$tmphour,$tmpminute,$tmpsec);
+    return sprintf("%d day%s %d hour%s %d min%s %d sec%s",$tmpday,($tmpday != 1) ? 's' : '',$tmphour,($tmphour != 1) ? 's' : '',$tmpminute,($tmpminute != 1) ? 's' : '',$tmpsec,($tmpsec != 1) ? 's' : '');
   } else if ($when > $hour) {
     $tmphour = floor($when / $hour);
     $tmpminute = floor(($when / $minute) - ($tmphour * 60));
     $tmpsec = floor($when - ($tmphour * 60 * 60) - ($tmpminute * 60));
-    return sprintf("%d hour %d min %d sec",$tmphour,$tmpminute,$tmpsec);
+    return sprintf("%d hour%s %d min%s %d sec%s",$tmphour,($tmphour != 1) ? 's' : '',$tmpminute,($tmpminute != 1) ? 's' : '',$tmpsec,($tmpsec != 1) ? 's' : '');
   } else if ($when > $minute) {
     $tmpminute = floor($when / $minute);
     $tmpsec = floor($when - ($tmpminute * 60));
-    return sprintf("%d min %d sec",$tmpminute,$tmpsec);
+    return sprintf("%d min%s %d sec%s",$tmpminute,($tmpminute != 1) ? 's' : '',$tmpsec,($tmpsec != 1) ? 's' : '');
   } else {
-    return sprintf("%d sec",$when);
+    return sprintf("%d sec%s",$when,($when != 1) ? 's' : '');
   }
 }
 
