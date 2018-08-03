@@ -83,9 +83,21 @@ require 'includes/header.inc.php';
 
   <tr><td><div>Memory used:</div></td><td><div><?php echo format_size($info[$i]['Memory']['used_memory'])?></div></td></tr>
 
-  <tr><td><div>Uptime:</div></td><td><div><?php echo format_ago($info[$i]['Server']['uptime_in_seconds'])?></div></td></tr>
+  <tr><td><div>Uptime:</div></td><td><div><?php echo format_time($info[$i]['Server']['uptime_in_seconds'])?></div></td></tr>
 
-  <tr><td><div>Last save:</div></td><td><div><?php if (isset($info[$i]['Persistence']['rdb_last_save_time'])) { echo format_ago(time() - $info[$i]['Persistence']['rdb_last_save_time'], true); } else { echo 'never'; } ?> <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
+  <tr><td><div>Last save:</div></td><td><div>
+    <?php 
+        if (isset($info[$i]['Persistence']['rdb_last_save_time'])) {
+           if((time() - $info[$i]['Persistence']['rdb_last_save_time'] ) >= 0) {
+              echo format_time(time() - $info[$i]['Persistence']['rdb_last_save_time']) . " ago";
+           } else { 
+              echo format_time(-(time() - $info[$i]['Persistence']['rdb_last_save_time'])) . "in the future"; 
+           } 
+        } else { 
+           echo 'never';
+        } 
+    ?> 
+    <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
 
   </table>
   <?php endif; ?>
