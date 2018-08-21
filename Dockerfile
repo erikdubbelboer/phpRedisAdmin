@@ -1,4 +1,4 @@
-FROM composer/composer
+FROM composer:1.7
 
 ADD . /src/app/
 WORKDIR /src/app
