@@ -39,7 +39,11 @@ if (!empty($config['cookie_auth'])) {
     if ($data['nonce'] == $_GET['nonce']) {
       unset($_SERVER['PHP_AUTH_DIGEST']);
 
-      require 'includes/login.inc.php';
+      if (!empty($config['cookie_auth'])) {
+          $login = authCookie();
+      } else {
+          $login = authHttpDigest();
+      }
     }
 
 
