@@ -58,10 +58,12 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
     $size = $redis->lLen($key);
 
     if (($_POST['index'] == '') ||
-        ($_POST['index'] == $size) ||
-        ($_POST['index'] == -1)) {
+        ($_POST['index'] == $size)) {
       // Push it at the end
       $redis->rPush($key, $value);
+    } else if ($_POST['index'] == -1) {
+      // Push it at the start
+      $redis->lPush($key, $value);
     } else if (($_POST['index'] >= 0) &&
                ($_POST['index'] < $size)) {
       // Overwrite an index
