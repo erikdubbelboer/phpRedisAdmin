@@ -80,12 +80,12 @@ function authCookie()
         // Using SHA512 because MD5, SHA1 are both now considered broken
         return hash(
             'sha512',
-            implode(':', [
+            implode(':', array(
                 $username,
                 $_SERVER['HTTP_USER_AGENT'],
                 $_SERVER['REMOTE_ADDR'],
                 $config['login'][$username]['password'],
-            ])
+            ))
         );
     };
 
