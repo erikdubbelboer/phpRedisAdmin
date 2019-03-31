@@ -16,7 +16,7 @@ if (!empty($admin_user)) {
 $i=1;
 $config['servers'] = array();
 
-while (TRUE) {
+while (true) {
 
   $prefix = 'REDIS_' . $i . '_';
 
