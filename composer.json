@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "predis/predis": "1.1.1"
+        "predis/predis": "1.1.x-dev"
     },
     "minimum-stability": "stable",
     "target-dir": "ErikDubbelboer/phpRedisAdmin"    

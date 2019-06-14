@@ -7,7 +7,7 @@ define('PHPREDIS_ADMIN_PATH', dirname(__DIR__));
 if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
   $process = array(&$_GET, &$_POST);
 
-  while (list($key, $val) = each($process)) {
+  foreach ($process as $key => $val) {
     foreach ($val as $k => $v) {
       unset($process[$key][$k]);
 
