@@ -96,6 +96,9 @@ if($redis) {
           }
         }
 
+        if (empty($name)) {
+          $name = '<empty>';
+        }
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
