@@ -60,4 +60,16 @@ if (isset($_GET['tree'])) {
   die('?view&s='.$server['id'].'&d='.$server['db']);
 }
 
+if (isset($_GET['batch_del'])){
+  $keys = $_POST['checked_keys'];
+  $keys = trim($keys,',');
+  $keys = explode(',', $keys);
+  if ($keys){
+    foreach ($keys as $key) {
+      $redis->del($key);
+    }
+  }
+  die('?view&s='.$server['id'].'&d='.$server['db']);
+}
+
 ?>

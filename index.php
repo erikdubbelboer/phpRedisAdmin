@@ -102,6 +102,7 @@ if($redis) {
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
+        <input type="checkbox" name="checked_keys" value="<?php echo $fullkey?>"/>
         <a href="?view&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
@@ -215,7 +216,10 @@ if ($databases > 1) { ?>
 <p>
 <input type="text" id="filter" size="24" value="type here to filter" placeholder="type here to filter" class="info">
 </p>
-
+<button id="check_all_keys">CheckAll</button>
+<button id="operations">
+<a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1" class="batch_del">BatchDel<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete" alt="[X]"></a>
+</button>
 <div id="keys">
 <ul>
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>

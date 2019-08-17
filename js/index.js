@@ -1,6 +1,40 @@
 $(function() {
+  $('#check_all_keys').on('click', function () {
+    if ($(this).html()=='CheckAll'){
+      $('input[name=checked_keys]').each(function () {
+        $(this).attr('checked', 'checked');
+      });
+      $(this).html('CheckNone');
+    }else {
+      $('input[name=checked_keys]').each(function () {
+        $(this).removeAttr('checked');
+      });
+      $(this).html('CheckAll');
+    }
+  })
+  
   $('#sidebar').on('click', 'a', function(e) {
-    if (e.currentTarget.className.indexOf('deltree') !== -1) {
+    if (e.currentTarget.className.indexOf('batch_del') !== -1){
+      e.preventDefault();
+      var checked_keys = '';
+      $('input[name=checked_keys]:checked').each(function () {
+        checked_keys += $(this).val() + ',';
+      });
+      if (!checked_keys) {
+        alert('You want to delete keys is not checked!');
+        return;
+      }
+      if (confirm('Are you sure you want to delete this whole checked and all it\'s keys?')) {
+        $.ajax({
+          type: "POST",
+          url: this.href,
+          data: 'post=1&checked_keys=' + checked_keys,
+          success: function(url) {
+            top.location.href = top.location.pathname+url;
+          }
+        });
+      }
+    }else if (e.currentTarget.className.indexOf('deltree') !== -1) {
       e.preventDefault();
 
       if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
