@@ -216,9 +216,9 @@ if ($databases > 1) { ?>
 <p>
 <input type="text" id="filter" size="24" value="type here to filter" placeholder="type here to filter" class="info">
 </p>
-<button id="check_all_keys">CheckAll</button>
+<button id="selected_all_keys">Select all</button>
 <button id="operations">
-<a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1" class="batch_del">BatchDel<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete" alt="[X]"></a>
+<a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1" class="batch_del">Delete selected<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete selected" alt="[X]"></a>
 </button>
 <div id="keys">
 <ul>

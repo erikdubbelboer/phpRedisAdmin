@@ -1,34 +1,34 @@
 $(function() {
-  $('#check_all_keys').on('click', function () {
-    if ($(this).html()=='CheckAll'){
+  $('#selected_all_keys').on('click', function () {
+    if ($(this).html()=='Select all'){
       $('input[name=checked_keys]').each(function () {
         $(this).attr('checked', 'checked');
       });
-      $(this).html('CheckNone');
+      $(this).html('Select none');
     }else {
       $('input[name=checked_keys]').each(function () {
         $(this).removeAttr('checked');
       });
-      $(this).html('CheckAll');
+      $(this).html('Select all');
     }
   })
   
   $('#sidebar').on('click', 'a', function(e) {
     if (e.currentTarget.className.indexOf('batch_del') !== -1){
       e.preventDefault();
-      var checked_keys = '';
+      var selected_keys = '';
       $('input[name=checked_keys]:checked').each(function () {
-        checked_keys += $(this).val() + ',';
+        selected_keys += $(this).val() + ',';
       });
-      if (!checked_keys) {
-        alert('You want to delete keys is not checked!');
+      if (!selected_keys) {
+        alert('Please select the keys you want to delete.');
         return;
       }
-      if (confirm('Are you sure you want to delete this whole checked and all it\'s keys?')) {
+      if (confirm('Are you sure you want to delete all selected keys?')) {
         $.ajax({
           type: "POST",
           url: this.href,
-          data: 'post=1&checked_keys=' + checked_keys,
+          data: 'post=1&selected_keys=' + selected_keys,
           success: function(url) {
             top.location.href = top.location.pathname+url;
           }
