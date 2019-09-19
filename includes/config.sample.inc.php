@@ -81,5 +81,3 @@ $config = array(
   // How many entries to fetch using each SCAN command.
   'scansize' => 1000
 );
-
-?>
