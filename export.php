@@ -186,7 +186,7 @@ require 'includes/header.inc.php';
 ?>
 <h2>Export <?php echo isset($_GET['key']) ? format_html($_GET['key']) : ''?></h2>
 
-<form action="<?php echo format_html($_SERVER['REQUEST_URI'])?>" method="post">
+<form action="<?php echo format_html(getRelativePath('export.php'))?>" method="post">
 
 <p>
 <label for="type">Type:</label>

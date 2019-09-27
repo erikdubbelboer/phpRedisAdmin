@@ -47,7 +47,5 @@ if (!empty($config['cookie_auth'])) {
     }
 
 
-    header('Location: '.substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], 'logout.php')));
+    header('Location: logout.php');
 }
-
-?>

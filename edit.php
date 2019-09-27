@@ -144,7 +144,7 @@ require 'includes/header.inc.php';
 
 ?>
 <h2><?php echo $edit ? 'Edit' : 'Add'?></h2>
-<form action="<?php echo format_html($_SERVER['REQUEST_URI'])?>" method="post">
+<form action="<?php echo format_html(getRelativePath('edit.php'))?>" method="post">
 
 <p>
 <label for="type">Type:</label>

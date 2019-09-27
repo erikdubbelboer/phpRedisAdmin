@@ -101,3 +101,6 @@ function encodeOrDecode($action, $key, $data) {
   return $data;
 }
 
+function getRelativePath($base) {
+  return substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], $base));
+}
