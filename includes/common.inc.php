@@ -111,6 +111,10 @@ if (!isset($server['serialization'])) {
   }
 }
 
+if (!isset($config['hideEmptyDBs'])) {
+  $config['hideEmptyDBs'] = false;
+}
+
 // Setup a connection to Redis.
 if(isset($server['scheme']) && $server['scheme'] === 'unix' && $server['path']) {
   $redis = new Predis\Client(array('scheme' => 'unix', 'path' => $server['path']));

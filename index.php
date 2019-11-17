@@ -137,7 +137,28 @@ if($redis) {
       }
     }
 
+    function getDbInfo($d, $info, $padding = '') {
+      global $config, $server;
+      $prefix = "database ";
+      $db = "db$d";
+
+      $dbHasData = array_key_exists("db$d", $info['Keyspace']);
+
+      if (!$dbHasData && ((isset($server['hide']) && $server['hide']) || (!isset($server['hide']) && $config['hideEmptyDBs']))) {
+        return false; // we don't show empty dbs, so return false to tell the caller to continue the loop
+      }
+
+      $dbinfo = sprintf("$prefix%'.-${padding}d", $d);
+      if ($dbHasData) {
+        $dbinfo = sprintf("%s (%d)", $dbinfo, $info['Keyspace'][$db]['keys']);
+      }
+      $dbinfo = str_replace('.', '&nbsp;&nbsp;', $dbinfo); // 2 spaces per character are needed to get the alignment right
+
+      return $dbinfo;
+    }
+
 }  // if redis
+
 
 
 // This is basically the same as the click code in index.js.
@@ -183,10 +204,11 @@ if (isset($server['databases'])) {
   $databases = $redis->config('GET', 'databases');
   $databases = $databases['databases'];
 }
+$info = $redis->info(); $len = strlen((string)($databases-1));
 if ($databases > 1) { ?>
   <select id="database">
-  <?php for ($d = 0; $d < $databases; ++$d) { ?>
-  <option value="<?php echo $d?>" <?php echo ($server['db'] == $d) ? 'selected="selected"' : ''?>>database <?php echo $d?></option>
+  <?php for ($d = 0; $d < $databases; ++$d) { if (($dbinfo=getDbInfo($d, $info, $len)) === false) continue; ?>
+  <option value="<?php echo $d?>" <?php echo ($server['db'] == $d) ? 'selected="selected"' : ''?>><?php echo "$dbinfo"; ?></option>
   <?php } ?>
   </select>
 <?php } ?>
