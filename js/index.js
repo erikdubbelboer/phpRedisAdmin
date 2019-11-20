@@ -12,7 +12,7 @@ $(function() {
       $(this).html('Select all');
     }
   })
-  
+
   $('#sidebar').on('click', 'a', function(e) {
     if (e.currentTarget.className.indexOf('batch_del') !== -1){
       e.preventDefault();
@@ -51,24 +51,24 @@ $(function() {
       if (e.currentTarget.href.indexOf('/?') == -1) {
         return;
       }
-  
+
       e.preventDefault();
-  
+
       var href;
-  
+
       if ((e.currentTarget.href.indexOf('?') == -1) ||
           (e.currentTarget.href.indexOf('?') == (e.currentTarget.href.length - 1))) {
         href = 'overview.php';
       } else {
         href = e.currentTarget.href.substr(e.currentTarget.href.indexOf('?') + 1);
-  
+
         if (href.indexOf('&') != -1) {
           href = href.replace('&', '.php?');
         } else {
           href += '.php';
         }
       }
-  
+
       if (href.indexOf('flush.php') == 0) {
         if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
           $.ajax({
@@ -90,24 +90,17 @@ $(function() {
   });
 
   $('#server').change(function(e) {
-    if (location.href.indexOf('?') == -1) {
-      location.href = location.href+'?s='+e.target.value;
-    } else if (location.href.indexOf('&s=') == -1) {
-      location.href = location.href+'&s='+e.target.value;
-    } else {
-      location.href = location.href.replace(/s=[0-9]*/, 's='+e.target.value);
-    }
+    // always show overview when switching server, only keep var s (old database index might not exist on new server)
+    const base = location.href.split('?', 1)[0];
+    location.href = base + '?overview&s=' + e.target.value;
   });
 
 
   $('#database').change(function(e) {
-    if (location.href.indexOf('?') == -1) {
-      location.href = location.href+'?d='+e.target.value;
-    } else if (location.href.indexOf('&d=') == -1) {
-      location.href = location.href+'&d='+e.target.value;
-    } else {
-      location.href = location.href.replace(/d=[0-9]*/, 'd='+e.target.value);
-    }
+    // always show overview when switching db, only keep vars s and d (whatever we are doing (show/edit key) won't be valid on new db)
+    const base = location.href.split('?', 1)[0];
+    const s = location.href.match(/s=[0-9]*/);
+    location.href = base + '?overview&' + s + '&d=' + e.target.value;
   });
 
 
