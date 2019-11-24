@@ -44,6 +44,10 @@ margin-top: .05em;
 cursor: pointer;
 }
 
+#keys li.empty a {
+color: #888;
+}
+
 #keys li.current a {
 background-color: #eee;
 }

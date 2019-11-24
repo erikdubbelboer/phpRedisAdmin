@@ -38,6 +38,7 @@ $config = array(
 
 
   'seperator' => ':',
+  'showEmptyNamespaceAsKey' => false,
 
   // Hide empty databases in the database list (global, valid for all servers unless set at server level)
   'hideEmptyDBs' => false,

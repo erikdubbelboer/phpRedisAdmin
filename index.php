@@ -34,6 +34,10 @@ if($redis) {
       }
 
       $key = explode($server['seperator'], $key);
+      if ($key[count($key) - 1] == '' && $config['showEmptyNamespaceAsKey']) {
+        array_pop($key);
+        $key[count($key) - 1] .= ':';
+      }
 
       // $d will be a reference to the current namespace.
       $d = &$namespaces;
@@ -98,6 +102,7 @@ if($redis) {
 
         if (empty($name) && $name != '0') {
           $name = '<empty>';
+          $class[] = 'empty';
         }
 
         ?>
