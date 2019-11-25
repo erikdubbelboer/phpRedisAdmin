@@ -34,7 +34,7 @@ if($redis) {
       }
 
       $key = explode($server['seperator'], $key);
-      if ($key[count($key) - 1] == '' && $config['showEmptyNamespaceAsKey']) {
+      if ($config['showEmptyNamespaceAsKey'] && $key[count($key) - 1] == '') {
         array_pop($key);
         $key[count($key) - 1] .= ':';
       }
