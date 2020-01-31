@@ -24,6 +24,7 @@ while (true) {
   $server_host = getenv($prefix . 'HOST');
   $server_port = getenv($prefix . 'PORT');
   $server_auth = getenv($prefix . 'AUTH');
+  $server_databases = getenv($prefix . 'DATABASES');
 
   if (empty($server_host)) {
     break;
@@ -50,6 +51,10 @@ while (true) {
   
   if (!empty($server_auth)) {
     $config['servers'][$i-1]['auth'] = $server_auth;
+  } 
+  
+  if (!empty($server_databases)) {
+    $config['servers'][$i-1]['databases'] = $server_databases;
   } 
 
   $i++;
