@@ -24,7 +24,7 @@ text-decoration: underline;
 
 #keys {
 width: 290px;
-padding-left: 10px;
+margin-top: 10px;
 overflow: auto;
 }
 
@@ -36,6 +36,9 @@ padding: 0;
 
 #keys li {
 font-weight: normal;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 #keys li.folder {
@@ -133,7 +136,8 @@ top: 0;
 left: 305px;
 right: 0;
 bottom: 0;
-padding-left: 2em;
+padding-left: 1.5em;
+padding-right: 1.5em;
 }
 
 #frame iframe {
