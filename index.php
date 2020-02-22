@@ -108,7 +108,7 @@ if($redis) {
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
         <input type="checkbox" name="checked_keys" value="<?php echo $fullkey?>"/>
-        <a href="?view&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($fullkey)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
+        <a href="?view&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($fullkey)?>" title="<?php echo format_html($name)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
       }
@@ -190,7 +190,7 @@ require 'includes/header.inc.php';
 
 ?>
 <div id="sidebar">
-
+<div id="header">
 <h1 class="logo"><a href="?overview&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>">phpRedisAdmin</a></h1>
 
 <p>
@@ -247,6 +247,7 @@ if ($databases > 1) { ?>
 <button id="operations">
 <a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1" class="batch_del">Delete selected<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete selected" alt="[X]"></a>
 </button>
+</div>
 <div id="keys">
 <ul>
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
