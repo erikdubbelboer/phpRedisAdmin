@@ -144,7 +144,9 @@ bottom: 0;
 }
 
 #frame iframe {
-width: 100%;
+width: calc(100% - 3em);
 height: 100%;
+margin-left: 1.5em;
+margin-right: 1.5em;
 }
 
