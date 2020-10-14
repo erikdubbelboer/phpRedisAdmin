@@ -25,7 +25,7 @@ require 'includes/header.inc.php';
     <label for="inputUser" class="sr-only">Username</label>
     <input type="text" name="username" id="inputUser" class="form-control"
            placeholder="Username"
-           value="<?= isset($_POST['username']) ? $_POST['username'] : '' ?>"
+           value="<?= isset($_POST['username']) ? htmlentities($_POST['username'], defined('ENT_SUBSTITUTE') ? (ENT_QUOTES | ENT_SUBSTITUTE) : ENT_QUOTES, 'utf-8') : '' ?>"
            required <?= isset($_POST['username']) ? '' : 'autofocus' ?>>
 
     <label for="inputPassword" class="sr-only">Password</label>
