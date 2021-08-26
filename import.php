@@ -92,6 +92,7 @@ require 'includes/header.inc.php';
 ?>
 <h2>Import</h2>
 <form action="<?php echo format_html(getRelativePath('import.php'))?>" method="post">
+<input type="hidden" name="csrf" value="<?php echo $csrfToken; ?>" />
 
 <p>
 <label for="commands">Commands:<br>

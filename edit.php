@@ -145,6 +145,7 @@ require 'includes/header.inc.php';
 ?>
 <h2><?php echo $edit ? 'Edit' : 'Add'?></h2>
 <form action="<?php echo format_html(getRelativePath('edit.php'))?>" method="post">
+<input type="hidden" name="csrf" value="<?php echo $csrfToken; ?>" />
 
 <p>
 <label for="type">Type:</label>

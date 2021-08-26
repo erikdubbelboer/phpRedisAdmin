@@ -13,6 +13,7 @@ require 'includes/header.inc.php';
 <h1 class="logo">phpRedisAdmin</h1>
 
 <form class="form-signin" method="post" action="login.php">
+<input type="hidden" name="csrf" value="<?php echo $csrfToken; ?>" />
     <h2 class="form-signin-heading">Please log in</h2>
 
     <?php if (isset($_POST['username']) || isset($_POST['password'])): ?>

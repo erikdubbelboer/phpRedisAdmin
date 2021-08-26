@@ -36,6 +36,7 @@ require 'includes/header.inc.php';
 ?>
 <h2>Edit Name of <?php echo format_html($_GET['key'])?></h2>
 <form action="<?php echo format_html(getRelativePath('rename.php'))?>" method="post">
+<input type="hidden" name="csrf" value="<?php echo $csrfToken; ?>" />
 
 <input type="hidden" name="old" value="<?php echo format_html($_GET['key'])?>">
 
