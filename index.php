@@ -107,7 +107,7 @@ if($redis) {
 
         ?>
         <li<?php echo empty($class) ? '' : ' class="'.implode(' ', $class).'"'?>>
-        <input type="checkbox" name="checked_keys" value="<?php echo $fullkey?>"/>
+        <input type="checkbox" name="checked_keys" value="<?php echo format_html($fullkey)?>"/>
         <a href="?view&amp;s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&amp;key=<?php echo urlencode($fullkey)?>" title="<?php echo format_html($name)?>"><?php echo format_html($name)?><?php if ($len !== false) { ?><span class="info">(<?php echo $len?>)</span><?php } ?></a>
         </li>
         <?php
