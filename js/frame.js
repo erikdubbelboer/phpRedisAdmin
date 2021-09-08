@@ -18,7 +18,7 @@ $(function() {
       $.ajax({
         type: "POST",
         url: this.href,
-        data: 'post=1',
+        data: 'post=1&csrf=' + phpRedisAdmin_csrfToken,
         success: function(url) {
           top.location.href = top.location.pathname+url;
         }

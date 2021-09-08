@@ -35,5 +35,9 @@ header('Cache-Control: private');
 <script src="js/<?php echo $js; ?>.js?v<?=$version?>"></script>
 <?php } ?>
 
+<script>
+phpRedisAdmin_csrfToken = '<?php echo $csrfToken; ?>';
+</script>
+
 </head>
 <body>

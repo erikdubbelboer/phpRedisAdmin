@@ -245,7 +245,7 @@ if ($databases > 1) { ?>
 </p>
 <button id="selected_all_keys">Select all</button>
 <button id="operations">
-<a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1" class="batch_del">Delete selected<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete selected" alt="[X]"></a>
+<a href="delete.php?s=<?php echo $server['id']?>&amp;d=<?php echo $server['db']?>&batch_del=1&csrf=<?php echo $csrfToken; ?>" class="batch_del">Delete selected<img src="images/delete.png" style="width: 1em;height: 1em;vertical-align: middle;" title="Delete selected" alt="[X]"></a>
 </button>
 </div>
 <div id="keys">

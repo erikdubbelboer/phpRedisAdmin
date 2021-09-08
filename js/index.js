@@ -28,7 +28,7 @@ $(function() {
         $.ajax({
           type: "POST",
           url: this.href,
-          data: 'post=1&selected_keys=' + selected_keys,
+          data: 'post=1&selected_keys=' + selected_keys + '&csrf=' + phpRedisAdmin_csrfToken,
           success: function(url) {
             top.location.href = top.location.pathname+url;
           }
@@ -41,7 +41,7 @@ $(function() {
         $.ajax({
           type: "POST",
           url: this.href,
-          data: 'post=1',
+          data: 'post=1&csrf=' + phpRedisAdmin_csrfToken,
           success: function(url) {
             top.location.href = top.location.pathname+url;
           }
@@ -74,7 +74,7 @@ $(function() {
           $.ajax({
             type: "POST",
             url: href,
-            data: 'post=1',
+            data: 'post=1&csrf=' + phpRedisAdmin_csrfToken,
             success: function() {
               window.location.reload();
             }
