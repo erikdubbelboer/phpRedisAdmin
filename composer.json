@@ -1,7 +1,7 @@
 {
     "name": "erik-dubbelboer/php-redis-admin",
     "description": "Simple web interface to manage Redis databases.",
-    "version": "1.14.0",
+    "version": "1.14.1",
     "license": "CC-BY-3.0",
     "homepage": "https://github.com/ErikDubbelboer/phpRedisAdmin",
     "authors": [
@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "predis/predis": "1.1.x-dev"
+        "predis/predis": "1.1.x-dev",
+        "paragonie/random_compat": ">=2"
     },
     "minimum-stability": "stable",
     "target-dir": "ErikDubbelboer/phpRedisAdmin"    
