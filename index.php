@@ -173,7 +173,9 @@ if (count($_GET) == 0) {
 } else {
   $iframe = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?') + 1);
 
-  if (strpos($iframe, '&') !== false) {
+  if (strpos($iframe, '//') === 0 || strpos($iframe, 'http') === 0) {
+    $iframe = 'overview.php';
+  } else if (strpos($iframe, '&') !== false) {
     $iframe = substr_replace($iframe, '.php?', strpos($iframe, '&'), 1);
   } else {
     $iframe .= '.php';
