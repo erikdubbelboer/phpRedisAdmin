@@ -56,7 +56,7 @@ function authHttpDigest()
 
     $response = md5($password.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']));
 
-    if ($data['response'] != $response) {
+    if ($data['response'] !== $response) {
       header('HTTP/1.1 401 Unauthorized');
       header('WWW-Authenticate: Digest realm="'.$realm.'",qop="auth",nonce="'.uniqid().'",opaque="'.$opaque.'"');
       die('Invalid username and/or password combination.');
