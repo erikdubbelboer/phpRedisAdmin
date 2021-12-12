@@ -1,6 +1,6 @@
-FROM composer:1.7
+FROM composer:2.2
 
-ENV TINI_VERSION 0.18.0-r0
+ENV TINI_VERSION 0.19.0-r0
 
 RUN apk add --no-cache tini=$TINI_VERSION
 

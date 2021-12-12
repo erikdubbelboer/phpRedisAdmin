@@ -45,9 +45,7 @@ require 'includes/header.inc.php';
 <input type="text" name="key" id="key" size="30" <?php echo isset($_GET['key']) ? 'value="'.format_html($_GET['key']).'"' : ''?>>
 </p>
 
-<p>
 <input type="submit" class="button" value="Rename">
-</p>
 
 </form>
 <?php

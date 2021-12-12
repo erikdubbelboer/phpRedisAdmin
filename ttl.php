@@ -39,9 +39,7 @@ require 'includes/header.inc.php';
 <input type="text" name="ttl" id="ttl" size="30" <?php echo isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
 </p>
 
-<p>
 <input type="submit" class="button" value="Edit TTL">
-</p>
 
 </form>
 <?php

@@ -185,9 +185,7 @@ require 'includes/header.inc.php';
 
 <input type="hidden" name="oldvalue" value="<?php echo format_html($value)?>">
 
-<p>
 <input type="submit" class="button" value="<?php echo $edit ? 'Edit' : 'Add'?>">
-</p>
 
 </form>
 <?php

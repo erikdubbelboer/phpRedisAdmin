@@ -111,9 +111,7 @@ ZADD
 <textarea name="commands" id="commands" cols="80" rows="20"></textarea>
 </p>
 
-<p>
 <input type="submit" class="button" value="Import">
-</p>
 
 </form>
 <?php
