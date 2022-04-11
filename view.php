@@ -96,6 +96,9 @@ switch ($type) {
     }
     $size = count($values);
     break;
+    
+  default:
+    $size = "Not Available for key of type " . $type . ". Unknown ";
 }
   
 if (isset($values) && ($count_elements_page !== false)) {
