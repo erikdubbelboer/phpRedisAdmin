@@ -98,7 +98,7 @@ switch ($type) {
     break;
     
   default:
-    $size = "Not Available. Unknown ";
+    $size = -1;
 }
   
 if (isset($values) && ($count_elements_page !== false)) {
