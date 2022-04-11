@@ -96,6 +96,9 @@ switch ($type) {
     }
     $size = count($values);
     break;
+    
+  default:
+    $size = -1;
 }
   
 if (isset($values) && ($count_elements_page !== false)) {
@@ -113,7 +116,19 @@ if (isset($values) && ($count_elements_page !== false)) {
 <tr><td><div>Encoding:</div></td><td><div><?php echo format_html($encoding)?></div></td></tr>
 <?php } ?>
 
-<tr><td><div>Size:</div></td><td><div><?php echo $size?> <?php echo ($type == 'string') ? 'characters' : 'items'?></div></td></tr>
+<tr><td><div>Size:</div></td><td><div>
+<?php 
+echo $size;
+
+if ($type === 'string') {
+    echo " characters";
+} else if ($size < 0) {
+    echo " (Type Unsupported)";
+} else {
+    echo " items";
+}
+?>
+</div></td></tr>
 
 </table>
 
