@@ -2,7 +2,7 @@ FROM composer:2.2
 
 ENV TINI_VERSION 0.19.0-r0
 
-RUN apk add --no-cache tini=$TINI_VERSION
+RUN apk add --no-cache tini=$TINI_VERSION tzdata
 
 ADD . /src/app/
 
