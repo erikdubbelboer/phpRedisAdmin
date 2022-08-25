@@ -23,7 +23,11 @@ while (true) {
   $server_name = getenv($prefix . 'NAME');
   $server_host = getenv($prefix . 'HOST');
   $server_port = getenv($prefix . 'PORT');
-  $server_auth = getenv($prefix . 'AUTH');
+  if (getenv($prefix . 'AUTH_FILE') !== false) {
+    $server_auth = file_get_contents(getenv($prefix . 'AUTH_FILE'));
+  } else {
+    $server_auth = getenv($prefix . 'AUTH');
+  }
   $server_databases = getenv($prefix . 'DATABASES');
 
   if (empty($server_host)) {
