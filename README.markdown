@@ -41,7 +41,7 @@ git clone https://github.com/nrk/predis.git vendor
 
 Docker Image
 ============
-A public [phpRedisAdmin Docker image](https://hub.docker.com/r/erikdubbelboer/phpredisadmin/) is available on Docker Hub [automatically built](https://docs.docker.com/docker-hub/builds/) from latest source.
+A public [phpRedisAdmin Docker image](https://hub.docker.com/r/erikdubbelboer/phpredisadmin/) is available on Docker Hub built from the latest tag.
 The file ```includes/config.environment.inc.php``` is used as the configuration file to allow environment variables to be used as configuration values.
 Example:
 ```
