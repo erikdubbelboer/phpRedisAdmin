@@ -14,13 +14,13 @@ $(function() {
   })
 
   $('#sidebar').on('click', 'a', function(e) {
-    if (e.currentTarget.className.indexOf('batch_del') !== -1){
+    if (e.currentTarget.className.indexOf('batch_del') !== -1) {
       e.preventDefault();
-      var selected_keys = '';
+      var selected_keys = [];
       $('input[name=checked_keys]:checked').each(function () {
-        selected_keys += $(this).val() + ',';
+        selected_keys.push($(this).val());
       });
-      if (!selected_keys) {
+      if (selected_keys.length == 0) {
         alert('Please select the keys you want to delete.');
         return;
       }
@@ -28,20 +28,27 @@ $(function() {
         $.ajax({
           type: "POST",
           url: this.href,
-          data: 'post=1&selected_keys=' + selected_keys + '&csrf=' + phpRedisAdmin_csrfToken,
+          data: {
+            post: 1,
+            selected_keys: JSON.stringify(selected_keys),
+            csrf: phpRedisAdmin_csrfToken
+          },
           success: function(url) {
             top.location.href = top.location.pathname+url;
           }
         });
       }
-    }else if (e.currentTarget.className.indexOf('deltree') !== -1) {
+    } else if (e.currentTarget.className.indexOf('deltree') !== -1) {
       e.preventDefault();
 
       if (confirm('Are you sure you want to delete this whole tree and all it\'s keys?')) {
         $.ajax({
           type: "POST",
           url: this.href,
-          data: 'post=1&csrf=' + phpRedisAdmin_csrfToken,
+          data: {
+            post: 1,
+            csrf: phpRedisAdmin_csrfToken
+          },
           success: function(url) {
             top.location.href = top.location.pathname+url;
           }
@@ -74,7 +81,10 @@ $(function() {
           $.ajax({
             type: "POST",
             url: href,
-            data: 'post=1&csrf=' + phpRedisAdmin_csrfToken,
+            data: {
+              post: 1,
+              csrf: phpRedisAdmin_csrfToken
+            },
             success: function() {
               window.location.reload();
             }
