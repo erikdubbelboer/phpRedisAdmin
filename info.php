@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 if (isset($_GET['reset'])) {
   $redis->config('resetstat');
@@ -12,14 +10,9 @@ if (isset($_GET['reset'])) {
   die;
 }
 
-
-
 // Fetch the info
 $info = $redis->info();
 $alt  = false;
-
-
-
 
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';

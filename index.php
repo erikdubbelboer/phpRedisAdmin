@@ -1,6 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
+global $redis, $config, $csrfToken, $server;
 
 if($redis) {
 
@@ -33,7 +34,7 @@ if($redis) {
         continue;
       }
 
-      $key = explode($server['seperator'], $key);
+      $key = explode($server['seperator'], $key); //@todo: may be separator ?
       if ($config['showEmptyNamespaceAsKey'] && $key[count($key) - 1] == '') {
         array_pop($key);
         $key[count($key) - 1] .= ':';

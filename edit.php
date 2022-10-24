@@ -2,8 +2,7 @@
 
 require_once 'includes/common.inc.php';
 
-
-
+global $redis, $config, $csrfToken, $server;
 
 // Are we editing or creating a new key?
 $edit = false;

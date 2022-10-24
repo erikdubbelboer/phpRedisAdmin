@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 $info = array();
 
@@ -109,7 +107,7 @@ require 'includes/header.inc.php';
 </p>
 
 <p>
-<a href="http://redis.io/documentation" target="_blank">Redis Documentation</a>
+<a href="https://redis.io/documentation" target="_blank">Redis Documentation</a>
 </p>
 <?php
 

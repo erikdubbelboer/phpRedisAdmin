@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';

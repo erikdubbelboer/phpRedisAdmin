@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 if (isset($_POST['key'], $_POST['ttl'])) {
   if ($_POST['ttl'] == -1) {
@@ -15,9 +13,6 @@ if (isset($_POST['key'], $_POST['ttl'])) {
   header('Location: view.php?key='.urlencode($_POST['key']));
   die;
 }
-
-
-
 
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';

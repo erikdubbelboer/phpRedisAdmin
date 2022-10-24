@@ -1,13 +1,12 @@
 <?php
 
 require_once 'includes/common.inc.php';
+global $redis, $config, $csrfToken, $server;
 
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 
 require 'includes/header.inc.php';
-
-
 
 if (!isset($_GET['key'])) {
   ?>
@@ -18,16 +17,12 @@ if (!isset($_GET['key'])) {
   die;
 }
 
-
-
 $type   = $redis->type($_GET['key']);
 $exists = $redis->exists($_GET['key']);
 
 $count_elements_page = isset($config['count_elements_page']) ? $config['count_elements_page'] : false;
 $page_num_request    = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $page_num_request    = $page_num_request === 0 ? 1 : $page_num_request;
-
-
 
 ?>
 <h2><?php echo format_html($_GET['key'])?>
@@ -48,8 +43,6 @@ if (!$exists) {
   die;
 }
 
-
-
 $alt      = false;
 $ttl      = $redis->ttl($_GET['key']);
 
@@ -58,7 +51,6 @@ try {
 } catch (Exception $e) {
   $encoding = null;
 }
-
 
 switch ($type) {
   case 'string':

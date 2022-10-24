@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 if (isset($_POST['old'], $_POST['key'])) {
   if (strlen($_POST['key']) > $config['maxkeylen']) {

@@ -2,6 +2,7 @@
 
 require_once 'includes/common.inc.php';
 
+global $redis, $config, $csrfToken, $server;
 
 // Export to redis-cli commands
 function export_redis($key, $filter = false, $transform = false) {
