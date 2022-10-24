@@ -1,8 +1,7 @@
 <?php
-require dirname(__FILE__) . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 define('PHPREDIS_ADMIN_PATH', dirname(__DIR__));
-
 
 if (session_status() !== PHP_SESSION_DISABLED) {
   session_start();
@@ -44,7 +43,6 @@ if (isset($login['servers'])) {
   $i = 0;
 }
 
-
 if (isset($_GET['s']) && is_numeric($_GET['s']) && ($_GET['s'] < count($config['servers']))) {
   $i = $_GET['s'];
 }
@@ -53,9 +51,7 @@ $server            = $config['servers'][$i];
 $server['id']      = $i;
 $server['charset'] = isset($server['charset']) && $server['charset'] ? $server['charset'] : false;
 
-
 mb_internal_encoding('utf-8');
-
 
 if (isset($login, $login['servers'])) {
   if (array_search($i, $login['servers']) === false) {
@@ -142,5 +138,3 @@ if ($server['db'] != 0) {
     die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
   }
 }
-
-?>
