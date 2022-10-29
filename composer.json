@@ -13,6 +13,8 @@
         }
     ],
     "require": {
+        "ext-mbstring": "*",
+        "ext-json": "*",
         "predis/predis": "v1.1.9",
         "paragonie/random_compat": ">=2"
     },

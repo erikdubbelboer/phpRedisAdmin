@@ -1,6 +1,5 @@
 <?php
 
-
 // Returns true when the user is using IE
 function is_ie() {
   if (isset($_SERVER['HTTP_USER_AGENT']) &&
@@ -10,9 +9,6 @@ function is_ie() {
     return false;
   }
 }
-
-
-
 
 $page = array(
   'css' => array('common'),

@@ -1,9 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
-
-
-
+global $redis, $config, $csrfToken, $server;
 
 // This mess could need some cleanup!
 if (isset($_POST['commands'])) {

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'includes/common.inc.php';
+global $redis, $config, $csrfToken, $server;
 
 if (!empty($config['cookie_auth'])) {
     // Cookie-based auth
