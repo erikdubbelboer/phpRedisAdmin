@@ -1,7 +1,7 @@
 {
     "name": "erik-dubbelboer/php-redis-admin",
     "description": "Simple web interface to manage Redis databases.",
-    "version": "1.17.3",
+    "version": "1.18.0",
     "license": "CC-BY-3.0",
     "homepage": "https://github.com/ErikDubbelboer/phpRedisAdmin",
     "authors": [
