@@ -12,5 +12,6 @@ RUN composer install
 
 RUN cp includes/config.environment.inc.php includes/config.inc.php
 
+ENV PORT 80
 EXPOSE 80
-ENTRYPOINT [ "tini", "--", "php", "-S", "0.0.0.0:80" ]
+ENTRYPOINT [ "sh", "-c", "tini -- php -S 0.0.0.0:$PORT" ]
