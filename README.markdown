@@ -52,12 +52,14 @@ Also, a Docker Compose manifest with a stack for testing and development is prov
 Environment variables summary
 ====
 
+* ``ROOT`` - define URI basePath. Default: `/`
+* ``PORT`` - define port of the embedded server. Default: `80`
 * ``REDIS_1_HOST`` - define host of the Redis server
 * ``REDIS_1_NAME`` - define name of the Redis server
 * ``REDIS_1_PORT`` - define port of the Redis server
 * ``REDIS_1_AUTH`` - define password of the Redis server
 * ``REDIS_1_AUTH_FILE`` - define file containing the password of the Redis server
-* ``REDIS_1_DATABASES`` - You can modify you config to prevent phpRedisAdmin from using CONFIG command 
+* ``REDIS_1_DATABASES`` - You can modify you config to prevent phpRedisAdmin from using CONFIG command
 * ``ADMIN_USER`` - define username for user-facing Basic Auth
 * ``ADMIN_PASS`` - define password for user-facing Basic Auth
 
