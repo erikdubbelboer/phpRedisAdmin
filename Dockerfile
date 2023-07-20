@@ -2,13 +2,13 @@ FROM composer:2.2
 
 RUN apk add --no-cache tini tzdata
 
-ADD . /src/app/
-
 WORKDIR /src/app
 
-RUN composer install
+COPY . .
 
-RUN cp includes/config.environment.inc.php includes/config.inc.php
+RUN set -xe; \
+    composer install; \
+    cp includes/config.environment.inc.php includes/config.inc.php
 
 ENV PORT 80
 EXPOSE 80
