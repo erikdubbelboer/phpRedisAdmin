@@ -82,7 +82,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   }
 
   // ZSet
-  else if (($_POST['type'] == 'zset') && isset($_POST['score'])) {
+  else if (($_POST['type'] == 'zset') && isset($_POST['score']) && is_numeric($_POST['score'])) {
     // The only way to edit a ZSet value is to add it and remove the old value.
     $redis->zRem($key, encodeOrDecode('save', $key, input_convert($_POST['oldvalue'])));
     $redis->zAdd($key, input_convert($_POST['score']), $value);
