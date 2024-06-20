@@ -2,6 +2,8 @@
 
 include 'config.sample.inc.php';
 
+$config['scan_max']                = getenv('SCAN_MAX')                    ?: 1000;
+
 $admin_user = getenv('ADMIN_USER');
 $admin_pass = getenv('ADMIN_PASS');
 
@@ -51,6 +53,7 @@ while (true) {
       'host'   => $server_host,
       'port'   => $server_port,
       'filter' => '*',
+      'scan_max' => $config['scan_max'],
   );
   
   if (!empty($server_auth)) {
