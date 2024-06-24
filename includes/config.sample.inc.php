@@ -32,7 +32,8 @@ $config = array(
       'flush'     => false,         // Set to true to enable the flushdb button for this instance.
       'charset'   => 'cp1251',      // Keys and values are stored in redis using this encoding (default utf-8).
       'keys'      => false,         // Use the old KEYS command instead of SCAN to fetch all keys for this server (default uses config default).
-      'scansize'  => 1000           // How many entries to fetch using each SCAN command for this server (default uses config default).
+      'scansize'  => 1000,          // How many entries to fetch using each SCAN command for this server (default uses config default).
+      'scanmax'   => 1000,          // In each query, SCAN command may be executed several times. To shorten the duration, it is recommended to limit the total number of entries to fetch.
     ),*/
   ),
 

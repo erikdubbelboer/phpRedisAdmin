@@ -17,6 +17,10 @@ if($redis) {
             $next = $r[0];
             $keys = array_merge($keys, $r[1]);
 
+            if (count($keys) >= $server['scanmax']) {
+                break;
+            }
+
             if ($next == 0) {
                 break;
             }

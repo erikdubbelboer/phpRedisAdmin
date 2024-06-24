@@ -11,6 +11,7 @@ $config['hideEmptyDBs']            = getenv('HIDE_EMPTY_DBS')              ?: fa
 $config['keys']                    = getenv('KEYS')                        ?: false;
 $config['maxkeylen']               = getenv('MAX_KEY_LEN')                 ?: 100;
 $config['scansize']                = getenv('SCAN_SIZE')                   ?: 1000;
+$config['scanmax']                 = getenv('SCAN_MAX')                    ?: 1000;
 $config['seperator']               = getenv('SEPERATOR')                   ?: ':';
 $config['showEmptyNamespaceAsKey'] = getenv('SHOW_EMPTY_NAMESPACE_AS_KEY') ?: false;
 
@@ -64,6 +65,7 @@ while (true) {
       'port'     => $server_port,
       'filter'   => $config['filter'],
       'scansize' => $config['scansize'],
+      'scanmax'  => $config['scanmax'],
   );
 
   if (!empty($server_auth)) {
