@@ -36,6 +36,7 @@ while (true) {
   $server_name = getenv($prefix . 'NAME');
   $server_host = getenv($prefix . 'HOST');
   $server_port = getenv($prefix . 'PORT');
+  $server_scheme = getenv($prefix . 'SCHEME');
   if (getenv($prefix . 'AUTH_FILE') !== false) {
     $server_auth = file_get_contents(getenv($prefix . 'AUTH_FILE'));
   } else {
@@ -55,8 +56,12 @@ while (true) {
     $server_auth = "";
   }
 
-  if (empty($server_port)) {
+  if (empty($server_port) && strpos($server_host, ':') !== false) {
     $server_port = 6379;
+  }
+
+  if (empty($server_scheme)) {
+    $server_scheme = 'tcp';
   }
 
   $config['servers'][] = array(
@@ -66,6 +71,7 @@ while (true) {
       'filter'   => $config['filter'],
       'scansize' => $config['scansize'],
       'scanmax'  => $config['scanmax'],
+      'scheme'   => $server_scheme,
   );
 
   if (!empty($server_auth)) {
