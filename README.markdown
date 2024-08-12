@@ -55,6 +55,7 @@ Environment variables summary
 * ``REDIS_1_HOST`` - define host of the Redis server
 * ``REDIS_1_NAME`` - define name of the Redis server
 * ``REDIS_1_PORT`` - define port of the Redis server
+* ``REDIS_1_SCHEME`` - define scheme of the Redis server (tcp or tls)
 * ``REDIS_1_AUTH`` - define password of the Redis server
 * ``REDIS_1_AUTH_FILE`` - define file containing the password of the Redis server
 * ``REDIS_1_DATABASES`` - You can modify you config to prevent phpRedisAdmin from using CONFIG command 
