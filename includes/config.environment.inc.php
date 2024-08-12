@@ -56,7 +56,7 @@ while (true) {
     $server_auth = "";
   }
 
-  if (empty($server_port) && strpos($server_host, ':') !== false) {
+  if (empty($server_port) && strpos($server_host, ':') === false) {
     $server_port = 6379;
   }
 
