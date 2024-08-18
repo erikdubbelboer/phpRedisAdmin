@@ -118,7 +118,7 @@ if (!isset($config['scheme']) || empty($config['scheme'])) {
 }
 
 // Setup a connection to Redis.
-if($server['scheme'] === 'unix' && $server['path']) {
+if ($server['scheme'] === 'unix' && $server['path']) {
   $redis = new Predis\Client(array('scheme' => 'unix', 'path' => $server['path']));
 } else {
   $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client($server['scheme'].'://'.$server['host'].':'.$server['port']);
