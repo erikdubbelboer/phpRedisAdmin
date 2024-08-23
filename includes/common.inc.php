@@ -135,6 +135,11 @@ if (isset($server['auth'])) {
     die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
   }
 }
+if (isset($server['username']) && isset($server['password'])) {
+  if (!$redis->auth($server['username'],$server['password'])) {
+    die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
+  }
+}
 
 
 if ($server['db'] != 0) {
