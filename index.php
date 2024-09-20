@@ -256,6 +256,9 @@ if ($databases > 1) { ?>
 </button>
 </div>
 <div id="keys">
+<div class="info">
+  scaned <?php echo count($keys) ?> keys<?php echo (count($keys) < $server['scanmax']) ? '' : ", reached {$server['scanmax']} limit" ?>
+</div>
 <ul>
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
 </ul>
