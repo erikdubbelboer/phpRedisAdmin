@@ -10,20 +10,18 @@ if($redis) {
     } else {
         $next = 0;
         $keys = array();
-
+        $scansize = $server['scansize'];
         while (true) {
-            $r = $redis->scan($next, 'MATCH', $server['filter'], 'COUNT', $server['scansize']);
-
+            $r = $redis->scan($next, 'MATCH', $server['filter'], 'COUNT', $scansize);
             $next = $r[0];
             $keys = array_merge($keys, $r[1]);
-
-            if (count($keys) >= $server['scanmax']) {
-                break;
-            }
-
             if ($next == 0) {
                 break;
             }
+            if (count($keys) >= $server['scanmax']) {
+                break;
+            }
+            $scansize = min($server['scanmax'] - count($keys), $server['scansize']);
         }
     }
 
