@@ -95,8 +95,20 @@ if (!isset($server['keys'])) {
   $server['keys'] = $config['keys'];
 }
 
+if (!isset($config['scansize'])) {
+  $config['scansize'] = 1000;
+}
+
+if (!isset($config['scanmax'])) {
+  $config['scanmax'] = 0;
+}
+
 if (!isset($server['scansize'])) {
   $server['scansize'] = $config['scansize'];
+}
+
+if (!isset($server['scanmax'])) {
+  $server['scanmax'] = $config['scanmax'];
 }
 
 if (!isset($server['serialization'])) {

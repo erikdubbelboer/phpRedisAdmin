@@ -10,18 +10,16 @@ if($redis) {
     } else {
         $next = 0;
         $keys = array();
-        $scansize = $server['scansize'];
         while (true) {
-            $r = $redis->scan($next, 'MATCH', $server['filter'], 'COUNT', $scansize);
+            $r = $redis->scan($next, 'MATCH', $server['filter'], 'COUNT', $server['scansize']);
             $next = $r[0];
             $keys = array_merge($keys, $r[1]);
             if ($next == 0) {
                 break;
             }
-            if (count($keys) >= $server['scanmax']) {
+            if ($server['scanmax'] > 0 && count($keys) >= $server['scanmax']) {
                 break;
             }
-            $scansize = min($server['scanmax'] - count($keys), $server['scansize']);
         }
     }
 
@@ -255,7 +253,7 @@ if ($databases > 1) { ?>
 </div>
 <div id="keys">
 <div class="info">
-  scanned <?php echo count($keys) ?> keys<?php echo (count($keys) >= $server['scanmax']) ? ', reached scanmax' : '' ?>
+  scanned <?php echo count($keys) ?> keys<?php echo ($server['scanmax'] > 0 && count($keys) >= $server['scanmax']) ? ', reached scanmax' : '' ?>
 </div>
 <ul>
 <?php print_namespace($namespaces, 'Keys', '', empty($namespaces))?>
