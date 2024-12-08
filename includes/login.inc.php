@@ -111,7 +111,7 @@ function authCookie()
         // Login form submitted; correctly?
         if (isset($config['login'][$_POST['username']])) {
             $userData = $config['login'][$_POST['username']];
-            if ($_POST['password'] === $userData['password']) {
+            if (urldecode($_POST['password']) === $userData['password']) {
                 // Correct username & password. Set cookie and redirect to home page
                 $cookieValue = $_POST['username'] . ':' . $generateCookieHash($_POST['username']);
                 setcookie('phpRedisAdminLogin', $cookieValue);
