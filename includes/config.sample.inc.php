@@ -84,7 +84,7 @@ $config = array(
   'keys' => false,
 
   // How many entries to fetch using each SCAN command.
-  'scansize' => 1000
+  'scansize' => 1000,
 
   // The total number of entries to fetch. Set to 0 or -1 for no limit.
   'scanmax' => 0
