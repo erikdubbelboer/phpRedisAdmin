@@ -15,7 +15,7 @@
     "require": {
         "ext-mbstring": "*",
         "ext-json": "*",
-        "predis/predis": "v1.1.9",
+        "predis/predis": "v2.3.0",
         "paragonie/random_compat": ">=2"
     },
     "minimum-stability": "stable",

@@ -95,20 +95,20 @@ if (!isset($server['keys'])) {
   $server['keys'] = $config['keys'];
 }
 
-if (!isset($config['scansize'])) {
-  $config['scansize'] = 1000;
-}
-
-if (!isset($config['scanmax'])) {
-  $config['scanmax'] = 0;
-}
-
 if (!isset($server['scansize'])) {
-  $server['scansize'] = $config['scansize'];
+  if (isset($config['scansize'])) {
+    $server['scansize'] = $config['scansize'];
+  } else {
+    $server['scansize'] = 1000;
+  }
 }
 
 if (!isset($server['scanmax'])) {
-  $server['scanmax'] = $config['scanmax'];
+  if (isset($config['scanmax'])) {
+    $server['scanmax'] = $config['scanmax'];
+  } else {
+    $server['scanmax'] = 0;
+  }
 }
 
 if (!isset($server['serialization'])) {
@@ -125,8 +125,8 @@ if (!isset($config['showEmptyNamespaceAsKey'])) {
   $config['showEmptyNamespaceAsKey'] = false;
 }
 
-if (!isset($config['scheme']) || empty($config['scheme'])) {
-  $config['scheme'] = 'tcp';
+if (!isset($server['scheme']) || empty($server['scheme'])) {
+  $server['scheme'] = 'tcp';
 }
 
 // Setup a connection to Redis.
