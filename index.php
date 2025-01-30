@@ -82,7 +82,15 @@ if($redis) {
 
         // Get the number of items in the key.
         if (!isset($config['faster']) || !$config['faster']) {
-          switch ($redis->type($fullkey)) {
+          $type = '';
+          try {
+            $type = $redis->type($fullkey);
+          } catch (\Predis\Response\ServerException $th) {
+            $type = 'NOPERM';
+            $class[] = 'empty';
+          }
+
+          switch ($type) {
             case 'hash':
               $len = $redis->hLen($fullkey);
               break;
