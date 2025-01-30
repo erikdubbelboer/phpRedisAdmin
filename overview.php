@@ -10,18 +10,6 @@ foreach ($config['servers'] as $i => $server) {
       $server['db'] = 0;
   }
 
-  // Setup a connection to Redis.
-  if(isset($server['scheme']) && $server['scheme'] === 'unix' && $server['path']) {
-    $redis = new Predis\Client(array('scheme' => 'unix', 'path' => $server['path']));
-  } else {
-    $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client('tcp://'.$server['host'].':'.$server['port']);
-  }
-  try {
-    $redis->connect();
-  } catch (Predis\CommunicationException $exception) {
-    $redis = false;
-  }
-
   if(!$redis) {
       $info[$i] = false;
   } else {
@@ -38,6 +26,7 @@ foreach ($config['servers'] as $i => $server) {
 
       $info[$i]         = $redis->info();
       $info[$i]['size'] = $redis->dbSize();
+      $info[$i]['username'] = $redis->acl->whoami();
 
       if (!isset($info[$i]['Server'])) {
         $info[$i]['Server'] = array(
@@ -82,6 +71,8 @@ require 'includes/header.inc.php';
   <tr><td><div>Memory used:</div></td><td><div><?php echo format_size($info[$i]['Memory']['used_memory'])?></div></td></tr>
 
   <tr><td><div>Uptime:</div></td><td><div><?php echo format_time($info[$i]['Server']['uptime_in_seconds'])?></div></td></tr>
+
+  <tr><td><div>ACL username:</div></td><td><div><?php echo ($info[$i]['username'])?></div></td></tr>
 
   <tr><td><div>Last save:</div></td><td><div>
     <?php 

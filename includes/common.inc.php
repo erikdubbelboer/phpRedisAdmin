@@ -24,18 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 // These includes are needed by each script.
-if(file_exists(PHPREDIS_ADMIN_PATH . '/includes/config.inc.php')){
+if (file_exists(PHPREDIS_ADMIN_PATH . '/includes/config.inc.php')) {
   require_once PHPREDIS_ADMIN_PATH . '/includes/config.inc.php';
-}else{
+} else {
   require_once PHPREDIS_ADMIN_PATH . '/includes/config.sample.inc.php';
 }
 require_once PHPREDIS_ADMIN_PATH . '/includes/functions.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/page.inc.php';
-
-if (isset($config['login'])) {
-  require_once PHPREDIS_ADMIN_PATH . '/includes/login.inc.php';
-}
-
 
 if (isset($login['servers'])) {
   $i = current($login['servers']);
@@ -81,10 +76,10 @@ if (!isset($server['filter'])) {
 
 // filter from GET param
 if (isset($_GET['filter']) && $_GET['filter'] != '') {
-    $server['filter'] = $_GET['filter'];
-    if (strpos($server['filter'], '*') === false) {
-      $server['filter'].= '*';
-    }
+  $server['filter'] = $_GET['filter'];
+  if (strpos($server['filter'], '*') === false) {
+    $server['filter'] .= '*';
+  }
 }
 
 if (!isset($server['seperator'])) {
@@ -130,27 +125,29 @@ if (!isset($server['scheme']) || empty($server['scheme'])) {
 }
 
 // Setup a connection to Redis.
-if ($server['scheme'] === 'unix' && $server['path']) {
-  $redis = new Predis\Client(array('scheme' => 'unix', 'path' => $server['path']));
-} else {
-  $redis = !$server['port'] ? new Predis\Client($server['host']) : new Predis\Client($server['scheme'].'://'.$server['host'].':'.$server['port']);
+$redis = new Predis\Client($server);
+
+try {
+  $redis->connect();
+} catch (Predis\CommunicationException $exception) {
+  die('ERROR: ' . $exception->getMessage());
 }
 
 try {
-    $redis->connect();
-} catch (Predis\CommunicationException $exception) {
-    die('ERROR: ' . $exception->getMessage());
+  $redis->ping();
+} catch (Predis\Response\ServerException $exception) {
+  require_once PHPREDIS_ADMIN_PATH . '/includes/login.inc.php';
 }
 
 if (isset($server['auth'])) {
   if (!$redis->auth($server['auth'])) {
-    die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
+    die('ERROR: Authentication failed (' . $server['host'] . ':' . $server['port'] . ')');
   }
 }
 
 
 if ($server['db'] != 0) {
   if (!$redis->select($server['db'])) {
-    die('ERROR: Selecting database failed ('.$server['host'].':'.$server['port'].','.$server['db'].')');
+    die('ERROR: Selecting database failed (' . $server['host'] . ':' . $server['port'] . ',' . $server['db'] . ')');
   }
 }
