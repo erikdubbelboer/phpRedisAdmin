@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "401ff61cebe5223d003a47192d7c3d6a",
+    "content-hash": "9ebfdd83053d61e2db192229cc39f2d8",
     "packages": [
         {
             "name": "paragonie/random_compat",
