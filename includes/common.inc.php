@@ -148,6 +148,9 @@ if (isset($server['auth'])) {
   }
 }
 
+if (!isset($config['login']) && !empty($config['login_as_acl_auth'])) {
+  require_once PHPREDIS_ADMIN_PATH . '/includes/login_acl.inc.php';
+}
 
 if ($server['db'] != 0) {
   if (!$redis->select($server['db'])) {
