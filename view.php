@@ -17,8 +17,18 @@ if (!isset($_GET['key'])) {
   die;
 }
 
-$type   = $redis->type($_GET['key']);
-$exists = $redis->exists($_GET['key']);
+$type   = ''; 
+$exists = false;
+try {
+  $type   = $redis->type($_GET['key']);
+  $exists = $redis->exists($_GET['key']);
+} catch (\Predis\Response\ServerException $th) {
+  ?>
+  <div class="exception">
+    <h3><?php echo $th->getMessage() ?></h3>
+  </div>
+  <?php
+}
 
 $count_elements_page = isset($config['count_elements_page']) ? $config['count_elements_page'] : false;
 $page_num_request    = isset($_GET['page']) ? (int)$_GET['page'] : 1;
