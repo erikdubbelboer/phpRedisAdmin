@@ -31,7 +31,7 @@ require 'includes/header.inc.php';
 
 <p>
 <label for="ttl"><abbr title="Time To Live">TTL</abbr>:</label>
-<input type="text" name="ttl" id="ttl" size="30" <?php echo isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
+<input type="number" min="-1" name="ttl" id="ttl" size="30" <?php echo isset($_GET['ttl']) ? 'value="'.format_html($_GET['ttl']).'"' : ''?>> <span class="info">(-1 to remove the TTL)</span>
 </p>
 
 <input type="submit" class="button" value="Edit TTL">
