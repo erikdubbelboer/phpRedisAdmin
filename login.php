@@ -33,7 +33,7 @@ require 'includes/header.inc.php';
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control"
            placeholder="Password"
-           required <?= isset($_POST['username']) ? 'autofocus' : '' ?>>
+           <?= isset($_POST['username']) ? 'autofocus' : '' ?>>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
 </form>

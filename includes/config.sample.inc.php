@@ -61,6 +61,12 @@ $config = array(
     )
   ),*/
 
+  // Uncomment to enable login as ACL authentication (won't work if 'login' or 'auth' is also used)
+  // Only support using one server at this moment.
+  // If you set the default user off, browsers will be redirected to login page.
+  // The user and password will be stored in browser as plaintext so using HTTPS is strongly recommended.
+  // 'login_as_acl_auth' => true,
+
   // Use HTML form/cookie-based auth instead of HTTP Basic/Digest auth
   'cookie_auth' => false,
 
