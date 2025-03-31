@@ -147,6 +147,11 @@ if (isset($server['auth'])) {
     die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
   }
 }
+if (isset($server['username']) && isset($server['password'])) {
+  if (!$redis->auth($server['username'],$server['password'])) {
+    die('ERROR: Authentication failed ('.$server['host'].':'.$server['port'].')');
+  }
+}
 
 if (!isset($config['login']) && !empty($config['login_as_acl_auth'])) {
   require_once PHPREDIS_ADMIN_PATH . '/includes/login_acl.inc.php';
