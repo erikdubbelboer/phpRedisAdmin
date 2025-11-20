@@ -122,7 +122,7 @@ if (isset($values) && ($count_elements_page !== false)) {
 <?php 
 echo $size;
 
-if ($type === 'string') {
+if ($type == 'string') {
     echo " characters";
 } else if ($size < 0) {
     echo " (Type Unsupported)";
