@@ -39,6 +39,26 @@ clear: left;
 }
 
 
+.inline-action {
+display: inline;
+margin: 0;
+padding: 0;
+}
+
+.inline-action .image-button, .inline-action .link-button {
+background: none;
+border: 0;
+cursor: pointer;
+font: inherit;
+padding: 0;
+}
+
+.inline-action .link-button {
+color: #00e;
+text-decoration: underline;
+}
+
+
 .info {
 color: #aaa;
 font-weight: normal;

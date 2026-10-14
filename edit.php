@@ -8,6 +8,8 @@ global $redis, $config, $csrfToken, $server;
 $edit = false;
 
 if (isset($_GET['key'], $_GET['type'])) {
+  require_key_in_server_filter($_GET['key']);
+
   if (($_GET['type'] == 'string') ||
       (($_GET['type'] == 'hash') && isset($_GET['hkey']))  ||
       (($_GET['type'] == 'list') && isset($_GET['index'])) ||
@@ -27,6 +29,7 @@ if (isset($_POST['type'], $_POST['key'], $_POST['value'])) {
   }
 
   $key   = input_convert($_POST['key']);
+  require_key_in_server_filter($key);
   $value = input_convert($_POST['value']);
   $value = encodeOrDecode('save', $key, $value);
 

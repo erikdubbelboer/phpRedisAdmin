@@ -17,7 +17,8 @@ if (session_status() !== PHP_SESSION_DISABLED) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if ($_POST['csrf'] !== $csrfToken) {
+  if (!isset($_POST['csrf']) || !is_string($_POST['csrf']) || !hash_equals($csrfToken, $_POST['csrf'])) {
+    http_response_code(403);
     die('bad csrf token');
   }
 }
@@ -29,6 +30,12 @@ if(file_exists(PHPREDIS_ADMIN_PATH . '/includes/config.inc.php')){
 }else{
   require_once PHPREDIS_ADMIN_PATH . '/includes/config.sample.inc.php';
 }
+
+if (!isset($config['login']) && empty($config['login_as_acl_auth']) && empty($config['allow_no_auth'])) {
+  http_response_code(403);
+  die('Authentication is required. Configure login credentials or explicitly set allow_no_auth for an isolated development instance.');
+}
+
 require_once PHPREDIS_ADMIN_PATH . '/includes/functions.inc.php';
 require_once PHPREDIS_ADMIN_PATH . '/includes/page.inc.php';
 
@@ -79,8 +86,8 @@ if (!isset($server['filter'])) {
   $server['filter'] = '*';
 }
 
-// filter from GET param
-if (isset($_GET['filter']) && $_GET['filter'] != '') {
+// filter from GET param - only apply when no operator restriction is configured
+if (isset($_GET['filter']) && $_GET['filter'] != '' && $server['filter'] === '*') {
     $server['filter'] = $_GET['filter'];
     if (strpos($server['filter'], '*') === false) {
       $server['filter'].= '*';

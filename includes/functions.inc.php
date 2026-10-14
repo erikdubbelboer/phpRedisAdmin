@@ -26,6 +26,27 @@ function input_convert($str) {
 }
 
 
+function key_matches_server_filter($key) {
+  global $server;
+
+  $filter = isset($server['filter']) ? $server['filter'] : '*';
+  return $filter === '*' || fnmatch($filter, $key);
+}
+
+
+function require_key_in_server_filter($key) {
+  if (!key_matches_server_filter($key)) {
+    http_response_code(403);
+    die('Key is outside the configured filter for this server.');
+  }
+}
+
+
+function filter_keys_for_server($keys) {
+  return array_values(array_filter($keys, 'key_matches_server_filter'));
+}
+
+
 function format_time($time) {
   $minute = 60;
   $hour   = $minute * 60;
