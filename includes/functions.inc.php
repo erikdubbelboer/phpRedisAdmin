@@ -26,11 +26,158 @@ function input_convert($str) {
 }
 
 
+// This matcher is adapted from Redis stringmatchlen() in src/util.c.
+// See LICENSE.redis-stringmatch for the source copyright and license.
+function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $string, $stringOffset, $stringLength, &$skipLongerMatches, $nesting) {
+  if ($nesting > 1000) {
+    return false;
+  }
+
+  while ($patternLength && $stringLength) {
+    switch ($pattern[$patternOffset]) {
+      case '*':
+        while ($patternLength > 1 && $pattern[$patternOffset + 1] === '*') {
+          ++$patternOffset;
+          --$patternLength;
+        }
+
+        if ($patternLength === 1) {
+          return true;
+        }
+
+        while ($stringLength) {
+          if (redis_pattern_matches_impl($pattern, $patternOffset + 1, $patternLength - 1, $string, $stringOffset, $stringLength, $skipLongerMatches, $nesting + 1)) {
+            return true;
+          }
+
+          if ($skipLongerMatches) {
+            return false;
+          }
+
+          ++$stringOffset;
+          --$stringLength;
+        }
+
+        $skipLongerMatches = true;
+        return false;
+
+      case '?':
+        ++$stringOffset;
+        --$stringLength;
+        break;
+
+      case '[':
+        ++$patternOffset;
+        --$patternLength;
+
+        $not = $patternLength && $pattern[$patternOffset] === '^';
+        if ($not) {
+          ++$patternOffset;
+          --$patternLength;
+        }
+
+        $match = false;
+        while (true) {
+          if ($patternLength >= 2 && $pattern[$patternOffset] === '\\') {
+            ++$patternOffset;
+            --$patternLength;
+            if ($pattern[$patternOffset] === $string[$stringOffset]) {
+              $match = true;
+            }
+          } elseif ($patternLength && $pattern[$patternOffset] === ']') {
+            break;
+          } elseif ($patternLength === 0) {
+            --$patternOffset;
+            ++$patternLength;
+            break;
+          } elseif ($patternLength >= 3 && $pattern[$patternOffset + 1] === '-') {
+            $start = ord($pattern[$patternOffset]);
+            $end = ord($pattern[$patternOffset + 2]);
+            $character = ord($string[$stringOffset]);
+
+            if ($start > $end) {
+              $temporary = $start;
+              $start = $end;
+              $end = $temporary;
+            }
+
+            $patternOffset += 2;
+            $patternLength -= 2;
+            if ($character >= $start && $character <= $end) {
+              $match = true;
+            }
+          } elseif ($pattern[$patternOffset] === $string[$stringOffset]) {
+            $match = true;
+          }
+
+          ++$patternOffset;
+          --$patternLength;
+        }
+
+        if ($not) {
+          $match = !$match;
+        }
+        if (!$match) {
+          return false;
+        }
+
+        ++$stringOffset;
+        --$stringLength;
+        break;
+
+      case '\\':
+        if ($patternLength >= 2) {
+          ++$patternOffset;
+          --$patternLength;
+        }
+        // Fall through and compare the escaped byte.
+      default:
+        if ($pattern[$patternOffset] !== $string[$stringOffset]) {
+          return false;
+        }
+
+        ++$stringOffset;
+        --$stringLength;
+        break;
+    }
+
+    ++$patternOffset;
+    --$patternLength;
+
+    if ($stringLength === 0) {
+      while ($patternLength && $pattern[$patternOffset] === '*') {
+        ++$patternOffset;
+        --$patternLength;
+      }
+      break;
+    }
+  }
+
+  return $patternLength === 0 && $stringLength === 0;
+}
+
+
+function redis_pattern_matches($pattern, $string) {
+  $skipLongerMatches = false;
+
+  return redis_pattern_matches_impl(
+    $pattern,
+    0,
+    strlen($pattern),
+    $string,
+    0,
+    strlen($string),
+    $skipLongerMatches,
+    0
+  );
+}
+
+
 function key_matches_server_filter($key) {
   global $server;
 
   $filter = isset($server['filter']) ? $server['filter'] : '*';
-  return $filter === '*' || fnmatch($filter, $key);
+  return $filter === '*' || redis_pattern_matches($filter, $key);
 }
 
 
