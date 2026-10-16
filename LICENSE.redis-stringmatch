@@ -30,3 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 The matcher in includes/functions.inc.php is adapted from stringmatchlen() in
 Redis 7.2 src/util.c:
 https://github.com/redis/redis/blob/7.2/src/util.c
+
+Character-class ranges compare bytes as signed 8-bit values, matching Redis
+7.0.12 and 7.2 on amd64 where char is signed. PHP ord() is unsigned, so the
+adaptation subtracts 256 from bytes 128..255 before the range test. Equality
+tests still compare raw bytes. Escaped class members never start a range.

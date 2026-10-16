@@ -28,6 +28,16 @@ function input_convert($str) {
 
 // This matcher is adapted from Redis stringmatchlen() in src/util.c.
 // See LICENSE.redis-stringmatch for the source copyright and license.
+//
+// Redis promotes class-range bytes through signed char (amd64 Linux ABI).
+// PHP ord() is unsigned 0..255, so ranges with a high bit set diverge:
+// [a-\xC3\xA9]* excludes banana in Redis and includes it with unsigned ord().
+function redis_pattern_signed_byte($character) {
+  $value = ord($character);
+  return ($value < 128) ? $value : $value - 256;
+}
+
+
 function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $string, $stringOffset, $stringLength, &$skipLongerMatches, $nesting) {
   if ($nesting > 1000) {
     return false;
@@ -91,9 +101,9 @@ function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $s
             ++$patternLength;
             break;
           } elseif ($patternLength >= 3 && $pattern[$patternOffset + 1] === '-') {
-            $start = ord($pattern[$patternOffset]);
-            $end = ord($pattern[$patternOffset + 2]);
-            $character = ord($string[$stringOffset]);
+            $start = redis_pattern_signed_byte($pattern[$patternOffset]);
+            $end = redis_pattern_signed_byte($pattern[$patternOffset + 2]);
+            $character = redis_pattern_signed_byte($string[$stringOffset]);
 
             if ($start > $end) {
               $temporary = $start;
