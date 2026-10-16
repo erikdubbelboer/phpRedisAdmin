@@ -3,7 +3,13 @@
 require_once 'includes/common.inc.php';
 global $redis, $config, $csrfToken, $server;
 
+if (isset($_GET['key'])) {
+  require_key_in_server_filter($_GET['key']);
+}
+
 if (isset($_POST['key'], $_POST['ttl'])) {
+  require_key_in_server_filter($_POST['key']);
+
   if ($_POST['ttl'] == -1) {
     $redis->persist($_POST['key']);
   } else {

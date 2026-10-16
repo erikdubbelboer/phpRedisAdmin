@@ -2,10 +2,10 @@ services:
   phpredisadmin:
     build: .
     environment:
-      - ADMIN_USER=admin
-      - ADMIN_PASS=admin
-      - REDIS_1_HOST=redis
-      - REDIS_1_PORT=6379
+      ADMIN_USER: ${ADMIN_USER:?Set ADMIN_USER before starting phpRedisAdmin}
+      ADMIN_PASS: ${ADMIN_PASS:?Set ADMIN_PASS before starting phpRedisAdmin}
+      REDIS_1_HOST: redis
+      REDIS_1_PORT: 6379
     links:
       - redis
     ports:

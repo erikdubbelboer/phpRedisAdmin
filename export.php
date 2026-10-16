@@ -4,6 +4,10 @@ require_once 'includes/common.inc.php';
 
 global $redis, $config, $csrfToken, $server;
 
+if (isset($_GET['key'])) {
+  require_key_in_server_filter($_GET['key']);
+}
+
 // Export to redis-cli commands
 function export_redis($key, $filter = false, $transform = false) {
 
@@ -130,7 +134,7 @@ if (isset($_POST['type'])) {
     if (isset($_GET['key'])) {
       echo json_encode(export_json($_GET['key']));
     } else { // All keys
-      $keys = $redis->keys('*');
+      $keys = filter_keys_for_server($redis->keys($server['filter']));
       $vals = array();
 
       foreach ($keys as $key) {
@@ -159,7 +163,7 @@ if (isset($_POST['type'])) {
     if (isset($_GET['key'])) {
       export_redis($_GET['key']);
     } else { // All keys
-      $keys = $redis->keys('*');
+      $keys = filter_keys_for_server($redis->keys($server['filter']));
 
       foreach ($keys as $key) {
 

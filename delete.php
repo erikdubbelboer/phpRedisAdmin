@@ -10,6 +10,8 @@ global $redis;
 global $server;
 
 if (isset($_GET['key'])) {
+  require_key_in_server_filter($_GET['key']);
+
   // String
   if (!isset($_GET['type']) || ($_GET['type'] == 'string')) {
     // Delete the whole key.
@@ -51,7 +53,13 @@ if (isset($_GET['key'])) {
 
 
 if (isset($_GET['tree'])) {
-  $keys = $redis->keys($_GET['tree'].'*');
+  $candidateKeys = $redis->keys($_GET['tree'].'*');
+  $keys = filter_keys_for_server($candidateKeys);
+
+  if (!empty($candidateKeys) && empty($keys)) {
+    http_response_code(403);
+    die('Tree is outside the configured filter for this server.');
+  }
 
   foreach ($keys as $key) {
     $redis->del($key);
@@ -65,6 +73,19 @@ if (isset($_GET['batch_del'])) {
     die('No keys to delete');
   }
   $keys = json_decode($_POST['selected_keys']);
+  if (!is_array($keys) || empty($keys)) {
+    http_response_code(400);
+    die('Invalid key selection.');
+  }
+
+  // Validate the full batch before deleting any key.
+  foreach ($keys as $key) {
+    if (!is_string($key)) {
+      http_response_code(400);
+      die('Invalid key selection.');
+    }
+    require_key_in_server_filter($key);
+  }
 
   foreach ($keys as $key) {
     $redis->del($key);

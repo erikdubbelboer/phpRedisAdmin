@@ -3,6 +3,10 @@
 require_once 'includes/common.inc.php';
 global $redis, $config, $csrfToken, $server;
 
+if (isset($_GET['key'])) {
+  require_key_in_server_filter($_GET['key']);
+}
+
 $page['css'][] = 'frame';
 $page['js'][]  = 'frame';
 

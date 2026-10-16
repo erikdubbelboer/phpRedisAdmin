@@ -110,7 +110,10 @@ require 'includes/header.inc.php';
            echo 'never';
         } 
     ?> 
-    <a href="save.php?s=<?php echo $i?>"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></a></div></td></tr>
+    <form action="save.php?s=<?php echo $i?>" method="post" class="inline-action">
+      <input type="hidden" name="csrf" value="<?php echo $csrfToken; ?>">
+      <button type="submit" class="image-button"><img src="images/save.png" width="16" height="16" title="Save Now" alt="[S]" class="imgbut"></button>
+    </form></div></td></tr>
 
   </table>
   <?php endif; ?>
