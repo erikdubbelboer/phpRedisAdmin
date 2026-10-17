@@ -29,16 +29,21 @@ function input_convert($str) {
 // This matcher is adapted from Redis stringmatchlen() in src/util.c.
 // See LICENSE.redis-stringmatch for the source copyright and license.
 //
-// Redis promotes class-range bytes through signed char (amd64 Linux ABI).
-// PHP ord() is unsigned 0..255, so ranges with a high bit set diverge:
-// [a-\xC3\xA9]* excludes banana in Redis and includes it with unsigned ord().
-function redis_pattern_signed_byte($character) {
+// Redis class-range bytes follow the host C char signedness:
+// amd64 Linux signed char, arm64 AAPCS unsigned char. PHP ord() is always
+// unsigned. A key is in-filter only when both ABIs match (fail closed).
+// [a-\xC3\xA9]* excludes banana on signed Redis; [^a-\xC3\xA9]* excludes
+// banana on unsigned Redis.
+function redis_pattern_range_byte($character, $signed) {
   $value = ord($character);
-  return ($value < 128) ? $value : $value - 256;
+  if ($signed && $value >= 128) {
+    return $value - 256;
+  }
+  return $value;
 }
 
 
-function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $string, $stringOffset, $stringLength, &$skipLongerMatches, $nesting) {
+function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $string, $stringOffset, $stringLength, &$skipLongerMatches, $nesting, $signed) {
   if ($nesting > 1000) {
     return false;
   }
@@ -56,7 +61,7 @@ function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $s
         }
 
         while ($stringLength) {
-          if (redis_pattern_matches_impl($pattern, $patternOffset + 1, $patternLength - 1, $string, $stringOffset, $stringLength, $skipLongerMatches, $nesting + 1)) {
+          if (redis_pattern_matches_impl($pattern, $patternOffset + 1, $patternLength - 1, $string, $stringOffset, $stringLength, $skipLongerMatches, $nesting + 1, $signed)) {
             return true;
           }
 
@@ -101,9 +106,9 @@ function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $s
             ++$patternLength;
             break;
           } elseif ($patternLength >= 3 && $pattern[$patternOffset + 1] === '-') {
-            $start = redis_pattern_signed_byte($pattern[$patternOffset]);
-            $end = redis_pattern_signed_byte($pattern[$patternOffset + 2]);
-            $character = redis_pattern_signed_byte($string[$stringOffset]);
+            $start = redis_pattern_range_byte($pattern[$patternOffset], $signed);
+            $end = redis_pattern_range_byte($pattern[$patternOffset + 2], $signed);
+            $character = redis_pattern_range_byte($string[$stringOffset], $signed);
 
             if ($start > $end) {
               $temporary = $start;
@@ -167,7 +172,7 @@ function redis_pattern_matches_impl($pattern, $patternOffset, $patternLength, $s
 }
 
 
-function redis_pattern_matches($pattern, $string) {
+function redis_pattern_matches_abi($pattern, $string, $signed) {
   $skipLongerMatches = false;
 
   return redis_pattern_matches_impl(
@@ -178,8 +183,15 @@ function redis_pattern_matches($pattern, $string) {
     0,
     strlen($string),
     $skipLongerMatches,
-    0
+    0,
+    $signed
   );
+}
+
+
+function redis_pattern_matches($pattern, $string) {
+  return redis_pattern_matches_abi($pattern, $string, true)
+    && redis_pattern_matches_abi($pattern, $string, false);
 }
 
 
