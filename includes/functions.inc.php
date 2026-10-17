@@ -217,6 +217,11 @@ function filter_keys_for_server($keys) {
 }
 
 
+function filtered_key_exists($redis, $key) {
+  return key_matches_server_filter($key) && $redis->exists($key);
+}
+
+
 function format_time($time) {
   $minute = 60;
   $hour   = $minute * 60;

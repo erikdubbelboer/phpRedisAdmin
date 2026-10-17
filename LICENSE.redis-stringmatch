@@ -37,5 +37,6 @@ amd64 compares signed 8-bit values. Redis 7.0.12 on arm64 compares unsigned
 
 The adapter evaluates each range twice (signed and unsigned). A key matches
 only when both results match. That fail-closed rule never allows a key that
-either Redis ABI would exclude. Equality tests still compare raw bytes.
-Escaped class members never start a range.
+either Redis ABI would exclude. A key that only one ABI would include is
+denied (narrow false-deny on high-byte ranges). Equality tests still compare
+raw bytes. Escaped class members never start a range.

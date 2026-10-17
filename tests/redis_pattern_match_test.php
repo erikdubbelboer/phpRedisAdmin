@@ -141,6 +141,43 @@ if (in_array('banana', $locked, true)) {
   fwrite(STDERR, "FAIL filter_keys_for_server does not lock [^a-e-acute]* against banana\n");
 }
 
+class ExistsCallRecorder {
+  public $calls = array();
+
+  public function exists($key) {
+    $this->calls[] = $key;
+    return 1;
+  }
+}
+
+$server = array('filter' => 'allowed:*');
+$exists_recorder = new ExistsCallRecorder();
+$members = array('allowed:a', 'secret:x', 'banana', 'allowed:b');
+$linkable = array();
+foreach ($members as $member) {
+  if (filtered_key_exists($exists_recorder, $member)) {
+    $linkable[] = $member;
+  }
+}
+foreach ($exists_recorder->calls as $probed) {
+  if (!key_matches_server_filter($probed)) {
+    ++$failed;
+    fwrite(STDERR, "FAIL EXISTS received denied key ".$probed."\n");
+  }
+}
+if (in_array('secret:x', $exists_recorder->calls, true) || in_array('banana', $exists_recorder->calls, true)) {
+  ++$failed;
+  fwrite(STDERR, "FAIL EXISTS probed a key outside allowed:*\n");
+}
+if ($linkable !== array('allowed:a', 'allowed:b')) {
+  ++$failed;
+  fwrite(STDERR, "FAIL filtered_key_exists linked unexpected members\n");
+}
+if ($exists_recorder->calls !== array('allowed:a', 'allowed:b')) {
+  ++$failed;
+  fwrite(STDERR, "FAIL EXISTS call list is not the allowed members only\n");
+}
+
 function redis_resp_read($fp) {
   $line = fgets($fp);
   if ($line === false) {
@@ -303,7 +340,7 @@ if ($failed) {
   exit(1);
 }
 
-$unit = count($ascii_cases) * 3 + count($signed_cases) + count($unsigned_cases) + count($portable_cases) + 5;
+$unit = count($ascii_cases) * 3 + count($signed_cases) + count($unsigned_cases) + count($portable_cases) + 6;
 printf("PASS %d Redis pattern unit checks", $unit);
 if ($live_checks) {
   printf(" plus %d live Redis ABI checks", $live_checks);
