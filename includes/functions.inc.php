@@ -212,6 +212,7 @@ function require_key_in_server_filter($key) {
 
 
 function filter_keys_for_server($keys) {
+  // Drop keys that only one Redis ABI would match (signed vs unsigned char).
   return array_values(array_filter($keys, 'key_matches_server_filter'));
 }
 

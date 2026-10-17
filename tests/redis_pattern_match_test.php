@@ -127,6 +127,20 @@ if (key_matches_server_filter('banana')) {
   fwrite(STDERR, "FAIL key_matches_server_filter [^a-e-acute]* arm64 maintainer case\n");
 }
 
+$mixed = array('apple', 'banana');
+$server = array('filter' => "[a-\xC3\xA9]*");
+$locked = filter_keys_for_server($mixed);
+if ($locked !== array('apple')) {
+  ++$failed;
+  fwrite(STDERR, "FAIL filter_keys_for_server does not lock [a-e-acute]* against banana\n");
+}
+$server = array('filter' => "[^a-\xC3\xA9]*");
+$locked = filter_keys_for_server($mixed);
+if (in_array('banana', $locked, true)) {
+  ++$failed;
+  fwrite(STDERR, "FAIL filter_keys_for_server does not lock [^a-e-acute]* against banana\n");
+}
+
 function redis_resp_read($fp) {
   $line = fgets($fp);
   if ($line === false) {
@@ -193,7 +207,7 @@ function redis_try_connect($host, $port) {
 }
 
 function live_redis_check($label, $host, $port, $signed) {
-  global $failed;
+  global $failed, $server;
   $fp = redis_try_connect($host, $port);
   if (!$fp) {
     fwrite(STDERR, "SKIP live Redis $label $host:$port unreachable\n");
@@ -253,6 +267,24 @@ function live_redis_check($label, $host, $port, $signed) {
     }
   }
 
+  foreach (array("[a-\xC3\xA9]*", "[^a-\xC3\xA9]*") as $lock_pattern) {
+    $matched = redis_resp_cmd($fp, array('KEYS', $lock_pattern));
+    if (!is_array($matched)) {
+      $matched = array();
+    }
+    $server = array('filter' => $lock_pattern);
+    $locked = filter_keys_for_server($matched);
+    if (in_array('banana', $locked, true)) {
+      ++$failed;
+      fwrite(STDERR, sprintf(
+        "FAIL live %s listing leak pattern=%s still contains banana after PHP filter\n",
+        $label,
+        bin2hex($lock_pattern)
+      ));
+    }
+    ++$checked;
+  }
+
   fclose($fp);
   printf("PASS live Redis %s %s:%d (%d checks)\n", $label, $host, $port, $checked);
   return $checked;
@@ -271,7 +303,7 @@ if ($failed) {
   exit(1);
 }
 
-$unit = count($ascii_cases) * 3 + count($signed_cases) + count($unsigned_cases) + count($portable_cases) + 3;
+$unit = count($ascii_cases) * 3 + count($signed_cases) + count($unsigned_cases) + count($portable_cases) + 5;
 printf("PASS %d Redis pattern unit checks", $unit);
 if ($live_checks) {
   printf(" plus %d live Redis ABI checks", $live_checks);

@@ -23,6 +23,10 @@ if($redis) {
         }
     }
 
+    // Redis MATCH follows host char signedness (amd64 signed, arm64 unsigned).
+    // PHP-filter the result so a key is listed only when both ABIs agree.
+    $keys = filter_keys_for_server($keys);
+
     sort($keys);
 
     $namespaces = array(); // Array to hold our top namespaces.
