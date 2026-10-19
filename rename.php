@@ -3,10 +3,17 @@
 require_once 'includes/common.inc.php';
 global $redis, $config, $csrfToken, $server;
 
+if (isset($_GET['key'])) {
+  require_key_in_server_filter($_GET['key']);
+}
+
 if (isset($_POST['old'], $_POST['key'])) {
   if (strlen($_POST['key']) > $config['maxkeylen']) {
     die('ERROR: Your key is to long (max length is '.$config['maxkeylen'].')');
   }
+
+  require_key_in_server_filter($_POST['old']);
+  require_key_in_server_filter($_POST['key']);
 
   $redis->rename($_POST['old'], $_POST['key']);
 

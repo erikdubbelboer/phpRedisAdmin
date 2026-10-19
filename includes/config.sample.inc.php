@@ -67,6 +67,10 @@ $config = array(
   // The user and password will be stored in browser as plaintext so using HTTPS is strongly recommended.
   // 'login_as_acl_auth' => true,
 
+  // Authentication is required by default. Set this to true only when the
+  // application is intentionally isolated and unauthenticated access is safe.
+  'allow_no_auth' => false,
+
   // Use HTML form/cookie-based auth instead of HTTP Basic/Digest auth
   'cookie_auth' => false,
 

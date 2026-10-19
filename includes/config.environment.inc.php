@@ -17,8 +17,25 @@ $config['showEmptyNamespaceAsKey'] = getenv('SHOW_EMPTY_NAMESPACE_AS_KEY') ?: fa
 
 $admin_user = getenv('ADMIN_USER');
 $admin_pass = getenv('ADMIN_PASS');
+$admin_user_set = $admin_user !== false && $admin_user !== '';
+$admin_pass_set = $admin_pass !== false && $admin_pass !== '';
+$allow_no_auth = getenv('ALLOW_NO_AUTH') === 'true';
 
-if (!empty($admin_user)) {
+// Partial credentials are almost always a deployment mistake. Fail closed even
+// when the explicit no-auth development mode is enabled.
+if ($admin_user_set !== $admin_pass_set) {
+  header('HTTP/1.1 403 Forbidden');
+  die('ADMIN_USER and ADMIN_PASS must both be set.');
+}
+
+if (!$allow_no_auth && !$admin_user_set) {
+  header('HTTP/1.1 403 Forbidden');
+  die('Authentication is required. Set ADMIN_USER and ADMIN_PASS, or set ALLOW_NO_AUTH=true for an isolated development instance.');
+}
+
+$config['allow_no_auth'] = $allow_no_auth;
+
+if ($admin_user_set) {
   $config['login'] = array(
     $admin_user => array(
       'password' => $admin_pass,

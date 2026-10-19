@@ -43,11 +43,28 @@ Docker Image
 ============
 A public [phpRedisAdmin Docker image](https://hub.docker.com/r/erikdubbelboer/phpredisadmin/) is available on Docker Hub built from the latest tag.
 The file ```includes/config.environment.inc.php``` is used as the configuration file to allow environment variables to be used as configuration values.
+**Authentication is required.** Set `ADMIN_USER` and `ADMIN_PASS` before exposing the container.
+If you intentionally need unauthenticated access, set `ALLOW_NO_AUTH=true` (not recommended outside
+isolated local development).
+
 Example:
 ```
-docker run --rm -it -e REDIS_1_HOST=myredis.host -e REDIS_1_NAME=MyRedis -p 80:80 erikdubbelboer/phpredisadmin
+docker run --rm -it \
+  -e ADMIN_USER=myuser \
+  -e ADMIN_PASS=mysecretpassword \
+  -e REDIS_1_HOST=myredis.host \
+  -e REDIS_1_NAME=MyRedis \
+  -p 80:80 erikdubbelboer/phpredisadmin
 ```
-Also, a Docker Compose manifest with a stack for testing and development is provided. Just issue ```docker-compose up --build``` to start it and browse to http://localhost. See ```docker-compose.yml``` file for configuration details.
+The Docker Compose manifest also requires credentials. Start it with:
+
+```
+ADMIN_USER=myuser ADMIN_PASS=mysecretpassword docker-compose up --build
+```
+
+Source installations require a configured `login` or `login_as_acl_auth` entry. An operator can set
+`allow_no_auth` to `true` in `includes/config.inc.php` only for an intentionally isolated development
+instance.
 
 Environment variables summary
 ====
@@ -59,8 +76,9 @@ Environment variables summary
 * ``REDIS_1_AUTH`` - define password of the Redis server
 * ``REDIS_1_AUTH_FILE`` - define file containing the password of the Redis server
 * ``REDIS_1_DATABASES`` - You can modify you config to prevent phpRedisAdmin from using CONFIG command 
-* ``ADMIN_USER`` - define username for user-facing Basic Auth
-* ``ADMIN_PASS`` - define password for user-facing Basic Auth
+* ``ADMIN_USER`` - define username for user-facing HTTP authentication
+* ``ADMIN_PASS`` - define password for user-facing HTTP authentication
+* ``ALLOW_NO_AUTH`` - set to `true` only to opt into unauthenticated access on an isolated development instance
 
 TODO
 ====
