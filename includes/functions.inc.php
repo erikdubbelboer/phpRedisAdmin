@@ -300,3 +300,9 @@ function encodeOrDecode($action, $key, $data) {
 function getRelativePath($base) {
   return substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], $base));
 }
+
+// FLUSHDB cannot be restricted to a key pattern.
+function server_can_flush($server) {
+  return !empty($server['flush']) &&
+    (!isset($server['filter']) || $server['filter'] === '*');
+}

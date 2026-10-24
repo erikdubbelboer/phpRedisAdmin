@@ -21,22 +21,21 @@ You can find an example database at
 Installing/Configuring
 ======================
 
-To install [phpRedisAdmin](https://packagist.org/packages/erik-dubbelboer/php-redis-admin) through [composer](http://getcomposer.org/) you need to execute the following commands:
+Install [Composer using its verified installer](https://getcomposer.org/download/), then run:
 
 ```
-curl -s http://getcomposer.org/installer | php
-php composer.phar create-project -s dev erik-dubbelboer/php-redis-admin path/to/install
+composer create-project erik-dubbelboer/php-redis-admin path/to/install
 ```
 
 You may also want to copy includes/config.sample.inc.php to includes/config.inc.php
 and edit it with your specific redis configuration.
 
-Instead of using composer, you can also do a manual install using:
+To install from a Git checkout, install its locked dependencies with Composer:
 
 ```
 git clone https://github.com/ErikDubbelboer/phpRedisAdmin.git
 cd phpRedisAdmin
-git clone https://github.com/nrk/predis.git vendor
+composer install
 ```
 
 Docker Image

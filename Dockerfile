@@ -1,4 +1,4 @@
-FROM composer:2.2.30
+FROM composer:2.10.3
 
 RUN apk add --no-cache tini tzdata
 

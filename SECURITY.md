@@ -2,11 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.13.x  | :white_check_mark: |
-| 1.12.x  | :white_check_mark: |
-| < 1.12  | :x:                |
+Security fixes are provided for the
+[latest release](https://github.com/erikdubbelboer/phpRedisAdmin/releases) only.
+Older releases do not receive backported fixes.
 
 ## Reporting a Vulnerability
 
