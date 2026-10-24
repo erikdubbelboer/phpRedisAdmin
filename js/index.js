@@ -2,12 +2,12 @@ $(function() {
   $('#selected_all_keys').on('click', function () {
     if ($(this).html()=='Select all'){
       $('input[name=checked_keys]').each(function () {
-        $(this).attr('checked', 'checked');
+        $(this).prop('checked', true);
       });
       $(this).html('Select none');
     }else {
       $('input[name=checked_keys]').each(function () {
-        $(this).removeAttr('checked');
+        $(this).prop('checked', false);
       });
       $(this).html('Select all');
     }
@@ -77,7 +77,7 @@ $(function() {
       }
 
       if (href.indexOf('flush.php') == 0) {
-        if (confirm('Are you sure you want to delete this key and all it\'s values?')) {
+        if (confirm('Are you sure you want to delete all keys in this database?')) {
           $.ajax({
             type: "POST",
             url: href,
